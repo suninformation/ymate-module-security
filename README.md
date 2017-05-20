@@ -21,7 +21,9 @@
     ymp.configs.module.security.authenticator_class=
     
     # 权限控制开关过滤集合, 默认值：空
-    ymp.configs.module.security.permissions.<group_name>=<name_1|name_2|name_N>
+    # - <group_name>: 权限组名称, 未指定分组的权限默认组为: default
+    # - <name_1|name_N>: 权限名称集合, 未指定名称的权限默认名称为: default, 多个名称间用'|'分隔, 若希望过滤权限组下全部权限可设置值为all
+    ymp.configs.module.security.permissions.<group_name>=<name_1|name_N>
     
     # 异常错误处理器，可选参数
     ymp.configs.webmvc.error_processor_class=net.ymate.module.security.support.SecurityWebErrorProcessor

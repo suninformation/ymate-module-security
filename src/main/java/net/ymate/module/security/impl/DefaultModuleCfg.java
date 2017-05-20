@@ -20,6 +20,7 @@ import net.ymate.module.security.ISecurityModuleCfg;
 import net.ymate.module.security.IUserAuthenticator;
 import net.ymate.platform.core.YMP;
 import net.ymate.platform.core.util.ClassUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
@@ -43,9 +44,17 @@ public class DefaultModuleCfg implements ISecurityModuleCfg {
         for (Map.Entry<String, String> _item : _moduleCfgs.entrySet()) {
             if (StringUtils.startsWith(_item.getKey(), "permissions.")) {
                 String _groupName = StringUtils.substringAfter(_item.getKey(), "permissions.");
-                String[] _permissions = StringUtils.split(_item.getValue(), "|");
-                if (_permissions != null && _permissions.length > 0) {
-                    __permissionFilters.put(_groupName, new HashSet<String>(Arrays.asList(_permissions)));
+                if (StringUtils.equalsIgnoreCase(_item.getValue(), "all")) {
+                    __permissionFilters.put(_groupName, new HashSet<String>(Collections.singletonList("all")));
+                } else {
+                    String[] _permissions = StringUtils.split(_item.getValue(), "|");
+                    if (_permissions != null && _permissions.length > 0) {
+                        if (ArrayUtils.contains(_permissions, "all")) {
+                            __permissionFilters.put(_groupName, new HashSet<String>(Collections.singletonList("all")));
+                        } else {
+                            __permissionFilters.put(_groupName, new HashSet<String>(Arrays.asList(_permissions)));
+                        }
+                    }
                 }
             }
         }

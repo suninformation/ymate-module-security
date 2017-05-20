@@ -82,7 +82,7 @@ public class Security implements IModule, ISecurity {
 
     public boolean isFiltered(PermissionMeta permissionMeta) {
         Set<String> _permissions = __moduleCfg.getPermissionFilters().get(permissionMeta.getGroupName());
-        return _permissions != null && _permissions.contains(permissionMeta.getName());
+        return _permissions != null && (_permissions.contains("all") || _permissions.contains(permissionMeta.getName()));
     }
 
     public YMP getOwner() {
