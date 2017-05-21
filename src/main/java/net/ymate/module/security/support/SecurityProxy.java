@@ -61,7 +61,7 @@ public class SecurityProxy implements IProxy {
                         if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
                             _LOG.debug(_errMsg);
                         }
-                        throw new SecurityPermissionException(_errMsg);
+                        throw new SecurityPrivilegeException(_errMsg);
                     }
                 }
                 // 进行用户权限判断
@@ -88,7 +88,7 @@ public class SecurityProxy implements IProxy {
                         if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
                             _LOG.debug(_errMsg);
                         }
-                        throw new SecurityPermissionException(_errMsg);
+                        throw new SecurityPrivilegeException(_errMsg);
                     }
                 }
             }

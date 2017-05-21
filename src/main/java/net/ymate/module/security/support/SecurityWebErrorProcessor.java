@@ -18,7 +18,7 @@ package net.ymate.module.security.support;
 import net.ymate.framework.core.Optional;
 import net.ymate.framework.webmvc.ErrorCode;
 import net.ymate.framework.webmvc.WebErrorProcessor;
-import net.ymate.module.security.SecurityPermissionException;
+import net.ymate.module.security.SecurityPrivilegeException;
 import net.ymate.platform.core.util.RuntimeUtils;
 import net.ymate.platform.webmvc.IWebMvc;
 import org.apache.commons.logging.Log;
@@ -35,7 +35,7 @@ public class SecurityWebErrorProcessor extends WebErrorProcessor {
     @Override
     public void onError(IWebMvc owner, Throwable e) {
         Throwable _unwrapThrow = RuntimeUtils.unwrapThrow(e);
-        if (_unwrapThrow instanceof SecurityPermissionException) {
+        if (_unwrapThrow instanceof SecurityPrivilegeException) {
             try {
                 __doInit(owner);
                 //

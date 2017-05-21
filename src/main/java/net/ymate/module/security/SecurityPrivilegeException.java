@@ -21,21 +21,21 @@ package net.ymate.module.security;
  * @author 刘镇 (suninformation@163.com) on 17/2/26 上午1:33
  * @version 1.0
  */
-public class SecurityPermissionException extends RuntimeException {
+public class SecurityPrivilegeException extends RuntimeException {
 
-    public SecurityPermissionException() {
+    public SecurityPrivilegeException() {
         super();
     }
 
-    public SecurityPermissionException(String message) {
+    public SecurityPrivilegeException(String message) {
         super(message);
     }
 
-    public SecurityPermissionException(String message, Throwable cause) {
+    public SecurityPrivilegeException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public SecurityPermissionException(Throwable cause) {
+    public SecurityPrivilegeException(Throwable cause) {
         super(cause);
     }
 }

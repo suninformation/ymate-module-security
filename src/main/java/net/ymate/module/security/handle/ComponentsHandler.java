@@ -15,8 +15,8 @@
  */
 package net.ymate.module.security.handle;
 
+import net.ymate.module.security.ComponentsMeta;
 import net.ymate.module.security.ISecurity;
-import net.ymate.module.security.annotation.Components;
 import net.ymate.platform.core.beans.IBeanHandler;
 
 /**
@@ -27,14 +27,11 @@ import net.ymate.platform.core.beans.IBeanHandler;
  */
 public class ComponentsHandler implements IBeanHandler {
 
-    private ISecurity __owner;
-
     public ComponentsHandler(ISecurity owner) {
-        __owner = owner;
     }
 
     public Object handle(Class<?> targetClass) throws Exception {
-        Components _comp = targetClass.getAnnotation(Components.class);
+        ComponentsMeta.createIfNeed(targetClass);
         return null;
     }
 }

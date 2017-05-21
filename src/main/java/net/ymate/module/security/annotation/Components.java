@@ -57,6 +57,11 @@ public @interface Components {
     MenuGroup[] value() default {};
 
     /**
+     * @return 菜单集合
+     */
+    Menu[] menus() default {};
+
+    /**
      * @return 组件通用权限
      */
     Permission permission() default @Permission;
