@@ -77,7 +77,7 @@ public class ComponentsMeta extends AbstractComponents {
                         MenuNode[] _menuItemsArr = __doParseMenu(_comp, Arrays.asList(_item.value()));
                         Arrays.sort(_menuItemsArr, new Comparator<MenuNode>() {
                             public int compare(MenuNode o1, MenuNode o2) {
-                                return o1.getOrder() - o2.getOrder();
+                                return o2.getOrder() - o1.getOrder();
                             }
                         });
                         _nodeGroup.menuNodes = _menuItemsArr;
@@ -87,7 +87,7 @@ public class ComponentsMeta extends AbstractComponents {
                     MenuNodeGroup[] _menuNodeGroupsArr = _menuNodeGroups.toArray(new MenuNodeGroup[_menuNodeGroups.size()]);
                     Arrays.sort(_menuNodeGroupsArr, new Comparator<MenuNodeGroup>() {
                         public int compare(MenuNodeGroup o1, MenuNodeGroup o2) {
-                            return o1.getOrder() - o2.getOrder();
+                            return o2.getOrder() - o1.getOrder();
                         }
                     });
                     _meta.menuGroups = _menuNodeGroupsArr;
@@ -102,7 +102,7 @@ public class ComponentsMeta extends AbstractComponents {
                     MenuNode[] _menuItemsArr = __doParseMenu(_comp, _menus);
                     Arrays.sort(_menuItemsArr, new Comparator<MenuNode>() {
                         public int compare(MenuNode o1, MenuNode o2) {
-                            return o1.getOrder() - o2.getOrder();
+                            return o2.getOrder() - o1.getOrder();
                         }
                     });
                     _meta.menus = _menuItemsArr;
@@ -145,7 +145,7 @@ public class ComponentsMeta extends AbstractComponents {
             MenuItem[] _subMenuArr = _subMenuItems.toArray(new MenuItem[_subMenuItems.size()]);
             Arrays.sort(_subMenuArr, new Comparator<MenuItem>() {
                 public int compare(MenuItem o1, MenuItem o2) {
-                    return o1.getOrder() - o2.getOrder();
+                    return o2.getOrder() - o1.getOrder();
                 }
             });
             _mItem.menuItems = _subMenuArr;
