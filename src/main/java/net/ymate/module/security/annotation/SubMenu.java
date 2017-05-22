@@ -25,6 +25,11 @@ import net.ymate.platform.core.beans.annotation.Order;
 public @interface SubMenu {
 
     /**
+     * @return 菜单唯一标识
+     */
+    String id() default "";
+
+    /**
      * @return 菜单项图标(支持I18N)
      */
     String icon() default "";

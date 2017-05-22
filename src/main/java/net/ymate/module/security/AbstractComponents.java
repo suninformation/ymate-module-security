@@ -16,7 +16,10 @@
 package net.ymate.module.security;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import net.ymate.module.security.annotation.Components;
 import net.ymate.module.security.annotation.Permission;
+import net.ymate.platform.core.i18n.I18N;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/5/20 下午3:46
@@ -38,6 +41,10 @@ public abstract class AbstractComponents {
     private boolean display;
 
     private int order;
+
+    static String __doTryLoadI18N(Components comp, String message) throws Exception {
+        return I18N.load(StringUtils.defaultIfBlank(comp.resourcesName(), ISecurity.MODULE_NAME), message, message);
+    }
 
     public String getId() {
         return id;

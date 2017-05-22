@@ -18,6 +18,7 @@ package net.ymate.module.security;
 import net.ymate.module.security.annotation.Components;
 import net.ymate.module.security.annotation.Menu;
 import net.ymate.module.security.annotation.MenuGroup;
+import net.ymate.module.security.annotation.SubMenu;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
@@ -37,7 +38,7 @@ public class ComponentsMeta extends AbstractComponents {
         __COMPONENTS_CACHES = new ConcurrentHashMap<String, ComponentsMeta>();
     }
 
-    private MenuNode[] menuGroups;
+    private MenuNodeGroup[] menuGroups;
 
     private MenuNode[] menus;
 
@@ -50,8 +51,8 @@ public class ComponentsMeta extends AbstractComponents {
             if (_meta == null) {
                 _meta = new ComponentsMeta();
                 _meta.setId(_id);
-                _meta.setName(_comp.name());
-                _meta.setIcon(_comp.icon());
+                _meta.setName(__doTryLoadI18N(_comp, _comp.name()));
+                _meta.setIcon(__doTryLoadI18N(_comp, _comp.icon()));
                 _meta.setMapping(_comp.mapping());
                 _meta.setDisplay(_comp.displayType().equals(ISecurity.DisplayType.SHOW));
                 _meta.setOrder(_comp.order().value());
@@ -63,43 +64,33 @@ public class ComponentsMeta extends AbstractComponents {
                     _menuGroups.add(_menuGrop);
                 }
                 if (!_menuGroups.isEmpty()) {
-                    List<MenuNode> _menuNodes = new ArrayList<MenuNode>();
+                    List<MenuNodeGroup> _menuNodeGroups = new ArrayList<MenuNodeGroup>();
                     for (MenuGroup _item : _menuGroups) {
-                        MenuNode _node = new MenuNode();
-                        _node.setId(_item.id());
-                        _node.setIcon(_item.icon());
-                        _node.setName(_item.name());
-                        _node.setOrder(_item.order().value());
-                        _node.setDisplay(_item.displayType().equals(ISecurity.DisplayType.SHOW));
-                        _node.setPermission(_item.permission());
+                        MenuNodeGroup _nodeGroup = new MenuNodeGroup();
+                        _nodeGroup.setId(_item.id());
+                        _nodeGroup.setIcon(__doTryLoadI18N(_comp, _item.icon()));
+                        _nodeGroup.setName(__doTryLoadI18N(_comp, _item.name()));
+                        _nodeGroup.setOrder(_item.order().value());
+                        _nodeGroup.setDisplay(_item.displayType().equals(ISecurity.DisplayType.SHOW));
+                        _nodeGroup.setPermission(_item.permission());
                         //
-                        List<MenuItem> _menuItems = new ArrayList<MenuItem>();
-                        for (Menu _menu : _item.value()) {
-                            MenuItem _menuItem = new MenuItem();
-                            _menuItem.setId(_menu.id());
-                            _menuItem.setIcon(_menu.icon());
-                            _menuItem.setName(_menu.name());
-                            _menuItem.setOrder(_menu.order().value());
-                            _menuItem.setDisplay(_menu.displayType().equals(ISecurity.DisplayType.SHOW));
-                            _menuItem.setPermission(_menu.permission());
-                            //
-                            _menuItems.add(_menuItem);
-                        }
-                        Collections.sort(_menuItems, new Comparator<MenuItem>() {
-                            public int compare(MenuItem o1, MenuItem o2) {
+                        MenuNode[] _menuItemsArr = __doParseMenu(_comp, Arrays.asList(_item.value()));
+                        Arrays.sort(_menuItemsArr, new Comparator<MenuNode>() {
+                            public int compare(MenuNode o1, MenuNode o2) {
                                 return o1.getOrder() - o2.getOrder();
                             }
                         });
-                        _node.menuItems = _menuItems.toArray(new MenuItem[_menuItems.size()]);
+                        _nodeGroup.menuNodes = _menuItemsArr;
                         //
-                        _menuNodes.add(_node);
+                        _menuNodeGroups.add(_nodeGroup);
                     }
-                    Collections.sort(_menuNodes, new Comparator<MenuNode>() {
-                        public int compare(MenuNode o1, MenuNode o2) {
+                    MenuNodeGroup[] _menuNodeGroupsArr = _menuNodeGroups.toArray(new MenuNodeGroup[_menuNodeGroups.size()]);
+                    Arrays.sort(_menuNodeGroupsArr, new Comparator<MenuNodeGroup>() {
+                        public int compare(MenuNodeGroup o1, MenuNodeGroup o2) {
                             return o1.getOrder() - o2.getOrder();
                         }
                     });
-                    _meta.menuGroups = _menuNodes.toArray(new MenuNode[_menuNodes.size()]);
+                    _meta.menuGroups = _menuNodeGroupsArr;
                 }
                 // @Menu
                 List<Menu> _menus = new ArrayList<Menu>(Arrays.asList(_comp.menus()));
@@ -108,24 +99,13 @@ public class ComponentsMeta extends AbstractComponents {
                     _menus.add(_menu);
                 }
                 if (!_menus.isEmpty()) {
-                    List<MenuNode> _menuItems = new ArrayList<MenuNode>();
-                    for (Menu _m : _menus) {
-                        MenuNode _mItem = new MenuNode();
-                        _mItem.setId(_m.id());
-                        _mItem.setIcon(_m.icon());
-                        _mItem.setName(_m.name());
-                        _mItem.setOrder(_m.order().value());
-                        _mItem.setDisplay(_m.displayType().equals(ISecurity.DisplayType.SHOW));
-                        _mItem.setPermission(_m.permission());
-                        //
-                        _menuItems.add(_mItem);
-                    }
-                    Collections.sort(_menuItems, new Comparator<MenuNode>() {
+                    MenuNode[] _menuItemsArr = __doParseMenu(_comp, _menus);
+                    Arrays.sort(_menuItemsArr, new Comparator<MenuNode>() {
                         public int compare(MenuNode o1, MenuNode o2) {
                             return o1.getOrder() - o2.getOrder();
                         }
                     });
-                    _meta.menus = _menuItems.toArray(new MenuNode[_menuItems.size()]);
+                    _meta.menus = _menuItemsArr;
                 }
                 //
                 __COMPONENTS_CACHES.put(_id, _meta);
@@ -133,6 +113,46 @@ public class ComponentsMeta extends AbstractComponents {
             return _meta;
         }
         return null;
+    }
+
+    private static void __doParseMenuGroup() throws Exception {
+    }
+
+    private static MenuNode[] __doParseMenu(Components comp, List<Menu> _menus) throws Exception {
+        List<MenuNode> _menuItems = new ArrayList<MenuNode>();
+        for (Menu _m : _menus) {
+            MenuNode _mItem = new MenuNode();
+            _mItem.setId(_m.id());
+            _mItem.setIcon(__doTryLoadI18N(comp, _m.icon()));
+            _mItem.setName(__doTryLoadI18N(comp, _m.name()));
+            _mItem.setOrder(_m.order().value());
+            _mItem.setDisplay(_m.displayType().equals(ISecurity.DisplayType.SHOW));
+            _mItem.setPermission(_m.permission());
+            // @SubMenu
+            List<SubMenu> _subMenus = new ArrayList<SubMenu>(Arrays.asList(_m.value()));
+            List<MenuItem> _subMenuItems = new ArrayList<MenuItem>();
+            for (SubMenu _subMenu : _subMenus) {
+                MenuItem _subItem = new MenuItem();
+                _subItem.setId(_subMenu.id());
+                _subItem.setIcon(__doTryLoadI18N(comp, _subMenu.icon()));
+                _subItem.setName(__doTryLoadI18N(comp, _subMenu.name()));
+                _subItem.setOrder(_subMenu.order().value());
+                _subItem.setDisplay(_subMenu.displayType().equals(ISecurity.DisplayType.SHOW));
+                _subItem.setPermission(_subMenu.permission());
+                //
+                _subMenuItems.add(_subItem);
+            }
+            MenuItem[] _subMenuArr = _subMenuItems.toArray(new MenuItem[_subMenuItems.size()]);
+            Arrays.sort(_subMenuArr, new Comparator<MenuItem>() {
+                public int compare(MenuItem o1, MenuItem o2) {
+                    return o1.getOrder() - o2.getOrder();
+                }
+            });
+            _mItem.menuItems = _subMenuArr;
+            //
+            _menuItems.add(_mItem);
+        }
+        return _menuItems.toArray(new MenuNode[_menuItems.size()]);
     }
 
     public static Set<String> getComponentsNames() {
@@ -146,12 +166,31 @@ public class ComponentsMeta extends AbstractComponents {
     private ComponentsMeta() {
     }
 
-    public MenuNode[] getMenuGroups() {
+    public MenuNodeGroup[] getMenuGroups() {
         return menuGroups;
     }
 
     public MenuNode[] getMenus() {
         return menus;
+    }
+
+    //
+    // ----------
+    //
+
+    /**
+     * 菜单组
+     */
+    public static class MenuNodeGroup extends AbstractComponents {
+
+        private MenuNode[] menuNodes;
+
+        MenuNodeGroup() {
+        }
+
+        public MenuNode[] getMenuNodes() {
+            return menuNodes;
+        }
     }
 
     /**
