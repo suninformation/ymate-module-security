@@ -163,6 +163,10 @@ public class ComponentsMeta extends AbstractComponents {
         return __COMPONENTS_CACHES.get(name);
     }
 
+    public static Collection<ComponentsMeta> getComponents() {
+        return Collections.unmodifiableCollection(__COMPONENTS_CACHES.values());
+    }
+
     private ComponentsMeta() {
     }
 

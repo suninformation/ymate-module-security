@@ -20,10 +20,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -126,6 +123,10 @@ public class PermissionMeta {
             _meta = __PERMISSION_CACHES.get(targetMethod);
         }
         return _meta;
+    }
+
+    public static Collection<PermissionMeta> getPermissionMetas() {
+        return Collections.unmodifiableCollection(__PERMISSION_CACHES.values());
     }
 
     private PermissionMeta() {
