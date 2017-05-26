@@ -16,7 +16,11 @@
 package net.ymate.module.security.support;
 
 import com.alibaba.fastjson.JSON;
-import net.ymate.module.security.*;
+import net.ymate.module.security.ISecurity;
+import net.ymate.module.security.IUserAuthenticator;
+import net.ymate.module.security.PermissionMeta;
+import net.ymate.module.security.SecurityPrivilegeException;
+import net.ymate.module.security.annotation.Security;
 import net.ymate.platform.core.beans.annotation.Order;
 import net.ymate.platform.core.beans.annotation.Proxy;
 import net.ymate.platform.core.beans.proxy.IProxy;
@@ -34,15 +38,15 @@ import java.util.Collections;
  * @author 刘镇 (suninformation@163.com) on 17/2/25 下午4:28
  * @version 1.0
  */
-@Proxy(annotation = net.ymate.module.security.annotation.Security.class, order = @Order(-899))
+@Proxy(annotation = Security.class, order = @Order(-899))
 public class SecurityProxy implements IProxy {
 
     private static final Log _LOG = LogFactory.getLog(SecurityProxy.class);
 
     public Object doProxy(IProxyChain proxyChain) throws Throwable {
         PermissionMeta _meta = PermissionMeta.bind(proxyChain.getTargetMethod());
-        if (_meta != null && !Security.get().isFiltered(_meta)) {
-            IUserAuthenticator _authenticator = Security.get().getModuleCfg().getUserAuthenticator();
+        if (_meta != null && !net.ymate.module.security.Security.get().isFiltered(_meta)) {
+            IUserAuthenticator _authenticator = net.ymate.module.security.Security.get().getModuleCfg().getUserAuthenticator();
             if (_authenticator != null) {
                 // 进行用户角色判断
                 if (ArrayUtils.isNotEmpty(_meta.getRoles())) {
@@ -65,26 +69,26 @@ public class SecurityProxy implements IProxy {
                     }
                 }
                 // 进行用户权限判断
-                if (ArrayUtils.isNotEmpty(_meta.getRights())) {
+                if (ArrayUtils.isNotEmpty(_meta.getPermissions())) {
                     boolean _flag = false;
-                    String[] _rights = _authenticator.getUserPermissions();
-                    if (ArrayUtils.isNotEmpty(_rights)) {
+                    String[] _permissions = _authenticator.getUserPermissions();
+                    if (ArrayUtils.isNotEmpty(_permissions)) {
                         switch (_meta.getLogicType()) {
                             case OR:
-                                for (String _right : _rights) {
-                                    if (ArrayUtils.contains(_meta.getRights(), _right)) {
+                                for (String _right : _permissions) {
+                                    if (ArrayUtils.contains(_meta.getPermissions(), _right)) {
                                         _flag = true;
                                         break;
                                     }
                                 }
                                 break;
                             case AND:
-                                _flag = Collections.indexOfSubList(Arrays.asList(_rights), Arrays.asList(_meta.getRights())) != -1;
+                                _flag = Collections.indexOfSubList(Arrays.asList(_permissions), Arrays.asList(_meta.getPermissions())) != -1;
                                 break;
                         }
                     }
                     if (!_flag) {
-                        String _errMsg = "User permissions are not within the allowed range: " + JSON.toJSONString(_rights);
+                        String _errMsg = "User permissions are not within the allowed range: " + JSON.toJSONString(_permissions);
                         if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
                             _LOG.debug(_errMsg);
                         }

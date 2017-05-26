@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	yMateWeb Security Tag Library 1.0
+-->
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>yMateWeb Security Tag Library 1.0</description>
+    <display-name>ymWebSecurityTagLib</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>ymweb_security</short-name>
+    <uri>http://www.ymate.net/ymweb_security</uri>
+
+    <tag>
+        <name>permission</name>
+        <tag-class>net.ymate.module.security.taglib.PermissionTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>var</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>scope</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>siteId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>components</name>
+        <tag-class>net.ymate.module.security.taglib.ComponentsTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>var</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>scope</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>siteId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+</taglib>

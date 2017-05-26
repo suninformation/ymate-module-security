@@ -47,7 +47,7 @@ public class PermissionMeta {
 
     private ISecurity.Role[] __roles;
 
-    private String[] __rights;
+    private String[] __permissions;
 
     private ISecurity.LogicType __logicType;
 
@@ -58,7 +58,7 @@ public class PermissionMeta {
         //
         if (_method != null) {
             Set<ISecurity.Role> _roles = new HashSet<ISecurity.Role>();
-            Set<String> _rights = new HashSet<String>();
+            Set<String> _permissions = new HashSet<String>();
             //
             String _groupName = "default";
             ISecurity.LogicType _logicType = ISecurity.LogicType.OR;
@@ -73,7 +73,7 @@ public class PermissionMeta {
                     _logicType = _parent.logicType();
                 }
                 _roles.addAll(Arrays.asList(_parent.roles()));
-                _rights.addAll(Arrays.asList(_parent.value()));
+                _permissions.addAll(Arrays.asList(_parent.value()));
                 //
                 // 然后处理方法级注解
                 if (!ISecurity.LogicType.INHERIT.equals(_parent.logicType())) {
@@ -90,21 +90,21 @@ public class PermissionMeta {
                 } else {
                     _roles.addAll(Arrays.asList(_method.roles()));
                 }
-                _rights.addAll(Arrays.asList(_method.value()));
+                _permissions.addAll(Arrays.asList(_method.value()));
             } else {
                 // 处理方法级注解
                 if (!ISecurity.LogicType.INHERIT.equals(_method.logicType())) {
                     _logicType = _method.logicType();
                 }
                 _roles.addAll(Arrays.asList(_method.roles()));
-                _rights.addAll(Arrays.asList(_method.value()));
+                _permissions.addAll(Arrays.asList(_method.value()));
             }
             //
             _meta = new PermissionMeta();
             _meta.__name = StringUtils.defaultIfBlank(_method.name(), "default");
             _meta.__groupName = _groupName;
             _meta.__logicType = _logicType;
-            _meta.__rights = _rights.toArray(new String[_rights.size()]);
+            _meta.__permissions = _permissions.toArray(new String[_permissions.size()]);
             //
             if (_roles.contains(ISecurity.Role.INHERIT) || _roles.contains(ISecurity.Role.ALL)) {
                 _meta.__roles = __ROLE_ALL;
@@ -148,7 +148,7 @@ public class PermissionMeta {
         return __roles;
     }
 
-    public String[] getRights() {
-        return __rights;
+    public String[] getPermissions() {
+        return __permissions;
     }
 }
