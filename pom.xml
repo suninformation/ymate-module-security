@@ -15,6 +15,7 @@
 
     <modules>
         <module>ymate-module-security</module>
+        <module>ymate-module-security-model</module>
     </modules>
 
     <properties>
@@ -124,6 +125,11 @@
             <dependency>
                 <groupId>net.ymate.platform</groupId>
                 <artifactId>ymate-platform-webmvc</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.ymate.platform</groupId>
+                <artifactId>ymate-platform-persistence-jdbc</artifactId>
                 <version>2.0.0</version>
             </dependency>
             <dependency>
