@@ -15,21 +15,14 @@
  */
 package net.ymate.module.security;
 
-import java.io.Serializable;
-
 /**
- * @author 刘镇 (suninformation@163.com) on 17/5/9 下午6:11
+ * @author 刘镇 (suninformation@163.com) on 17/6/1 上午11:18
  * @version 1.0
  */
-public interface IUserAuthenticator extends Serializable {
+public interface IAuthenticatorFactory {
 
     /**
-     * @return 返回所拥有的角色集合
+     * @return 返回用户认证接口实例对象
      */
-    ISecurity.Role[] getUserRoles();
-
-    /**
-     * @return 返回所拥有的权限码集合
-     */
-    String[] getUserPermissions();
+    IUserAuthenticator createUserAuthenticatorIfNeed();
 }

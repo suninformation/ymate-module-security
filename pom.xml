@@ -15,6 +15,7 @@
 
     <modules>
         <module>ymate-module-security</module>
+        <module>ymate-module-security-impl</module>
         <module>ymate-module-security-model</module>
     </modules>
 
@@ -121,6 +122,11 @@
                 <groupId>javax.servlet.jsp</groupId>
                 <artifactId>jsp-api</artifactId>
                 <version>2.2</version>
+            </dependency>
+            <dependency>
+                <groupId>net.ymate.platform</groupId>
+                <artifactId>ymate-platform-core</artifactId>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>net.ymate.platform</groupId>

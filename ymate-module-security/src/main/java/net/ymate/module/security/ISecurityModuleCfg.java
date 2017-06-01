@@ -25,9 +25,14 @@ import java.util.Set;
 public interface ISecurityModuleCfg {
 
     /**
-     * @return 返回用户认证接口实例对象
+     * @return 返回用户认证工厂接口实例对象
      */
-    IUserAuthenticator getUserAuthenticator();
+    IAuthenticatorFactory getAuthenticatorFactory();
+
+    /**
+     * @return 返回安全数据存储适配器接口实例对象
+     */
+    ISecurityStorageAdapter getStorageAdapter();
 
     /**
      * @return 返回权限控制开关过滤集合

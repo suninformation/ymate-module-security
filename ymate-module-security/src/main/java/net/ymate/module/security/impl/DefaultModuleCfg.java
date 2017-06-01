@@ -15,9 +15,10 @@
  */
 package net.ymate.module.security.impl;
 
+import net.ymate.module.security.IAuthenticatorFactory;
 import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.ISecurityModuleCfg;
-import net.ymate.module.security.IUserAuthenticator;
+import net.ymate.module.security.ISecurityStorageAdapter;
 import net.ymate.platform.core.YMP;
 import net.ymate.platform.core.util.ClassUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -31,14 +32,18 @@ import java.util.*;
  */
 public class DefaultModuleCfg implements ISecurityModuleCfg {
 
-    private IUserAuthenticator __authenticator;
+    private IAuthenticatorFactory __authFactory;
+
+    private ISecurityStorageAdapter __storageAdapter;
 
     private Map<String, Set<String>> __permissionFilters;
 
     public DefaultModuleCfg(YMP owner) {
         Map<String, String> _moduleCfgs = owner.getConfig().getModuleConfigs(ISecurity.MODULE_NAME);
         //
-        __authenticator = ClassUtils.impl(_moduleCfgs.get("authenticator_class"), IUserAuthenticator.class, this.getClass());
+        __authFactory = ClassUtils.impl(_moduleCfgs.get("authenticator_factory_class"), IAuthenticatorFactory.class, this.getClass());
+        //
+        __storageAdapter = ClassUtils.impl(_moduleCfgs.get("storage_adapter_class"), ISecurityStorageAdapter.class, this.getClass());
         //
         __permissionFilters = new HashMap<String, Set<String>>();
         for (Map.Entry<String, String> _item : _moduleCfgs.entrySet()) {
@@ -60,8 +65,12 @@ public class DefaultModuleCfg implements ISecurityModuleCfg {
         }
     }
 
-    public IUserAuthenticator getUserAuthenticator() {
-        return __authenticator;
+    public IAuthenticatorFactory getAuthenticatorFactory() {
+        return __authFactory;
+    }
+
+    public ISecurityStorageAdapter getStorageAdapter() {
+        return __storageAdapter;
     }
 
     public Map<String, Set<String>> getPermissionFilters() {

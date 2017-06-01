@@ -10,13 +10,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>ymate-module-security</artifactId>
+    <artifactId>ymate-module-security-impl</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>ymate-module-security</name>
+    <name>ymate-module-security-impl</name>
     <url>http://www.ymate.net/</url>
-    <description>Security for YMP</description>
+    <description>Security Implements for YMP</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,7 +29,6 @@
                 <excludes>
                     <exclude>**/ymp-*.properties</exclude>
                 </excludes>
-                <filtering>false</filtering>
             </resource>
         </resources>
         <pluginManagement>
@@ -41,7 +40,7 @@
                         <archive>
                             <manifestSections>
                                 <manifestSection>
-                                    <name>net/ymate/module/security/</name>
+                                    <name>net/ymate/module/security/impl/</name>
                                 </manifestSection>
                             </manifestSections>
                             <manifestEntries>
@@ -90,8 +89,34 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>net.ymate.platform</groupId>
-            <artifactId>ymate-platform-core</artifactId>
+            <artifactId>ymate-platform-webmvc</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.ymate.framework</groupId>
+            <artifactId>ymate-framework-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.ymate.module</groupId>
+            <artifactId>ymate-module-security</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.ymate.module</groupId>
+            <artifactId>ymate-module-security-model</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 </project>

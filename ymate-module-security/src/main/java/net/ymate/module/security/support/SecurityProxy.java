@@ -46,7 +46,7 @@ public class SecurityProxy implements IProxy {
     public Object doProxy(IProxyChain proxyChain) throws Throwable {
         PermissionMeta _meta = PermissionMeta.bind(proxyChain.getTargetMethod());
         if (_meta != null && !net.ymate.module.security.Security.get().isFiltered(_meta)) {
-            IUserAuthenticator _authenticator = net.ymate.module.security.Security.get().getModuleCfg().getUserAuthenticator();
+            IUserAuthenticator _authenticator = net.ymate.module.security.Security.get().getModuleCfg().getAuthenticatorFactory().createUserAuthenticatorIfNeed();
             if (_authenticator != null) {
                 // 进行用户角色判断
                 if (ArrayUtils.isNotEmpty(_meta.getRoles())) {

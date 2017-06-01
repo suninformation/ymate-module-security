@@ -13,23 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.ymate.module.security;
+package net.ymate.module.security.impl;
 
-import java.io.Serializable;
+import net.ymate.module.security.IAuthenticatorFactory;
+import net.ymate.module.security.IUserAuthenticator;
 
 /**
- * @author 刘镇 (suninformation@163.com) on 17/5/9 下午6:11
+ * @author 刘镇 (suninformation@163.com) on 17/6/1 下午3:54
  * @version 1.0
  */
-public interface IUserAuthenticator extends Serializable {
+public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
 
-    /**
-     * @return 返回所拥有的角色集合
-     */
-    ISecurity.Role[] getUserRoles();
-
-    /**
-     * @return 返回所拥有的权限码集合
-     */
-    String[] getUserPermissions();
+    public IUserAuthenticator createUserAuthenticatorIfNeed() {
+        return null;
+    }
 }
