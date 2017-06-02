@@ -106,5 +106,39 @@ public interface ISecurity {
         SHOW, HIDE
     }
 
+    interface IGroup {
 
+        /**
+         * @return 组Id
+         */
+        String getId();
+
+        /**
+         * @return 组名称
+         */
+        String getName();
+
+        /**
+         * @return 所属站点Id
+         */
+        String getSiteId();
+    }
+
+    interface IGroupUser {
+
+        /**
+         * @return 用户Uid
+         */
+        String getUid();
+
+        /**
+         * @return 所属组Id
+         */
+        String getGroupId();
+
+        /**
+         * @return 所属站点Id
+         */
+        String getSiteId();
+    }
 }

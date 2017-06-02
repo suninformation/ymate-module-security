@@ -15,6 +15,8 @@
  */
 package net.ymate.module.security;
 
+import java.util.List;
+
 /**
  * @author 刘镇 (suninformation@163.com) on 17/5/27 上午10:56
  * @version 1.0
@@ -42,39 +44,76 @@ public interface ISecurityStorageAdapter {
     IUserAuthenticator getUserAuthenticator(String siteId, String uid) throws Exception;
 
     /**
-     * 保存或更新用户认证数据
+     * 保存或更新组用户认证数据
      *
-     * @param siteId        站点唯一标识
-     * @param groupId       用户组唯一标识
+     * @param groupId       组唯一标识
      * @param authenticator 用户认证接口对象
      * @throws Exception 可能产生的任何异常
      */
-    void saveOrUpdate(String siteId, String groupId, IUserAuthenticator authenticator) throws Exception;
+    void saveOrUpdate(String groupId, IUserAuthenticator authenticator) throws Exception;
 
     /**
-     * 删除用户组
-     *
-     * @param siteId  站点唯一标识
-     * @param groupId 用户组唯一标识
+     * @param siteId 站点唯一标识
+     * @param uid    用户标识ID
+     * @return 返回指定站点的用户所在组集合
      * @throws Exception 可能产生的任何异常
      */
-    void removeGroup(String siteId, String groupId) throws Exception;
+    List<ISecurity.IGroup> getUserGroups(String siteId, String uid) throws Exception;
 
     /**
-     * 删除用户组成员
+     * @param siteId 站点唯一标识
+     * @return 返回指定站点的组集合
+     * @throws Exception 可能产生的任何异常
+     */
+    List<ISecurity.IGroup> getGroups(String siteId) throws Exception;
+
+    /**
+     * @param siteId    站点唯一标识
+     * @param groupName 组名称
+     * @return 添加组若成功则返回组接口对象，否则返回null
+     * @throws Exception 可能产生的任何异常
+     */
+    ISecurity.IGroup addGroup(String siteId, String groupName) throws Exception;
+
+    /**
+     * @param groupId  组唯一标识
+     * @param page     页码
+     * @param pageSize 每页记录数
+     * @return 返回指定组下用户集合
+     * @throws Exception 可能产生的任何异常
+     */
+    List<ISecurity.IGroupUser> getGroupUsers(String groupId, int page, int pageSize) throws Exception;
+
+    /**
+     * 添加组用户
      *
-     * @param siteId  站点唯一标识
-     * @param groupId 用户组唯一标识
+     * @param groupUser 组用户接口对象
+     * @throws Exception 可能产生的任何异常
+     */
+    void addGroupUser(ISecurity.IGroupUser groupUser) throws Exception;
+
+    /**
+     * 删除组成员
+     *
+     * @param groupId 组唯一标识
      * @param uid     用户标识ID
      * @throws Exception 可能产生的任何异常
      */
-    void removeGroupUser(String siteId, String groupId, String uid) throws Exception;
+    void removeGroupUser(String groupId, String uid) throws Exception;
 
     /**
-     * 清理已过期的令牌
+     * 删除组
      *
-     * @param uid 用户标识ID
+     * @param groupId 组唯一标识
      * @throws Exception 可能产生的任何异常
      */
-    void cleanup(String uid) throws Exception;
+    void removeGroup(String groupId) throws Exception;
+
+    /**
+     * 清理组用户成员
+     *
+     * @param groupId 组唯一标识
+     * @throws Exception 可能产生的任何异常
+     */
+    void cleanupGroup(String groupId) throws Exception;
 }

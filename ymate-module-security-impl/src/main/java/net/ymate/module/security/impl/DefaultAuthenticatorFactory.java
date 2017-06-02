@@ -16,6 +16,7 @@
 package net.ymate.module.security.impl;
 
 import net.ymate.module.security.IAuthenticatorFactory;
+import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
 
 /**
@@ -23,6 +24,12 @@ import net.ymate.module.security.IUserAuthenticator;
  * @version 1.0
  */
 public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
+
+    public void init(ISecurity owner) throws Exception {
+    }
+
+    public void destroy() throws Exception {
+    }
 
     public IUserAuthenticator createUserAuthenticatorIfNeed() {
         return null;

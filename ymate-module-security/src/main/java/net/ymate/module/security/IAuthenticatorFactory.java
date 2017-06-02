@@ -22,6 +22,16 @@ package net.ymate.module.security;
 public interface IAuthenticatorFactory {
 
     /**
+     * 初始化用户认证工厂
+     *
+     * @param owner 所属模块管理器实例
+     * @throws Exception 可能产生的任何异常
+     */
+    void init(ISecurity owner) throws Exception;
+
+    void destroy() throws Exception;
+
+    /**
      * @return 返回用户认证接口实例对象
      */
     IUserAuthenticator createUserAuthenticatorIfNeed();

@@ -19,6 +19,8 @@ import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.ISecurityStorageAdapter;
 import net.ymate.module.security.IUserAuthenticator;
 
+import java.util.List;
+
 /**
  * @author 刘镇 (suninformation@163.com) on 17/5/27 下午3:58
  * @version 1.0
@@ -35,15 +37,34 @@ public class DefaultSecurityStorageAdapter implements ISecurityStorageAdapter {
         return null;
     }
 
-    public void saveOrUpdate(String siteId, String groupId, IUserAuthenticator authenticator) throws Exception {
+    public void saveOrUpdate(String groupId, IUserAuthenticator authenticator) throws Exception {
     }
 
-    public void removeGroup(String siteId, String groupId) throws Exception {
+    public List<ISecurity.IGroup> getUserGroups(String siteId, String uid) throws Exception {
+        return null;
     }
 
-    public void removeGroupUser(String siteId, String groupId, String uid) throws Exception {
+    public List<ISecurity.IGroup> getGroups(String siteId) throws Exception {
+        return null;
     }
 
-    public void cleanup(String uid) throws Exception {
+    public ISecurity.IGroup addGroup(String siteId, String groupName) throws Exception {
+        return null;
+    }
+
+    public List<ISecurity.IGroupUser> getGroupUsers(String groupId, int page, int pageSize) throws Exception {
+        return null;
+    }
+
+    public void addGroupUser(ISecurity.IGroupUser groupUser) throws Exception {
+    }
+
+    public void removeGroupUser(String groupId, String uid) throws Exception {
+    }
+
+    public void removeGroup(String groupId) throws Exception {
+    }
+
+    public void cleanupGroup(String groupId) throws Exception {
     }
 }

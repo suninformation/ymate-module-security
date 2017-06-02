@@ -76,6 +76,14 @@ public class Security implements IModule, ISecurity {
             __owner.registerHandler(Components.class, new ComponentsHandler(this));
             __owner.registerHandler(net.ymate.module.security.annotation.Security.class, new SecurityHandler(this));
             //
+            if (__moduleCfg.getAuthenticatorFactory() != null) {
+                __moduleCfg.getAuthenticatorFactory().init(this);
+            }
+            //
+            if (__moduleCfg.getStorageAdapter() != null) {
+                __moduleCfg.getStorageAdapter().init(this);
+            }
+            //
             __inited = true;
         }
     }
@@ -151,6 +159,14 @@ public class Security implements IModule, ISecurity {
     public void destroy() throws Exception {
         if (__inited) {
             __inited = false;
+            //
+            if (__moduleCfg.getAuthenticatorFactory() != null) {
+                __moduleCfg.getAuthenticatorFactory().destroy();
+            }
+            //
+            if (__moduleCfg.getStorageAdapter() != null) {
+                __moduleCfg.getStorageAdapter().destroy();
+            }
             //
             __moduleCfg = null;
             __owner = null;
