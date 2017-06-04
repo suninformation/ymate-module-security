@@ -122,6 +122,11 @@ public interface ISecurity {
          * @return 所属站点Id
          */
         String getSiteId();
+
+        /**
+         * @return 所拥有的角色及权限信息
+         */
+        IUserAuthenticator getAuthenticator();
     }
 
     interface IGroupUser {

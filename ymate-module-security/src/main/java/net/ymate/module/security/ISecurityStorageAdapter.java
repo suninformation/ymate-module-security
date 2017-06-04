@@ -44,15 +44,6 @@ public interface ISecurityStorageAdapter {
     IUserAuthenticator getUserAuthenticator(String siteId, String uid) throws Exception;
 
     /**
-     * 保存或更新组用户认证数据
-     *
-     * @param groupId       组唯一标识
-     * @param authenticator 用户认证接口对象
-     * @throws Exception 可能产生的任何异常
-     */
-    void saveOrUpdate(String groupId, IUserAuthenticator authenticator) throws Exception;
-
-    /**
      * @param siteId 站点唯一标识
      * @param uid    用户标识ID
      * @return 返回指定站点的用户所在组集合
@@ -70,10 +61,19 @@ public interface ISecurityStorageAdapter {
     /**
      * @param siteId    站点唯一标识
      * @param groupName 组名称
-     * @return 添加组若成功则返回组接口对象，否则返回null
+     * @return 添加组若已存在或添加成功则返回组接口对象
      * @throws Exception 可能产生的任何异常
      */
     ISecurity.IGroup addGroup(String siteId, String groupName) throws Exception;
+
+    /**
+     * 保存或更新组用户认证数据
+     *
+     * @param groupId       组唯一标识
+     * @param authenticator 用户认证接口对象
+     * @throws Exception 可能产生的任何异常
+     */
+    void saveOrUpdateGroup(String groupId, IUserAuthenticator authenticator) throws Exception;
 
     /**
      * @param groupId  组唯一标识
@@ -87,10 +87,11 @@ public interface ISecurityStorageAdapter {
     /**
      * 添加组用户
      *
-     * @param groupUser 组用户接口对象
+     * @param groupId 组唯一标识
+     * @param uid     用户标识ID
      * @throws Exception 可能产生的任何异常
      */
-    void addGroupUser(ISecurity.IGroupUser groupUser) throws Exception;
+    void addGroupUser(String groupId, String uid) throws Exception;
 
     /**
      * 删除组成员
