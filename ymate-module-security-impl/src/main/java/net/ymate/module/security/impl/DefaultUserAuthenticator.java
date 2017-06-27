@@ -15,7 +15,6 @@
  */
 package net.ymate.module.security.impl;
 
-import net.ymate.framework.webmvc.support.UserSessionBean;
 import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
 
@@ -25,15 +24,33 @@ import net.ymate.module.security.IUserAuthenticator;
  */
 public class DefaultUserAuthenticator implements IUserAuthenticator {
 
+    private boolean __founder;
+
+    private ISecurity.Role[] __roles;
+
+    private String[] __permissions;
+
+    public DefaultUserAuthenticator() {
+        __founder = false;
+        __roles = new ISecurity.Role[0];
+        __permissions = new String[0];
+    }
+
+    public DefaultUserAuthenticator(boolean founder, ISecurity.Role[] roles, String[] permissions) {
+        __founder = founder;
+        __roles = roles;
+        __permissions = permissions;
+    }
+
+    public boolean isFounder() {
+        return __founder;
+    }
+
     public ISecurity.Role[] getUserRoles() {
-        UserSessionBean _sessionBean = UserSessionBean.current();
-        if (_sessionBean != null) {
-//            _sessionBean.getAttribute();
-        }
-        return new ISecurity.Role[0];
+        return __roles;
     }
 
     public String[] getUserPermissions() {
-        return new String[0];
+        return __permissions;
     }
 }

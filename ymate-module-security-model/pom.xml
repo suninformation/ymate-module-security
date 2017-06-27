@@ -87,10 +87,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>net.ymate.framework</groupId>
-            <artifactId>ymate-framework-core</artifactId>
-        </dependency>
-        <dependency>
             <groupId>net.ymate.platform</groupId>
             <artifactId>ymate-platform-persistence-jdbc</artifactId>
         </dependency>

@@ -65,6 +65,11 @@ public class DefaultSecurityStorageAdapter implements ISecurityStorageAdapter {
             }
         }
         return new IUserAuthenticator() {
+
+            public boolean isFounder() {
+                return false;
+            }
+
             public ISecurity.Role[] getUserRoles() {
                 return _roles.toArray(new ISecurity.Role[_roles.size()]);
             }
@@ -89,6 +94,7 @@ public class DefaultSecurityStorageAdapter implements ISecurityStorageAdapter {
                         .field(Fields.create(SecurityGroupUser.FIELDS.GROUP_ID))
                         .where(Where.create(Cond.create()
                                 .eq(SecurityGroupUser.FIELDS.SITE_ID).param(siteId)
+                                .and()
                                 .eq(SecurityGroupUser.FIELDS.UID).param(uid)));
                 return session.find(Select.create(_prefix, SecurityGroup.class)
                         .field(Fields.create(SecurityGroup.FIELDS.CREATE_TIME,
@@ -239,6 +245,7 @@ public class DefaultSecurityStorageAdapter implements ISecurityStorageAdapter {
                         return session.executeForUpdate(Delete.create(_prefix, SecurityGroupUser.class)
                                 .where(Where.create(Cond.create()
                                         .eq(SecurityGroupUser.FIELDS.GROUP_ID).param(groupId)
+                                        .and()
                                         .eq(SecurityGroupUser.FIELDS.UID).param(uid))).toSQL());
                     }
                 });

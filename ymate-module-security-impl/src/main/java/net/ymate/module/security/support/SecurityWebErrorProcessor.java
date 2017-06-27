@@ -39,7 +39,7 @@ public class SecurityWebErrorProcessor extends WebErrorProcessor {
             try {
                 __doInit(owner);
                 //
-                __doShowErrorMsg(owner, ErrorCode.REQUEST_RESOURCE_UNAUTHORIZED, __doGetI18nMsg(Optional.SYSTEM_REQUEST_RESOURCE_UNAUTHORIZED_KEY, "请求的资源未授权或无权限"));
+                __doShowErrorMsg(owner, ErrorCode.REQUEST_RESOURCE_UNAUTHORIZED, __doGetI18nMsg(Optional.SYSTEM_REQUEST_RESOURCE_UNAUTHORIZED_KEY, "请求的资源未授权或无权限")).render();
             } catch (Throwable e1) {
                 _LOG.warn("", RuntimeUtils.unwrapThrow(e1));
             }

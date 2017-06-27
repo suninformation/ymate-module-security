@@ -76,6 +76,10 @@ public class DefaultSecurityGroup implements ISecurity.IGroup {
         //
         this.authenticator = new IUserAuthenticator() {
 
+            public boolean isFounder() {
+                return false;
+            }
+
             public ISecurity.Role[] getUserRoles() {
                 return _roles.toArray(new ISecurity.Role[_roles.size()]);
             }
