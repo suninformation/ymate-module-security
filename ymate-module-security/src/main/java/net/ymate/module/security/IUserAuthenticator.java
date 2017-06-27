@@ -24,6 +24,11 @@ import java.io.Serializable;
 public interface IUserAuthenticator extends Serializable {
 
     /**
+     * @return 当前用户是否为超级用户(即站点创建者, 该用户将默认拥有全部权限且不可删除)
+     */
+    boolean isFounder();
+
+    /**
      * @return 返回所拥有的角色集合
      */
     ISecurity.Role[] getUserRoles();

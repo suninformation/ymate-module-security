@@ -17,9 +17,6 @@ package net.ymate.module.security;
 
 import net.ymate.platform.core.YMP;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author 刘镇 (suninformation@163.com) on 17/2/18 下午6:01
  * @version 1.0
@@ -44,46 +41,10 @@ public interface ISecurity {
     boolean isInited();
 
     /**
-     * @return 返回所有分组权限元数据对象映射
-     */
-    Map<String, List<PermissionMeta>> getAllPermissions();
-
-    /**
-     * @param siteId 站点唯一标识Id
-     * @return 返回指定siteId站点所拥有的分组权限元数据对象映射
-     */
-    Map<String, List<PermissionMeta>> getSitePermissions(String siteId);
-
-    /**
-     * @param siteId 站点唯一标识Id
-     * @param uid    用户唯一标识uid
-     * @return 返回指定UID用户所拥有的分组权限元数据对象映射
-     */
-    Map<String, List<PermissionMeta>> getUserPermissions(String siteId, String uid);
-
-    /**
      * @param permissionMeta 权限元数据对象
      * @return 检查权限是否被过滤
      */
     boolean isFiltered(PermissionMeta permissionMeta);
-
-    /**
-     * @return 返回所有的组件元数据对象集合
-     */
-    ComponentsMeta[] getAllComponents();
-
-    /**
-     * @param siteId 站点唯一标识Id
-     * @return 返回指定siteId站点所拥有访问权限的组件元数据对象集合
-     */
-    ComponentsMeta[] getSiteComponents(String siteId);
-
-    /**
-     * @param siteId 站点唯一标识Id
-     * @param uid    用户唯一标识uid
-     * @return 返回指定UID用户所拥有访问权限的组件元数据对象集合
-     */
-    ComponentsMeta[] getUserComponents(String siteId, String uid);
 
     /**
      * 角色

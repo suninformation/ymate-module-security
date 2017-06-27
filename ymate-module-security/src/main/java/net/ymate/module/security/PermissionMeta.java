@@ -129,6 +129,24 @@ public class PermissionMeta {
         return Collections.unmodifiableCollection(__PERMISSION_CACHES.values());
     }
 
+    /**
+     * @return 按分组的方式返回所有权限元数据对象映射
+     */
+    public static Map<String, List<PermissionMeta>> getPermissionMetasWithGroup() {
+        Map<String, List<PermissionMeta>> _permissionMetas = new HashMap<String, List<PermissionMeta>>();
+        for (PermissionMeta _meta : PermissionMeta.getPermissionMetas()) {
+            List<PermissionMeta> _values = _permissionMetas.get(_meta.getGroupName());
+            if (_values == null) {
+                _values = new ArrayList<PermissionMeta>();
+                _values.add(_meta);
+                _permissionMetas.put(_meta.getGroupName(), _values);
+            } else {
+                _values.add(_meta);
+            }
+        }
+        return Collections.unmodifiableMap(_permissionMetas);
+    }
+
     private PermissionMeta() {
     }
 

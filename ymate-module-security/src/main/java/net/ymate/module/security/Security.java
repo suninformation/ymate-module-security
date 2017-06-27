@@ -26,7 +26,9 @@ import net.ymate.platform.core.module.annotation.Module;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/2/18 下午6:06
@@ -92,64 +94,9 @@ public class Security implements IModule, ISecurity {
         return __inited;
     }
 
-    public Map<String, List<PermissionMeta>> getAllPermissions() {
-        if (__permissionMetas == null) {
-            synchronized (VERSION) {
-                if (__permissionMetas == null) {
-                    Map<String, List<PermissionMeta>> _permissionMetas = new HashMap<String, List<PermissionMeta>>();
-                    for (PermissionMeta _meta : PermissionMeta.getPermissionMetas()) {
-                        List<PermissionMeta> _values = _permissionMetas.get(_meta.getGroupName());
-                        if (_values == null) {
-                            _values = new ArrayList<PermissionMeta>();
-                            _values.add(_meta);
-                            _permissionMetas.put(_meta.getGroupName(), _values);
-                        } else {
-                            _values.add(_meta);
-                        }
-                    }
-                    __permissionMetas = _permissionMetas;
-                }
-            }
-        }
-        return Collections.unmodifiableMap(__permissionMetas);
-    }
-
-    public Map<String, List<PermissionMeta>> getSitePermissions(String siteId) {
-        return null;
-    }
-
-    public Map<String, List<PermissionMeta>> getUserPermissions(String siteId, String uid) {
-        return null;
-    }
-
     public boolean isFiltered(PermissionMeta permissionMeta) {
         Set<String> _permissions = __moduleCfg.getPermissionFilters().get(permissionMeta.getGroupName());
         return _permissions != null && (_permissions.contains("all") || _permissions.contains(permissionMeta.getName()));
-    }
-
-    public ComponentsMeta[] getAllComponents() {
-        if (__componentsMetas == null) {
-            synchronized (VERSION) {
-                if (__componentsMetas == null) {
-                    ComponentsMeta[] _metas = ComponentsMeta.getComponents().toArray(new ComponentsMeta[ComponentsMeta.getComponents().size()]);
-                    Arrays.sort(_metas, new Comparator<ComponentsMeta>() {
-                        public int compare(ComponentsMeta o1, ComponentsMeta o2) {
-                            return o2.getOrder() - o1.getOrder();
-                        }
-                    });
-                    __componentsMetas = _metas;
-                }
-            }
-        }
-        return __componentsMetas;
-    }
-
-    public ComponentsMeta[] getSiteComponents(String siteId) {
-        return new ComponentsMeta[0];
-    }
-
-    public ComponentsMeta[] getUserComponents(String siteId, String uid) {
-        return new ComponentsMeta[0];
     }
 
     public YMP getOwner() {

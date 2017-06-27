@@ -164,7 +164,13 @@ public class ComponentsMeta extends AbstractComponents {
     }
 
     public static Collection<ComponentsMeta> getComponents() {
-        return Collections.unmodifiableCollection(__COMPONENTS_CACHES.values());
+        List<ComponentsMeta> _componentsMetas = new ArrayList<ComponentsMeta>(__COMPONENTS_CACHES.values());
+        Collections.sort(_componentsMetas, new Comparator<ComponentsMeta>() {
+            public int compare(ComponentsMeta o1, ComponentsMeta o2) {
+                return o2.getOrder() - o1.getOrder();
+            }
+        });
+        return Collections.unmodifiableCollection(_componentsMetas);
     }
 
     private ComponentsMeta() {
