@@ -27,10 +27,29 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>siteId</name>
-            <required>true</required>
+            <name>logicType</name>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>permissions</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>userRole</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <name>adminRole</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
+        </attribute>
+        <attribute>
+            <name>operatorRole</name>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Boolean</type>
         </attribute>
     </tag>
 
@@ -49,8 +68,7 @@
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>siteId</name>
-            <required>true</required>
+            <name>name</name>
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
