@@ -17,8 +17,11 @@
     # module.security 模块初始化参数
     #-------------------------------------
     
-    # 用户认证接口实现类, 必须参数, 默认值: 空
-    ymp.configs.module.security.authenticator_class=
+    # 用户认证工厂接口实现类, 必须参数, 默认值: 空
+    ymp.configs.module.security.authenticator_factory_class=
+    
+    # 安全数据存储适配器接口实现类, 必须参数, 默认值: 空
+    ymp.configs.module.security.storage_adapter_class=
     
     # 权限控制开关过滤集合, 默认值：空
     # - <group_name>: 权限组名称, 未指定分组的权限默认组为: default
