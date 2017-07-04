@@ -64,6 +64,9 @@ public class PermissionTag extends AbstractDataTagSupport {
         if (_factory != null) {
             IUserAuthenticator _authenticator = _factory.createUserAuthenticatorIfNeed();
             if (_authenticator != null) {
+                if (_authenticator.isFounder()) {
+                    return true;
+                }
                 // 进行用户角色判断
                 List<ISecurity.Role> _roles = new ArrayList<ISecurity.Role>();
                 if (userRole) {
