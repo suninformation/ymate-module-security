@@ -97,10 +97,6 @@ public class DefaultSecurityStorageAdapter implements ISecurityStorageAdapter {
                                 .and()
                                 .eq(SecurityGroupUser.FIELDS.UID).param(uid)));
                 return session.find(Select.create(_prefix, SecurityGroup.class)
-                        .field(Fields.create(SecurityGroup.FIELDS.CREATE_TIME,
-                                SecurityGroup.FIELDS.LAST_MODIFY_TIME,
-                                SecurityGroup.FIELDS.STATUS,
-                                SecurityGroup.FIELDS.TYPE).excluded(true))
                         .where(Where.create(Cond.create().in(SecurityGroup.FIELDS.ID, _subQuery))).toSQL(), new EntityResultSetHandler<SecurityGroup>(SecurityGroup.class));
             }
         });

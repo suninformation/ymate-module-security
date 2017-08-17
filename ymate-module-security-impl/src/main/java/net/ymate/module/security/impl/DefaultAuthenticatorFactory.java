@@ -55,6 +55,8 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
                     //
                     _authenticator = __owner.getModuleCfg().getStorageAdapter().getUserAuthenticator(_siteId, _sessionBean.getUid());
                     _authenticator = new DefaultUserAuthenticator(__doCheckUserIsFounder(_sessionBean.getUid(), _siteId), _authenticator.getUserRoles(), _authenticator.getUserPermissions());
+                    //
+                    _sessionBean.addAttribute(IUserAuthenticator.class.getName(), _authenticator);
                 }
                 return _authenticator;
             } catch (Exception e) {
