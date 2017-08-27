@@ -206,12 +206,13 @@ public class DefaultSecurityStorageAdapter implements ISecurityStorageAdapter {
         if (_group == null) {
             throw new IllegalArgumentException("groupId");
         }
-        String _id = DigestUtils.md5Hex(_group.getId() + _group.getSiteId() + uid);
+        final String _id = DigestUtils.md5Hex(_group.getId() + _group.getSiteId() + uid);
         SecurityGroupUser _groupUser = SecurityGroupUser.builder().id(_id).build().load(Fields.create(SecurityGroupUser.FIELDS.ID));
         if (_groupUser == null) {
             Transactions.execute(new ITrade() {
                 public void deal() throws Throwable {
                     SecurityGroupUser.builder()
+                            .id(_id)
                             .groupId(groupId)
                             .siteId(_group.getSiteId())
                             .uid(uid)
