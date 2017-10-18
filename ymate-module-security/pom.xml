@@ -93,5 +93,9 @@
             <groupId>net.ymate.platform</groupId>
             <artifactId>ymate-platform-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>net.ymate.framework</groupId>
+            <artifactId>ymate-framework-core</artifactId>
+        </dependency>
     </dependencies>
 </project>

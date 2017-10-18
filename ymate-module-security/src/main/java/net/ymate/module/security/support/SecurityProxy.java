@@ -16,7 +16,11 @@
 package net.ymate.module.security.support;
 
 import com.alibaba.fastjson.JSON;
-import net.ymate.module.security.*;
+import net.ymate.framework.exception.RequestUnauthorizedException;
+import net.ymate.module.security.IAuthenticatorFactory;
+import net.ymate.module.security.ISecurity;
+import net.ymate.module.security.IUserAuthenticator;
+import net.ymate.module.security.PermissionMeta;
 import net.ymate.module.security.annotation.Security;
 import net.ymate.platform.core.beans.annotation.Order;
 import net.ymate.platform.core.beans.annotation.Proxy;
@@ -99,7 +103,7 @@ public class SecurityProxy implements IProxy {
                         if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
                             _LOG.debug(_errMsg);
                         }
-                        throw new SecurityPrivilegeException(_errMsg);
+                        throw new RequestUnauthorizedException(_errMsg);
                     }
                     // 进行用户权限判断
                     if (!containsUserPermissions(_meta.getLogicType(), _meta.getPermissions(), _authenticator)) {
@@ -107,7 +111,7 @@ public class SecurityProxy implements IProxy {
                         if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
                             _LOG.debug(_errMsg);
                         }
-                        throw new SecurityPrivilegeException(_errMsg);
+                        throw new RequestUnauthorizedException(_errMsg);
                     }
                 }
             }

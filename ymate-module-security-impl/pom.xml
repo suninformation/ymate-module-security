@@ -104,11 +104,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>net.ymate.framework</groupId>
-            <artifactId>ymate-framework-core</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>net.ymate.module</groupId>
             <artifactId>ymate-module-security</artifactId>
             <version>${project.parent.version}</version>
