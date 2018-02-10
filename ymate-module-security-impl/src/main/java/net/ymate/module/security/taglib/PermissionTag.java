@@ -19,6 +19,7 @@ import net.ymate.framework.core.taglib.AbstractDataTagSupport;
 import net.ymate.module.security.IAuthenticatorFactory;
 import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
+import net.ymate.module.security.Security;
 import net.ymate.module.security.support.SecurityProxy;
 import org.apache.commons.lang.StringUtils;
 
@@ -60,7 +61,7 @@ public class PermissionTag extends AbstractDataTagSupport {
     private String permissions;
 
     protected Object doProcessTagData() throws JspException {
-        IAuthenticatorFactory _factory = net.ymate.module.security.Security.get().getModuleCfg().getAuthenticatorFactory();
+        IAuthenticatorFactory _factory = Security.get().getModuleCfg().getAuthenticatorFactory();
         if (_factory != null) {
             IUserAuthenticator _authenticator = _factory.createUserAuthenticatorIfNeed();
             if (_authenticator != null) {

@@ -30,11 +30,6 @@ public interface ISecurityModuleCfg {
     IAuthenticatorFactory getAuthenticatorFactory();
 
     /**
-     * @return 返回安全数据存储适配器接口实例对象
-     */
-    ISecurityStorageAdapter getStorageAdapter();
-
-    /**
      * @return 返回权限控制开关过滤集合
      */
     Map<String, Set<String>> getPermissionFilters();

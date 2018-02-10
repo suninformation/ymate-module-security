@@ -15,7 +15,6 @@
  */
 package net.ymate.module.security.handle;
 
-import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.PermissionMeta;
 import net.ymate.platform.core.beans.IBeanHandler;
 
@@ -28,9 +27,6 @@ import java.lang.reflect.Method;
  * @version 1.0
  */
 public class SecurityHandler implements IBeanHandler {
-
-    public SecurityHandler(ISecurity owner) {
-    }
 
     public Object handle(Class<?> targetClass) throws Exception {
         for (Method _method : targetClass.getDeclaredMethods()) {

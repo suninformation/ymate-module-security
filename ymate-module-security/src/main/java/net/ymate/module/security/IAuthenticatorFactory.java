@@ -15,24 +15,24 @@
  */
 package net.ymate.module.security;
 
+import net.ymate.platform.core.support.IInitializable;
+
 /**
+ * 用户认证工厂接口定义
+ *
  * @author 刘镇 (suninformation@163.com) on 17/6/1 上午11:18
  * @version 1.0
  */
-public interface IAuthenticatorFactory {
-
-    /**
-     * 初始化用户认证工厂
-     *
-     * @param owner 所属模块管理器实例
-     * @throws Exception 可能产生的任何异常
-     */
-    void init(ISecurity owner) throws Exception;
-
-    void destroy() throws Exception;
+public interface IAuthenticatorFactory extends IInitializable<ISecurity> {
 
     /**
      * @return 返回用户认证接口实例对象
      */
     IUserAuthenticator createUserAuthenticatorIfNeed();
+
+    /**
+     * @param uid 当前用户唯一标识ID
+     * @return 判断当前用户是否为该站点创建者(超级用户), 默认值: false, 子类可根据实际需求重写该方法
+     */
+    boolean checkUserIsFounder(String uid);
 }

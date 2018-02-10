@@ -7,11 +7,11 @@
     <parent>
         <artifactId>ymate-security-parent</artifactId>
         <groupId>net.ymate.module</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1</version>
     </parent>
 
     <artifactId>ymate-module-security-impl</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>ymate-module-security-impl</name>
@@ -105,13 +105,19 @@
         </dependency>
         <dependency>
             <groupId>net.ymate.module</groupId>
+            <artifactId>ymate-module-oauth</artifactId>
+            <version>1.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.ymate.module</groupId>
             <artifactId>ymate-module-security</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.ymate.module</groupId>
             <artifactId>ymate-module-security-model</artifactId>
-            <version>${project.parent.version}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

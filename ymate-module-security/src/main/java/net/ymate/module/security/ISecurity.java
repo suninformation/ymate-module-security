@@ -66,45 +66,4 @@ public interface ISecurity {
     enum DisplayType {
         SHOW, HIDE
     }
-
-    interface IGroup {
-
-        /**
-         * @return 组Id
-         */
-        String getId();
-
-        /**
-         * @return 组名称
-         */
-        String getName();
-
-        /**
-         * @return 所属站点Id
-         */
-        String getSiteId();
-
-        /**
-         * @return 所拥有的角色及权限信息
-         */
-        IUserAuthenticator getAuthenticator();
-    }
-
-    interface IGroupUser {
-
-        /**
-         * @return 用户Uid
-         */
-        String getUid();
-
-        /**
-         * @return 所属组Id
-         */
-        String getGroupId();
-
-        /**
-         * @return 所属站点Id
-         */
-        String getSiteId();
-    }
 }

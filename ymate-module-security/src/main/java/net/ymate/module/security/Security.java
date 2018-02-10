@@ -15,8 +15,6 @@
  */
 package net.ymate.module.security;
 
-import net.ymate.module.security.annotation.Components;
-import net.ymate.module.security.handle.ComponentsHandler;
 import net.ymate.module.security.handle.SecurityHandler;
 import net.ymate.module.security.impl.DefaultModuleCfg;
 import net.ymate.platform.core.Version;
@@ -51,8 +49,6 @@ public class Security implements IModule, ISecurity {
 
     private volatile Map<String, List<PermissionMeta>> __permissionMetas;
 
-    private volatile ComponentsMeta[] __componentsMetas;
-
     public static ISecurity get() {
         if (__instance == null) {
             synchronized (VERSION) {
@@ -75,15 +71,10 @@ public class Security implements IModule, ISecurity {
             //
             __owner = owner;
             __moduleCfg = new DefaultModuleCfg(owner);
-            __owner.registerHandler(Components.class, new ComponentsHandler(this));
-            __owner.registerHandler(net.ymate.module.security.annotation.Security.class, new SecurityHandler(this));
+            __owner.registerHandler(net.ymate.module.security.annotation.Security.class, new SecurityHandler());
             //
             if (__moduleCfg.getAuthenticatorFactory() != null) {
                 __moduleCfg.getAuthenticatorFactory().init(this);
-            }
-            //
-            if (__moduleCfg.getStorageAdapter() != null) {
-                __moduleCfg.getStorageAdapter().init(this);
             }
             //
             __inited = true;
@@ -109,10 +100,6 @@ public class Security implements IModule, ISecurity {
             //
             if (__moduleCfg.getAuthenticatorFactory() != null) {
                 __moduleCfg.getAuthenticatorFactory().destroy();
-            }
-            //
-            if (__moduleCfg.getStorageAdapter() != null) {
-                __moduleCfg.getStorageAdapter().destroy();
             }
             //
             __moduleCfg = null;
