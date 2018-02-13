@@ -99,7 +99,7 @@ public class SecurityProxy implements IProxy {
                 if (_authenticator != null && !_authenticator.isFounder()) {
                     // 进行用户角色判断
                     if (!containsUserRole(_meta.getRoles(), _authenticator)) {
-                        String _errMsg = "User role is not within the allowed range: " + JSON.toJSONString(_authenticator.getUserRoles());
+                        String _errMsg = "User role is not within the allowed range: " + JSON.toJSONString(_meta.getRoles());
                         if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
                             _LOG.debug(_errMsg);
                         }
@@ -107,7 +107,7 @@ public class SecurityProxy implements IProxy {
                     }
                     // 进行用户权限判断
                     if (!containsUserPermissions(_meta.getLogicType(), _meta.getPermissions(), _authenticator)) {
-                        String _errMsg = "User permissions are not within the allowed range: " + JSON.toJSONString(_authenticator.getUserPermissions());
+                        String _errMsg = "User permissions are not within the allowed range: " + JSON.toJSONString(_meta.getPermissions());
                         if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
                             _LOG.debug(_errMsg);
                         }
