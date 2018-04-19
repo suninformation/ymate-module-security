@@ -87,7 +87,7 @@ public class SecurityRepository implements ISecurityRepository {
                         .field(Fields.create(SecurityGroupUser.FIELDS.GROUP_ID))
                         .where(Where.create(Cond.create().eq(SecurityGroupUser.FIELDS.UID).param(uid)));
                 return session.find(Select.create(_prefix, SecurityGroup.class)
-                        .where(Where.create(Cond.create().in(SecurityGroup.FIELDS.ID, _subQuery))).toSQL(), new EntityResultSetHandler<SecurityGroup>(SecurityGroup.class));
+                        .where(Where.create(Cond.create().in(SecurityGroup.FIELDS.ID, _subQuery).and().eq(SecurityGroup.FIELDS.STATUS).param(0))).toSQL(), new EntityResultSetHandler<SecurityGroup>(SecurityGroup.class));
             }
         });
         return _results.getResultData();
