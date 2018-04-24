@@ -101,11 +101,7 @@ public class SecurityRepository implements ISecurityRepository {
                 _page.pageSize(pageSize);
             }
         }
-        return SecurityGroup.builder().build()
-                .find(Fields.create(SecurityGroup.FIELDS.CREATE_TIME,
-                        SecurityGroup.FIELDS.LAST_MODIFY_TIME,
-                        SecurityGroup.FIELDS.STATUS,
-                        SecurityGroup.FIELDS.TYPE).excluded(true), _page);
+        return SecurityGroup.builder().build().find(_page);
     }
 
     public SecurityGroup addGroup(String groupName) throws Exception {
