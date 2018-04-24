@@ -39,7 +39,7 @@ public interface ISecurityRepository {
 
     /**
      * @param uid 用户标识ID
-     * @return 返回指定站点的用户所在组集合
+     * @return 返回指定用户所在组集合
      * @throws Exception 可能产生的任何异常
      */
     List<SecurityGroup> getUserGroups(String uid) throws Exception;
@@ -47,7 +47,7 @@ public interface ISecurityRepository {
     /**
      * @param page     页码
      * @param pageSize 每页记录数
-     * @return 返回指定站点的组集合
+     * @return 返回组集合
      * @throws Exception 可能产生的任何异常
      */
     IResultSet<SecurityGroup> getGroups(int page, int pageSize) throws Exception;
