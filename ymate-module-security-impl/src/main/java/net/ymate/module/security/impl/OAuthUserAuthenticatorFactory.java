@@ -51,7 +51,7 @@ public class OAuthUserAuthenticatorFactory extends DefaultAuthenticatorFactory {
 
     @Override
     public IUserAuthenticator createUserAuthenticatorIfNeed() {
-        OAuthClientUserBean _clientUser = WebContext.getContext().getAttribute(OAuthClientUserBean.class.getName());
+        OAuthClientUserBean _clientUser = WebContext.getContext().getRequestAttributeToObject(OAuthClientUserBean.class.getName());
         if (_clientUser != null && StringUtils.isNotBlank(_clientUser.getUid())) {
             try {
                 IUserAuthenticator _authenticator = (IUserAuthenticator) __dataCache.get(_clientUser.getUid());

@@ -34,17 +34,13 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
 
     private ISecurity __owner;
 
-    private ISecurityRepository __repo;
-
     @Override
     public void init(ISecurity owner) throws Exception {
         __owner = owner;
-        __repo = owner.getOwner().getBean(ISecurityRepository.class);
     }
 
     @Override
     public void destroy() throws Exception {
-        __repo = null;
         __owner = null;
     }
 
@@ -53,7 +49,7 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
     }
 
     protected ISecurityRepository getSecurityRepository() {
-        return __repo;
+        return __owner.getOwner().getBean(ISecurityRepository.class);
     }
 
     @Override
