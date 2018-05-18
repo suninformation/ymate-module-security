@@ -60,7 +60,6 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
                 IUserAuthenticator _authenticator = _sessionBean.getAttribute(IUserAuthenticator.class.getName());
                 if (_authenticator == null) {
                     _authenticator = getSecurityRepository().getUserAuthenticator(_sessionBean.getUid());
-                    _authenticator = new DefaultUserAuthenticator(checkUserIsFounder(_sessionBean.getUid()), _authenticator.getUserRoles(), _authenticator.getUserPermissions());
                     //
                     _sessionBean.addAttribute(IUserAuthenticator.class.getName(), _authenticator);
                 }

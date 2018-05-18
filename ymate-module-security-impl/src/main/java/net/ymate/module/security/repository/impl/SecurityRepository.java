@@ -15,8 +15,10 @@
  */
 package net.ymate.module.security.repository.impl;
 
+import net.ymate.module.security.IAuthenticatorFactory;
 import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
+import net.ymate.module.security.Security;
 import net.ymate.module.security.impl.DefaultUserAuthenticator;
 import net.ymate.module.security.model.SecurityGroup;
 import net.ymate.module.security.model.SecurityGroupUser;
@@ -73,7 +75,8 @@ public class SecurityRepository implements ISecurityRepository {
                 }
             }
         }
-        return new DefaultUserAuthenticator(false, _roles.toArray(new ISecurity.Role[_roles.size()]), _permissions.toArray(new String[_permissions.size()]));
+        IAuthenticatorFactory _authenticatorFactory = Security.get().getModuleCfg().getAuthenticatorFactory();
+        return new DefaultUserAuthenticator(_authenticatorFactory != null && _authenticatorFactory.checkUserIsFounder(uid), _roles.toArray(new ISecurity.Role[0]), _permissions.toArray(new String[0]));
     }
 
     public List<SecurityGroup> getUserGroups(final String uid) throws Exception {
