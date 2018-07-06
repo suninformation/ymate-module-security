@@ -18,9 +18,10 @@ package net.ymate.module.security.support;
 import com.alibaba.fastjson.JSON;
 import net.ymate.framework.exception.RequestUnauthorizedException;
 import net.ymate.module.security.IAuthenticatorFactory;
-import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
 import net.ymate.module.security.PermissionMeta;
+import net.ymate.module.security.annotation.LogicType;
+import net.ymate.module.security.annotation.RoleType;
 import net.ymate.module.security.annotation.Security;
 import net.ymate.platform.core.beans.annotation.Order;
 import net.ymate.platform.core.beans.annotation.Proxy;
@@ -44,13 +45,13 @@ public class SecurityProxy implements IProxy {
 
     private static final Log _LOG = LogFactory.getLog(SecurityProxy.class);
 
-    public static boolean containsUserRole(ISecurity.Role[] roles, IUserAuthenticator _authenticator) {
+    public static boolean containsUserRole(RoleType[] roles, IUserAuthenticator _authenticator) {
         if (ArrayUtils.isNotEmpty(roles)) {
             boolean _flag = false;
-            ISecurity.Role[] _roles = _authenticator.getUserRoles();
+            RoleType[] _roles = _authenticator.getUserRoles();
             if (ArrayUtils.isNotEmpty(_roles)) {
-                for (ISecurity.Role _role : _roles) {
-                    for (ISecurity.Role _r : roles) {
+                for (RoleType _role : _roles) {
+                    for (RoleType _r : roles) {
                         if (_r.compareTo(_role) == 0) {
                             _flag = true;
                             break;
@@ -66,7 +67,7 @@ public class SecurityProxy implements IProxy {
         return true;
     }
 
-    public static boolean containsUserPermissions(ISecurity.LogicType logicType, String[] permissions, IUserAuthenticator _authenticator) {
+    public static boolean containsUserPermissions(LogicType logicType, String[] permissions, IUserAuthenticator _authenticator) {
         if (ArrayUtils.isNotEmpty(permissions)) {
             boolean _flag = false;
             String[] _permissions = _authenticator.getUserPermissions();
@@ -90,6 +91,7 @@ public class SecurityProxy implements IProxy {
         return true;
     }
 
+    @Override
     public Object doProxy(IProxyChain proxyChain) throws Throwable {
         PermissionMeta _meta = PermissionMeta.bind(proxyChain.getTargetMethod());
         if (_meta != null && !net.ymate.module.security.Security.get().isFiltered(_meta)) {

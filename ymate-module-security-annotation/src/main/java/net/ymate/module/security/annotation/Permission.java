@@ -15,8 +15,6 @@
  */
 package net.ymate.module.security.annotation;
 
-import net.ymate.module.security.ISecurity;
-
 import java.lang.annotation.*;
 
 /**
@@ -34,9 +32,9 @@ public @interface Permission {
     String name() default "";
 
     /**
-     * @return 限制访问角色集合, 默认为继承类级设置，若无父级设置则Role.INHERIT等同于Role.ALL
+     * @return 限制访问角色集合, 默认为继承类级设置，若无父级设置则RoleType.INHERIT等同于RoleType.ALL
      */
-    ISecurity.Role[] roles() default ISecurity.Role.INHERIT;
+    RoleType[] roles() default RoleType.INHERIT;
 
     /**
      * @return 权限码集合
@@ -46,5 +44,5 @@ public @interface Permission {
     /**
      * @return 权限码匹配逻辑类型, 默认为继承类级设置，若无父级设置则LogicType.INHERIT等同于LogicType.OR
      */
-    ISecurity.LogicType logicType() default ISecurity.LogicType.INHERIT;
+    LogicType logicType() default LogicType.INHERIT;
 }

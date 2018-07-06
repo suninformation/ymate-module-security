@@ -15,6 +15,7 @@
 
     <modules>
         <module>ymate-module-security</module>
+        <module>ymate-module-security-annotation</module>
         <module>ymate-module-security-impl</module>
         <module>ymate-module-security-model</module>
     </modules>

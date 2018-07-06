@@ -20,6 +20,9 @@ import net.ymate.platform.persistence.IShardingable;
 import net.ymate.platform.persistence.annotation.*;
 import net.ymate.platform.persistence.jdbc.IConnectionHolder;
 import net.ymate.platform.persistence.jdbc.support.BaseEntity;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.NullArgumentException;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 2017/05/26 下午 16:59:41
@@ -29,6 +32,21 @@ import net.ymate.platform.persistence.jdbc.support.BaseEntity;
 public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 根据分组名称生成记录主键字符串
+     *
+     * @param groupName 分组名称
+     * @param createBy  创建者标识
+     * @param owner     拥有者标识
+     * @return 返回生成的主键字符串
+     */
+    public static String buildPrimaryKey(String groupName, String createBy, String owner) {
+        if (StringUtils.isBlank(groupName)) {
+            throw new NullArgumentException("groupName");
+        }
+        return DigestUtils.md5Hex(groupName + StringUtils.trimToEmpty(createBy) + StringUtils.trimToEmpty(owner));
+    }
 
     @Id
     @Property(name = "id", nullable = false, length = 32)
@@ -67,6 +85,16 @@ public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
     @Default("0")
     @PropertyState(propertyName = "status")
     private java.lang.Integer status;
+
+    @Property(name = "create_by", length = 32)
+    @PropertyState(propertyName = "create_by")
+    @Readonly
+    private java.lang.String createBy;
+
+    @Property(name = "owner", length = 32)
+    @PropertyState(propertyName = "owner")
+    @Readonly
+    private java.lang.String owner;
 
     @Property(name = "create_time", nullable = false, length = 13)
     @PropertyState(propertyName = "create_time")
@@ -108,10 +136,12 @@ public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
      * @param isUserRole
      * @param type
      * @param status
+     * @param createBy
+     * @param owner
      * @param createTime
      * @param lastModifyTime
      */
-    public SecurityGroup(java.lang.String id, java.lang.String name, java.lang.String permission, java.lang.Integer isAdminRole, java.lang.Integer isOperatorRole, java.lang.Integer isUserRole, java.lang.Integer type, java.lang.Integer status, java.lang.Long createTime, java.lang.Long lastModifyTime) {
+    public SecurityGroup(java.lang.String id, java.lang.String name, java.lang.String permission, java.lang.Integer isAdminRole, java.lang.Integer isOperatorRole, java.lang.Integer isUserRole, java.lang.Integer type, java.lang.Integer status, java.lang.String createBy, java.lang.String owner, java.lang.Long createTime, java.lang.Long lastModifyTime) {
         this.id = id;
         this.name = name;
         this.permission = permission;
@@ -120,6 +150,8 @@ public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
         this.isUserRole = isUserRole;
         this.type = type;
         this.status = status;
+        this.createBy = createBy;
+        this.owner = owner;
         this.createTime = createTime;
         this.lastModifyTime = lastModifyTime;
     }
@@ -231,6 +263,34 @@ public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
      */
     public void setStatus(java.lang.Integer status) {
         this.status = status;
+    }
+
+    /**
+     * @return the createBy
+     */
+    public java.lang.String getCreateBy() {
+        return createBy;
+    }
+
+    /**
+     * @param createBy the createBy to set
+     */
+    public void setCreateBy(java.lang.String createBy) {
+        this.createBy = createBy;
+    }
+
+    /**
+     * @return the owner
+     */
+    public java.lang.String getOwner() {
+        return owner;
+    }
+
+    /**
+     * @param owner the owner to set
+     */
+    public void setOwner(java.lang.String owner) {
+        this.owner = owner;
     }
 
     /**
@@ -390,6 +450,24 @@ public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
             return this;
         }
 
+        public java.lang.String createBy() {
+            return _model.getCreateBy();
+        }
+
+        public SecurityGroupBuilder createBy(java.lang.String createBy) {
+            _model.setCreateBy(createBy);
+            return this;
+        }
+
+        public java.lang.String owner() {
+            return _model.getOwner();
+        }
+
+        public SecurityGroupBuilder owner(java.lang.String owner) {
+            _model.setOwner(owner);
+            return this;
+        }
+
         public java.lang.Long createTime() {
             return _model.getCreateTime();
         }
@@ -422,6 +500,8 @@ public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
         public static final String IS_USER_ROLE = "is_user_role";
         public static final String TYPE = "type";
         public static final String STATUS = "status";
+        public static final String CREATE_BY = "create_by";
+        public static final String OWNER = "owner";
         public static final String CREATE_TIME = "create_time";
         public static final String LAST_MODIFY_TIME = "last_modify_time";
     }

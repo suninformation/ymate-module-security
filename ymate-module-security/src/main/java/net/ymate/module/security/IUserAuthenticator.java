@@ -15,6 +15,8 @@
  */
 package net.ymate.module.security;
 
+import net.ymate.module.security.annotation.RoleType;
+
 import java.io.Serializable;
 
 /**
@@ -31,7 +33,7 @@ public interface IUserAuthenticator extends Serializable {
     /**
      * @return 返回所拥有的角色集合
      */
-    ISecurity.Role[] getUserRoles();
+    RoleType[] getUserRoles();
 
     /**
      * @return 返回所拥有的权限码集合

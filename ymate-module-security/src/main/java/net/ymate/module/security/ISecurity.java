@@ -45,25 +45,4 @@ public interface ISecurity {
      * @return 检查权限是否被过滤
      */
     boolean isFiltered(PermissionMeta permissionMeta);
-
-    /**
-     * 角色
-     */
-    enum Role {
-        INHERIT, ALL, ADMIN, OPERATOR, USER
-    }
-
-    /**
-     * 逻辑类型
-     */
-    enum LogicType {
-        INHERIT, AND, OR
-    }
-
-    /**
-     * 显示状态
-     */
-    enum DisplayType {
-        SHOW, HIDE
-    }
 }

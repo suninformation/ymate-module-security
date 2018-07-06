@@ -24,8 +24,6 @@ import net.ymate.platform.core.module.annotation.Module;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,8 +45,6 @@ public class Security implements IModule, ISecurity {
 
     private boolean __inited;
 
-    private volatile Map<String, List<PermissionMeta>> __permissionMetas;
-
     public static ISecurity get() {
         if (__instance == null) {
             synchronized (VERSION) {
@@ -60,10 +56,12 @@ public class Security implements IModule, ISecurity {
         return __instance;
     }
 
+    @Override
     public String getName() {
         return ISecurity.MODULE_NAME;
     }
 
+    @Override
     public void init(YMP owner) throws Exception {
         if (!__inited) {
             //
@@ -81,19 +79,23 @@ public class Security implements IModule, ISecurity {
         }
     }
 
+    @Override
     public boolean isInited() {
         return __inited;
     }
 
+    @Override
     public boolean isFiltered(PermissionMeta permissionMeta) {
         Set<String> _permissions = __moduleCfg.getPermissionFilters().get(permissionMeta.getGroupName());
         return _permissions != null && (_permissions.contains("all") || _permissions.contains(permissionMeta.getName()));
     }
 
+    @Override
     public YMP getOwner() {
         return __owner;
     }
 
+    @Override
     public void destroy() throws Exception {
         if (__inited) {
             __inited = false;
@@ -107,6 +109,7 @@ public class Security implements IModule, ISecurity {
         }
     }
 
+    @Override
     public ISecurityModuleCfg getModuleCfg() {
         return __moduleCfg;
     }

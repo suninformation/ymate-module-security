@@ -17,9 +17,10 @@ package net.ymate.module.security.taglib;
 
 import net.ymate.framework.core.taglib.AbstractDataTagSupport;
 import net.ymate.module.security.IAuthenticatorFactory;
-import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
 import net.ymate.module.security.Security;
+import net.ymate.module.security.annotation.LogicType;
+import net.ymate.module.security.annotation.RoleType;
 import net.ymate.module.security.support.SecurityProxy;
 import org.apache.commons.lang.StringUtils;
 
@@ -60,6 +61,7 @@ public class PermissionTag extends AbstractDataTagSupport {
      */
     private String permissions;
 
+    @Override
     protected Object doProcessTagData() throws JspException {
         IAuthenticatorFactory _factory = Security.get().getModuleCfg().getAuthenticatorFactory();
         if (_factory != null) {
@@ -69,22 +71,22 @@ public class PermissionTag extends AbstractDataTagSupport {
                     return true;
                 }
                 // 进行用户角色判断
-                List<ISecurity.Role> _roles = new ArrayList<ISecurity.Role>();
+                List<RoleType> _roles = new ArrayList<RoleType>();
                 if (userRole) {
-                    _roles.add(ISecurity.Role.USER);
+                    _roles.add(RoleType.USER);
                 }
                 if (adminRole) {
-                    _roles.add(ISecurity.Role.ADMIN);
+                    _roles.add(RoleType.ADMIN);
                 }
                 if (operatorRole) {
-                    _roles.add(ISecurity.Role.OPERATOR);
+                    _roles.add(RoleType.OPERATOR);
                 }
                 //
                 String[] _permissions = StringUtils.split(StringUtils.trimToEmpty(permissions), "|");
                 //
-                boolean _returnFlag = SecurityProxy.containsUserRole(_roles.toArray(new ISecurity.Role[0]), _authenticator);
+                boolean _returnFlag = SecurityProxy.containsUserRole(_roles.toArray(new RoleType[0]), _authenticator);
                 // 进行用户权限判断
-                if (_returnFlag && SecurityProxy.containsUserPermissions(ISecurity.LogicType.valueOf(StringUtils.defaultIfBlank(logicType, "OR").toUpperCase()), _permissions, _authenticator)) {
+                if (_returnFlag && SecurityProxy.containsUserPermissions(LogicType.valueOf(StringUtils.defaultIfBlank(logicType, "OR").toUpperCase()), _permissions, _authenticator)) {
                     return true;
                 }
             }

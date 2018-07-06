@@ -10,13 +10,13 @@
         <version>1</version>
     </parent>
 
-    <artifactId>ymate-module-security</artifactId>
+    <artifactId>ymate-module-security-annotation</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>ymate-module-security</name>
+    <name>ymate-module-security-annotation</name>
     <url>http://www.ymate.net/</url>
-    <description>Security for YMP</description>
+    <description>Security Annotation for YMP</description>
 
     <build>
         <resources>
@@ -25,7 +25,6 @@
                 <excludes>
                     <exclude>**/ymp-*.properties</exclude>
                 </excludes>
-                <filtering>false</filtering>
             </resource>
         </resources>
         <pluginManagement>
@@ -37,7 +36,7 @@
                         <archive>
                             <manifestSections>
                                 <manifestSection>
-                                    <name>net/ymate/module/security/</name>
+                                    <name>net/ymate/module/security/impl/</name>
                                 </manifestSection>
                             </manifestSections>
                             <manifestEntries>
@@ -84,19 +83,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.ymate.platform</groupId>
-            <artifactId>ymate-platform-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.ymate.framework</groupId>
-            <artifactId>ymate-framework-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.ymate.module</groupId>
-            <artifactId>ymate-module-security-annotation</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

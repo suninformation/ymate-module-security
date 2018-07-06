@@ -11,6 +11,8 @@ CREATE TABLE `ym_security_group` (
   `is_user_role` smallint(1) DEFAULT '0' COMMENT '是否普通用户角色',
   `type` smallint(2) unsigned DEFAULT '0' COMMENT '类型',
   `status` smallint(2) unsigned DEFAULT '0' COMMENT '状态',
+  `create_by` varchar(32) DEFAULT NULL COMMENT '创建者标识',
+  `owner` varchar(32) DEFAULT NULL COMMENT '拥有者标识',
   `create_time` bigint(13) NOT NULL COMMENT '创建时间',
   `last_modify_time` bigint(13) DEFAULT '0' COMMENT '最后修改时间',
   PRIMARY KEY (`id`),

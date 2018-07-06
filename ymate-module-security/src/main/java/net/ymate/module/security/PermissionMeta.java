@@ -15,7 +15,9 @@
  */
 package net.ymate.module.security;
 
+import net.ymate.module.security.annotation.LogicType;
 import net.ymate.module.security.annotation.Permission;
+import net.ymate.module.security.annotation.RoleType;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
@@ -31,12 +33,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PermissionMeta {
 
-    private static final ISecurity.Role[] __ROLE_ALL;
+    private static final RoleType[] __ROLE_ALL;
 
     private static Map<Method, PermissionMeta> __PERMISSION_CACHES;
 
     static {
-        __ROLE_ALL = new ISecurity.Role[]{ISecurity.Role.ADMIN, ISecurity.Role.OPERATOR, ISecurity.Role.USER};
+        __ROLE_ALL = new RoleType[]{RoleType.ADMIN, RoleType.OPERATOR, RoleType.USER};
         //
         __PERMISSION_CACHES = new ConcurrentHashMap<Method, PermissionMeta>();
     }
@@ -45,11 +47,11 @@ public class PermissionMeta {
 
     private String __name;
 
-    private ISecurity.Role[] __roles;
+    private RoleType[] __roles;
 
     private String[] __permissions;
 
-    private ISecurity.LogicType __logicType;
+    private LogicType __logicType;
 
     public static PermissionMeta createIfNeed(Method targetMethod) throws Exception {
         PermissionMeta _meta = null;
@@ -57,11 +59,11 @@ public class PermissionMeta {
         Permission _method = targetMethod.getAnnotation(Permission.class);
         //
         if (_method != null) {
-            Set<ISecurity.Role> _roles = new HashSet<ISecurity.Role>();
+            Set<RoleType> _roles = new HashSet<RoleType>();
             Set<String> _permissions = new HashSet<String>();
             //
             String _groupName = "default";
-            ISecurity.LogicType _logicType = ISecurity.LogicType.OR;
+            LogicType _logicType = LogicType.OR;
             //
             Permission _parent = targetMethod.getDeclaringClass().getAnnotation(Permission.class);
             if (_parent != null) {
@@ -69,21 +71,21 @@ public class PermissionMeta {
                 if (StringUtils.isNotBlank(_parent.name())) {
                     _groupName = _parent.name();
                 }
-                if (!ISecurity.LogicType.INHERIT.equals(_parent.logicType())) {
+                if (!LogicType.INHERIT.equals(_parent.logicType())) {
                     _logicType = _parent.logicType();
                 }
                 _roles.addAll(Arrays.asList(_parent.roles()));
                 _permissions.addAll(Arrays.asList(_parent.value()));
                 //
                 // 然后处理方法级注解
-                if (!ISecurity.LogicType.INHERIT.equals(_parent.logicType())) {
+                if (!LogicType.INHERIT.equals(_parent.logicType())) {
                     _logicType = _method.logicType();
                 }
-                if (ArrayUtils.contains(_method.roles(), ISecurity.Role.ALL)) {
-                    _roles.add(ISecurity.Role.INHERIT);
-                } else if (ArrayUtils.contains(_method.roles(), ISecurity.Role.INHERIT)) {
-                    for (ISecurity.Role _item : _method.roles()) {
-                        if (!ISecurity.Role.INHERIT.equals(_item)) {
+                if (ArrayUtils.contains(_method.roles(), RoleType.ALL)) {
+                    _roles.add(RoleType.INHERIT);
+                } else if (ArrayUtils.contains(_method.roles(), RoleType.INHERIT)) {
+                    for (RoleType _item : _method.roles()) {
+                        if (!RoleType.INHERIT.equals(_item)) {
                             _roles.add(_item);
                         }
                     }
@@ -93,7 +95,7 @@ public class PermissionMeta {
                 _permissions.addAll(Arrays.asList(_method.value()));
             } else {
                 // 处理方法级注解
-                if (!ISecurity.LogicType.INHERIT.equals(_method.logicType())) {
+                if (!LogicType.INHERIT.equals(_method.logicType())) {
                     _logicType = _method.logicType();
                 }
                 _roles.addAll(Arrays.asList(_method.roles()));
@@ -104,12 +106,12 @@ public class PermissionMeta {
             _meta.__name = StringUtils.defaultIfBlank(_method.name(), "default");
             _meta.__groupName = _groupName;
             _meta.__logicType = _logicType;
-            _meta.__permissions = _permissions.toArray(new String[_permissions.size()]);
+            _meta.__permissions = _permissions.toArray(new String[0]);
             //
-            if (_roles.contains(ISecurity.Role.INHERIT) || _roles.contains(ISecurity.Role.ALL)) {
+            if (_roles.contains(RoleType.INHERIT) || _roles.contains(RoleType.ALL)) {
                 _meta.__roles = __ROLE_ALL;
             } else {
-                _meta.__roles = _roles.toArray(new ISecurity.Role[_roles.size()]);
+                _meta.__roles = _roles.toArray(new RoleType[0]);
             }
             //
             __PERMISSION_CACHES.put(targetMethod, _meta);
@@ -158,11 +160,11 @@ public class PermissionMeta {
         return __groupName;
     }
 
-    public ISecurity.LogicType getLogicType() {
+    public LogicType getLogicType() {
         return __logicType;
     }
 
-    public ISecurity.Role[] getRoles() {
+    public RoleType[] getRoles() {
         return __roles;
     }
 

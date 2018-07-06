@@ -28,6 +28,7 @@ import java.lang.reflect.Method;
  */
 public class SecurityHandler implements IBeanHandler {
 
+    @Override
     public Object handle(Class<?> targetClass) throws Exception {
         for (Method _method : targetClass.getDeclaredMethods()) {
             PermissionMeta.createIfNeed(_method);

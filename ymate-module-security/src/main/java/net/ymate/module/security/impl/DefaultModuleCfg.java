@@ -60,10 +60,12 @@ public class DefaultModuleCfg implements ISecurityModuleCfg {
         }
     }
 
+    @Override
     public IAuthenticatorFactory getAuthenticatorFactory() {
         return __authFactory;
     }
 
+    @Override
     public Map<String, Set<String>> getPermissionFilters() {
         return Collections.unmodifiableMap(__permissionFilters);
     }

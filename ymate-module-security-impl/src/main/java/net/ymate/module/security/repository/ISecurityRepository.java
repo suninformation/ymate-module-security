@@ -52,12 +52,24 @@ public interface ISecurityRepository {
      */
     IResultSet<SecurityGroup> getGroups(int page, int pageSize) throws Exception;
 
+    IResultSet<SecurityGroup> getGroups(Integer type, String createBy, String owner, int page, int pageSize) throws Exception;
+
     /**
      * @param groupName 组名称
      * @return 添加组若已存在或添加成功则返回组接口对象
      * @throws Exception 可能产生的任何异常
      */
     SecurityGroup addGroup(String groupName) throws Exception;
+
+    /**
+     * @param groupName 组名称
+     * @param type      类型
+     * @param createBy  创建者标识
+     * @param owner     拥有者标识
+     * @return 添加组若已存在或添加成功则返回组接口对象
+     * @throws Exception 可能产生的任何异常
+     */
+    SecurityGroup addGroup(String groupName, Integer type, String createBy, String owner) throws Exception;
 
     /**
      * 保存或更新组用户认证数据
@@ -87,7 +99,15 @@ public interface ISecurityRepository {
      * @param uid     用户标识ID
      * @throws Exception 可能产生的任何异常
      */
-    void addGroupUser(String groupId, String uid) throws Exception;
+    boolean addGroupUser(String groupId, String uid) throws Exception;
+
+    boolean disableGroup(String groupId) throws Exception;
+
+    boolean enableGroup(String groupId) throws Exception;
+
+    boolean disableGroupUser(String groupId, String uid) throws Exception;
+
+    boolean enableGroupUser(String groupId, String uid) throws Exception;
 
     /**
      * 删除组成员
@@ -96,7 +116,7 @@ public interface ISecurityRepository {
      * @param uid     用户标识ID
      * @throws Exception 可能产生的任何异常
      */
-    void removeGroupUser(String groupId, String uid) throws Exception;
+    boolean removeGroupUser(String groupId, String uid) throws Exception;
 
     /**
      * 删除组
@@ -104,7 +124,7 @@ public interface ISecurityRepository {
      * @param groupId 组唯一标识
      * @throws Exception 可能产生的任何异常
      */
-    void removeGroup(String groupId) throws Exception;
+    boolean removeGroup(String groupId) throws Exception;
 
     /**
      * 清理组用户成员

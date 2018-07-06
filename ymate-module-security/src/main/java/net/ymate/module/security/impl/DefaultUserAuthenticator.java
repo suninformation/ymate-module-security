@@ -15,8 +15,8 @@
  */
 package net.ymate.module.security.impl;
 
-import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
+import net.ymate.module.security.annotation.RoleType;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/5/27 下午4:16
@@ -26,30 +26,33 @@ public class DefaultUserAuthenticator implements IUserAuthenticator {
 
     private boolean __founder;
 
-    private ISecurity.Role[] __roles;
+    private RoleType[] __roles;
 
     private String[] __permissions;
 
     public DefaultUserAuthenticator() {
         __founder = false;
-        __roles = new ISecurity.Role[0];
+        __roles = new RoleType[0];
         __permissions = new String[0];
     }
 
-    public DefaultUserAuthenticator(boolean founder, ISecurity.Role[] roles, String[] permissions) {
+    public DefaultUserAuthenticator(boolean founder, RoleType[] roles, String[] permissions) {
         __founder = founder;
         __roles = roles;
         __permissions = permissions;
     }
 
+    @Override
     public boolean isFounder() {
         return __founder;
     }
 
-    public ISecurity.Role[] getUserRoles() {
+    @Override
+    public RoleType[] getUserRoles() {
         return __roles;
     }
 
+    @Override
     public String[] getUserPermissions() {
         return __permissions;
     }

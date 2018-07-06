@@ -20,6 +20,9 @@ import net.ymate.platform.persistence.IShardingable;
 import net.ymate.platform.persistence.annotation.*;
 import net.ymate.platform.persistence.jdbc.IConnectionHolder;
 import net.ymate.platform.persistence.jdbc.support.BaseEntity;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.NullArgumentException;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 2017/05/26 下午 16:59:41
@@ -29,6 +32,16 @@ import net.ymate.platform.persistence.jdbc.support.BaseEntity;
 public class SecurityGroupUser extends BaseEntity<SecurityGroupUser, java.lang.String> {
 
     private static final long serialVersionUID = 1L;
+
+    public static String buildPrimaryKey(String groupId, String uid) {
+        if (StringUtils.isBlank(groupId)) {
+            throw new NullArgumentException("groupId");
+        }
+        if (StringUtils.isBlank(uid)) {
+            throw new NullArgumentException("uid");
+        }
+        return DigestUtils.md5Hex(groupId + uid);
+    }
 
     @Id
     @Property(name = "id", nullable = false, length = 32)
