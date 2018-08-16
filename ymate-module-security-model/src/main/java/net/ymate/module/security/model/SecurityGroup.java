@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
  * @author 刘镇 (suninformation@163.com) on 2017/05/26 下午 16:59:41
  * @version 1.0
  */
-@Entity("security_group")
+@Entity(SecurityGroup.TABLE_NAME)
 public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
 
     private static final long serialVersionUID = 1L;
@@ -49,61 +49,59 @@ public class SecurityGroup extends BaseEntity<SecurityGroup, java.lang.String> {
     }
 
     @Id
-    @Property(name = "id", nullable = false, length = 32)
-    @PropertyState(propertyName = "id")
+    @Property(name = FIELDS.ID, nullable = false, length = 32)
+    @PropertyState(propertyName = FIELDS.ID)
     private java.lang.String id;
 
-    @Property(name = "name", nullable = false, length = 32)
-    @PropertyState(propertyName = "name")
+    @Property(name = FIELDS.NAME, nullable = false, length = 32)
+    @PropertyState(propertyName = FIELDS.NAME)
     private java.lang.String name;
 
-    @Property(name = "permission", length = 16383)
-    @PropertyState(propertyName = "permission")
+    @Property(name = FIELDS.PERMISSION, length = 16383)
+    @PropertyState(propertyName = FIELDS.PERMISSION)
     private java.lang.String permission;
 
-    @Property(name = "is_admin_role", unsigned = true, length = 1)
+    @Property(name = FIELDS.IS_ADMIN_ROLE, unsigned = true, length = 1)
     @Default("0")
-    @PropertyState(propertyName = "is_admin_role")
+    @PropertyState(propertyName = FIELDS.IS_ADMIN_ROLE)
     private java.lang.Integer isAdminRole;
 
-    @Property(name = "is_operator_role", unsigned = true, length = 1)
+    @Property(name = FIELDS.IS_OPERATOR_ROLE, unsigned = true, length = 1)
     @Default("0")
-    @PropertyState(propertyName = "is_operator_role")
+    @PropertyState(propertyName = FIELDS.IS_OPERATOR_ROLE)
     private java.lang.Integer isOperatorRole;
 
-    @Property(name = "is_user_role", length = 1)
+    @Property(name = FIELDS.IS_USER_ROLE, length = 1)
     @Default("0")
-    @PropertyState(propertyName = "is_user_role")
+    @PropertyState(propertyName = FIELDS.IS_USER_ROLE)
     private java.lang.Integer isUserRole;
 
-    @Property(name = "type", unsigned = true, length = 2)
+    @Property(name = FIELDS.TYPE, unsigned = true, length = 2)
     @Default("0")
-    @PropertyState(propertyName = "type")
+    @PropertyState(propertyName = FIELDS.TYPE)
     private java.lang.Integer type;
 
-    @Property(name = "status", unsigned = true, length = 2)
+    @Property(name = FIELDS.STATUS, unsigned = true, length = 2)
     @Default("0")
-    @PropertyState(propertyName = "status")
+    @PropertyState(propertyName = FIELDS.STATUS)
     private java.lang.Integer status;
 
-    @Property(name = "create_by", length = 32)
-    @PropertyState(propertyName = "create_by")
-    @Readonly
+    @Property(name = FIELDS.CREATE_BY, length = 32)
+    @PropertyState(propertyName = FIELDS.CREATE_BY)
     private java.lang.String createBy;
 
-    @Property(name = "owner", length = 32)
-    @PropertyState(propertyName = "owner")
-    @Readonly
+    @Property(name = FIELDS.OWNER, length = 32)
+    @PropertyState(propertyName = FIELDS.OWNER)
     private java.lang.String owner;
 
-    @Property(name = "create_time", nullable = false, length = 13)
-    @PropertyState(propertyName = "create_time")
+    @Property(name = FIELDS.CREATE_TIME, nullable = false, length = 13)
+    @PropertyState(propertyName = FIELDS.CREATE_TIME)
     @Readonly
     private java.lang.Long createTime;
 
-    @Property(name = "last_modify_time", length = 13)
+    @Property(name = FIELDS.LAST_MODIFY_TIME, length = 13)
     @Default("0")
-    @PropertyState(propertyName = "last_modify_time")
+    @PropertyState(propertyName = FIELDS.LAST_MODIFY_TIME)
     private java.lang.Long lastModifyTime;
 
     /**

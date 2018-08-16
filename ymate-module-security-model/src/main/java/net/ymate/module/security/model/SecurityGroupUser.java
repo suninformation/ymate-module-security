@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
  * @author 刘镇 (suninformation@163.com) on 2017/05/26 下午 16:59:41
  * @version 1.0
  */
-@Entity("security_group_user")
+@Entity(SecurityGroupUser.TABLE_NAME)
 public class SecurityGroupUser extends BaseEntity<SecurityGroupUser, java.lang.String> {
 
     private static final long serialVersionUID = 1L;
@@ -44,36 +44,36 @@ public class SecurityGroupUser extends BaseEntity<SecurityGroupUser, java.lang.S
     }
 
     @Id
-    @Property(name = "id", nullable = false, length = 32)
-    @PropertyState(propertyName = "id")
+    @Property(name = FIELDS.ID, nullable = false, length = 32)
+    @PropertyState(propertyName = FIELDS.ID)
     private java.lang.String id;
 
-    @Property(name = "group_id", nullable = false, length = 32)
-    @PropertyState(propertyName = "group_id")
+    @Property(name = FIELDS.GROUP_ID, nullable = false, length = 32)
+    @PropertyState(propertyName = FIELDS.GROUP_ID)
     private java.lang.String groupId;
 
-    @Property(name = "uid", nullable = false, length = 32)
-    @PropertyState(propertyName = "uid")
+    @Property(name = FIELDS.UID, nullable = false, length = 32)
+    @PropertyState(propertyName = FIELDS.UID)
     private java.lang.String uid;
 
-    @Property(name = "type", unsigned = true, length = 2)
+    @Property(name = FIELDS.TYPE, unsigned = true, length = 2)
     @Default("0")
-    @PropertyState(propertyName = "type")
+    @PropertyState(propertyName = FIELDS.TYPE)
     private java.lang.Integer type;
 
-    @Property(name = "status", unsigned = true, length = 2)
+    @Property(name = FIELDS.STATUS, unsigned = true, length = 2)
     @Default("0")
-    @PropertyState(propertyName = "status")
+    @PropertyState(propertyName = FIELDS.STATUS)
     private java.lang.Integer status;
 
-    @Property(name = "create_time", nullable = false, length = 13)
-    @PropertyState(propertyName = "create_time")
+    @Property(name = FIELDS.CREATE_TIME, nullable = false, length = 13)
+    @PropertyState(propertyName = FIELDS.CREATE_TIME)
     @Readonly
     private java.lang.Long createTime;
 
-    @Property(name = "last_modify_time", length = 13)
+    @Property(name = FIELDS.LAST_MODIFY_TIME, length = 13)
     @Default("0")
-    @PropertyState(propertyName = "last_modify_time")
+    @PropertyState(propertyName = FIELDS.LAST_MODIFY_TIME)
     private java.lang.Long lastModifyTime;
 
     /**
@@ -341,7 +341,7 @@ public class SecurityGroupUser extends BaseEntity<SecurityGroupUser, java.lang.S
     public class FIELDS {
         public static final String ID = "id";
         public static final String GROUP_ID = "group_id";
-        public static final String UID = "uid";
+        public static final String UID = "u_id";
         public static final String TYPE = "type";
         public static final String STATUS = "status";
         public static final String CREATE_TIME = "create_time";

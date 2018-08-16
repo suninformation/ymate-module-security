@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `ym_security_group_user`;
 CREATE TABLE `ym_security_group_user` (
   `id` varchar(32) NOT NULL COMMENT '安全组用户关系唯一标识',
   `group_id` varchar(32) NOT NULL COMMENT '安全组唯一标识',
-  `uid` varchar(32) NOT NULL COMMENT '用户唯一标识',
+  `u_id` varchar(32) NOT NULL COMMENT '用户唯一标识',
   `type` smallint(2) unsigned DEFAULT '0' COMMENT '类型',
   `status` smallint(2) unsigned DEFAULT '0' COMMENT '状态',
   `create_time` bigint(13) NOT NULL COMMENT '创建时间',
