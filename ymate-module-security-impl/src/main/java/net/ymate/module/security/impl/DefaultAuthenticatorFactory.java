@@ -15,6 +15,7 @@
  */
 package net.ymate.module.security.impl;
 
+import net.ymate.framework.commons.ReentrantLockHelper;
 import net.ymate.framework.webmvc.support.UserSessionBean;
 import net.ymate.module.security.IAuthenticatorFactory;
 import net.ymate.module.security.ISecurity;
@@ -24,6 +25,8 @@ import net.ymate.platform.core.util.RuntimeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * @author 刘镇 (suninformation@163.com) on 17/6/1 下午3:54
  * @version 1.0
@@ -31,6 +34,8 @@ import org.apache.commons.logging.LogFactory;
 public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
 
     private static final Log _LOG = LogFactory.getLog(DefaultAuthenticatorFactory.class);
+
+    private static final ReentrantLockHelper authLocker = new ReentrantLockHelper();
 
     private ISecurity __owner;
 
@@ -59,11 +64,21 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
             try {
                 IUserAuthenticator _authenticator = _sessionBean.getAttribute(IUserAuthenticator.class.getName());
                 if (_authenticator == null) {
-                    _authenticator = getSecurityRepository().getUserAuthenticator(_sessionBean.getUid());
-                    //
-                    _sessionBean.addAttribute(IUserAuthenticator.class.getName(), _authenticator);
+                    ReentrantLock locker = authLocker.getLocker(_sessionBean.getUid());
+                    if (locker != null) {
+                        locker.lock();
+                        try {
+                            _authenticator = getSecurityRepository().getUserAuthenticator(_sessionBean.getUid());
+                            //
+                            _sessionBean.addAttribute(IUserAuthenticator.class.getName(), _authenticator);
+                        } finally {
+                            locker.unlock();
+                        }
+                    }
                 }
-                return _authenticator;
+                if (_authenticator != null) {
+                    return _authenticator;
+                }
             } catch (Exception e) {
                 _LOG.warn("", RuntimeUtils.unwrapThrow(e));
             }

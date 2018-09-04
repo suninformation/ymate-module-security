@@ -143,6 +143,11 @@
             </dependency>
             <dependency>
                 <groupId>net.ymate.framework</groupId>
+                <artifactId>ymate-framework-commons</artifactId>
+                <version>${ymate.framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.ymate.framework</groupId>
                 <artifactId>ymate-framework-core</artifactId>
                 <version>${ymate.framework.version}</version>
             </dependency>

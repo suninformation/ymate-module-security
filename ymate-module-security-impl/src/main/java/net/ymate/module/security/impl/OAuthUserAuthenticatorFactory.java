@@ -59,19 +59,19 @@ public class OAuthUserAuthenticatorFactory extends DefaultAuthenticatorFactory {
                     ICacheLocker _locker = __dataCache.acquireCacheLocker();
                     if (_locker != null) {
                         _locker.writeLock(_clientUser.getUid());
-                    }
-                    try {
-                        _authenticator = getSecurityRepository().getUserAuthenticator(_clientUser.getUid());
-                        _authenticator = new DefaultUserAuthenticator(checkUserIsFounder(_clientUser.getUid()), _authenticator.getUserRoles(), _authenticator.getUserPermissions());
-                        //
-                        __dataCache.put(_clientUser.getUid(), _authenticator);
-                    } finally {
-                        if (_locker != null) {
+                        try {
+                            _authenticator = getSecurityRepository().getUserAuthenticator(_clientUser.getUid());
+                            _authenticator = new DefaultUserAuthenticator(checkUserIsFounder(_clientUser.getUid()), _authenticator.getUserRoles(), _authenticator.getUserPermissions());
+                            //
+                            __dataCache.put(_clientUser.getUid(), _authenticator);
+                        } finally {
                             _locker.releaseWriteLock(_clientUser.getUid());
                         }
                     }
                 }
-                return _authenticator;
+                if (_authenticator != null) {
+                    return _authenticator;
+                }
             } catch (Exception e) {
                 _LOG.warn("", RuntimeUtils.unwrapThrow(e));
             }
