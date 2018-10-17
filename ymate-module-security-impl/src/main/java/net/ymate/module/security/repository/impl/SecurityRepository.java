@@ -70,26 +70,29 @@ public class SecurityRepository implements ISecurityRepository {
         Set<RoleType> _roles = new HashSet<RoleType>();
         Set<String> _permissions = new HashSet<String>();
         //
-        List<SecurityGroup> _groups = getUserGroups(uid);
-        if (!_groups.isEmpty()) {
-            for (SecurityGroup _group : _groups) {
-                if (BlurObject.bind(_group.getIsAdminRole()).toBooleanValue()) {
-                    _roles.add(RoleType.ADMIN);
-                }
-                if (BlurObject.bind(_group.getIsOperatorRole()).toBooleanValue()) {
-                    _roles.add(RoleType.OPERATOR);
-                }
-                if (BlurObject.bind(_group.getIsUserRole()).toBooleanValue()) {
-                    _roles.add(RoleType.USER);
-                }
-                String[] _permissionArr = StringUtils.split(StringUtils.trimToEmpty(_group.getPermission()), "|");
-                if (_permissionArr != null && _permissionArr.length > 0) {
-                    _permissions.addAll(Arrays.asList(_permissionArr));
+        IAuthenticatorFactory _authenticatorFactory = Security.get().getModuleCfg().getAuthenticatorFactory();
+        boolean _isFounder = _authenticatorFactory.checkUserIsFounder(uid);
+        if (!_isFounder) {
+            List<SecurityGroup> _groups = getUserGroups(uid);
+            if (!_groups.isEmpty()) {
+                for (SecurityGroup _group : _groups) {
+                    if (BlurObject.bind(_group.getIsAdminRole()).toBooleanValue()) {
+                        _roles.add(RoleType.ADMIN);
+                    }
+                    if (BlurObject.bind(_group.getIsOperatorRole()).toBooleanValue()) {
+                        _roles.add(RoleType.OPERATOR);
+                    }
+                    if (BlurObject.bind(_group.getIsUserRole()).toBooleanValue()) {
+                        _roles.add(RoleType.USER);
+                    }
+                    String[] _permissionArr = StringUtils.split(StringUtils.trimToEmpty(_group.getPermission()), "|");
+                    if (_permissionArr != null && _permissionArr.length > 0) {
+                        _permissions.addAll(Arrays.asList(_permissionArr));
+                    }
                 }
             }
         }
-        IAuthenticatorFactory _authenticatorFactory = Security.get().getModuleCfg().getAuthenticatorFactory();
-        return new DefaultUserAuthenticator(_authenticatorFactory != null && _authenticatorFactory.checkUserIsFounder(uid), _roles.toArray(new RoleType[0]), _permissions.toArray(new String[0]));
+        return new DefaultUserAuthenticator(_isFounder, _roles.toArray(new RoleType[0]), _permissions.toArray(new String[0]));
     }
 
     @Override
