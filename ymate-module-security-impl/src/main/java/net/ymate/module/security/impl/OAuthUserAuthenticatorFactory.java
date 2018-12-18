@@ -40,7 +40,7 @@ public class OAuthUserAuthenticatorFactory extends DefaultAuthenticatorFactory {
     @Override
     public void init(ISecurity owner) throws Exception {
         super.init(owner);
-        __dataCache = Caches.get().getCacheProvider().getCache("security_data");
+        __dataCache = Caches.get().getCacheProvider().getCache(owner.getModuleCfg().getCacheNamePrefix().concat("security_data"));
     }
 
     @Override

@@ -24,6 +24,18 @@ import java.util.Set;
  */
 public interface ISecurityModuleCfg {
 
+    String CACHE_NAME_PREFIX = "cache_name_prefix";
+
+    String AUTHENTICATOR_FACTORY_CLASS = "authenticator_factory_class";
+
+    String PERMISSIONS_PREFIX = "permissions.";
+    String PERMISSIONS_ALL = "all";
+
+    /**
+     * @return 缓存名称前缀, 默认值: ""
+     */
+    String getCacheNamePrefix();
+
     /**
      * @return 返回用户认证工厂接口实例对象
      */

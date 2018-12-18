@@ -19,8 +19,8 @@ import net.ymate.module.security.IAuthenticatorFactory;
 import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.ISecurityModuleCfg;
 import net.ymate.platform.core.YMP;
-import net.ymate.platform.core.util.ClassUtils;
-import org.apache.commons.lang.ArrayUtils;
+import net.ymate.platform.core.support.IConfigReader;
+import net.ymate.platform.core.support.impl.MapSafeConfigReader;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
@@ -29,35 +29,44 @@ import java.util.*;
  * @author 刘镇 (suninformation@163.com) on 17/2/18 下午6:10
  * @version 1.0
  */
-public class DefaultModuleCfg implements ISecurityModuleCfg {
+public class DefaultSecurityModuleCfg implements ISecurityModuleCfg {
+
+    private String __cacheNamePrefix;
 
     private IAuthenticatorFactory __authFactory;
 
     private Map<String, Set<String>> __permissionFilters;
 
-    public DefaultModuleCfg(YMP owner) {
-        Map<String, String> _moduleCfgs = owner.getConfig().getModuleConfigs(ISecurity.MODULE_NAME);
+    public DefaultSecurityModuleCfg(YMP owner) {
+        IConfigReader _moduleCfg = MapSafeConfigReader.bind(owner.getConfig().getModuleConfigs(ISecurity.MODULE_NAME));
         //
-        __authFactory = ClassUtils.impl(_moduleCfgs.get("authenticator_factory_class"), IAuthenticatorFactory.class, this.getClass());
+        __cacheNamePrefix = _moduleCfg.getString(CACHE_NAME_PREFIX);
+        //
+        __authFactory = _moduleCfg.getClassImpl(AUTHENTICATOR_FACTORY_CLASS, IAuthenticatorFactory.class);
         //
         __permissionFilters = new HashMap<String, Set<String>>();
-        for (Map.Entry<String, String> _item : _moduleCfgs.entrySet()) {
-            if (StringUtils.startsWith(_item.getKey(), "permissions.")) {
-                String _groupName = StringUtils.substringAfter(_item.getKey(), "permissions.");
-                if (StringUtils.equalsIgnoreCase(_item.getValue(), "all")) {
-                    __permissionFilters.put(_groupName, new HashSet<String>(Collections.singletonList("all")));
+        for (Map.Entry<String, String> _item : _moduleCfg.getMap(PERMISSIONS_PREFIX).entrySet()) {
+            if (StringUtils.startsWith(_item.getKey(), PERMISSIONS_PREFIX)) {
+                String _groupName = StringUtils.lowerCase(_item.getKey());
+                if (StringUtils.equalsIgnoreCase(_item.getValue(), PERMISSIONS_ALL)) {
+                    __permissionFilters.put(_groupName, new HashSet<String>(Collections.singletonList(PERMISSIONS_ALL)));
                 } else {
-                    String[] _permissions = StringUtils.split(_item.getValue(), "|");
-                    if (_permissions != null && _permissions.length > 0) {
-                        if (ArrayUtils.contains(_permissions, "all")) {
-                            __permissionFilters.put(_groupName, new HashSet<String>(Collections.singletonList("all")));
+                    if (StringUtils.isNotBlank(_item.getValue())) {
+                        if (StringUtils.equalsIgnoreCase(_item.getValue(), PERMISSIONS_ALL)) {
+                            __permissionFilters.put(_groupName, new HashSet<String>(Collections.singletonList(PERMISSIONS_ALL)));
                         } else {
+                            String[] _permissions = StringUtils.split(_item.getValue(), "|");
                             __permissionFilters.put(_groupName, new HashSet<String>(Arrays.asList(_permissions)));
                         }
                     }
                 }
             }
         }
+    }
+
+    @Override
+    public String getCacheNamePrefix() {
+        return __cacheNamePrefix;
     }
 
     @Override

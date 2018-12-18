@@ -100,6 +100,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>net.ymate.framework</groupId>
+            <artifactId>ymate-framework-core</artifactId>
+        </dependency>
+        <dependency>
             <groupId>net.ymate.module</groupId>
             <artifactId>ymate-module-oauth</artifactId>
             <version>1.0.0</version>

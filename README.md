@@ -17,6 +17,9 @@
     # module.security 模块初始化参数
     #-------------------------------------
     
+    # 缓存名称前缀, 默认值: ""
+    ymp.configs.module.security.cache_name_prefix=
+    
     # 用户认证工厂接口实现类, 必须参数, 默认值: 空
     ymp.configs.module.security.authenticator_factory_class=
     

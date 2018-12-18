@@ -30,6 +30,11 @@ public interface IAuthenticatorFactory extends IInitializable<ISecurity> {
      */
     IUserAuthenticator createUserAuthenticatorIfNeed();
 
+//    /**
+//     * @return 返回用户数据访问认证器
+//     */
+//    IDataAccessAuthenticator createDataAccessAuthenticatorIfNeed();
+
     /**
      * @param uid 当前用户唯一标识ID
      * @return 判断当前用户是否为该站点创建者(超级用户), 默认值: false, 子类可根据实际需求重写该方法

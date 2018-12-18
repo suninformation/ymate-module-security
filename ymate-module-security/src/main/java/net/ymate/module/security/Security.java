@@ -16,11 +16,12 @@
 package net.ymate.module.security;
 
 import net.ymate.module.security.handle.SecurityHandler;
-import net.ymate.module.security.impl.DefaultModuleCfg;
+import net.ymate.module.security.impl.DefaultSecurityModuleCfg;
 import net.ymate.platform.core.Version;
 import net.ymate.platform.core.YMP;
 import net.ymate.platform.core.module.IModule;
 import net.ymate.platform.core.module.annotation.Module;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -35,7 +36,7 @@ public class Security implements IModule, ISecurity {
 
     private static final Log _LOG = LogFactory.getLog(Security.class);
 
-    public static final Version VERSION = new Version(1, 0, 0, Security.class.getPackage().getImplementationVersion(), Version.VersionType.Alphal);
+    public static final Version VERSION = new Version(1, 0, 0, Security.class.getPackage().getImplementationVersion(), Version.VersionType.Alpha);
 
     private static volatile ISecurity __instance;
 
@@ -68,7 +69,7 @@ public class Security implements IModule, ISecurity {
             _LOG.info("Initializing ymate-module-security-" + VERSION);
             //
             __owner = owner;
-            __moduleCfg = new DefaultModuleCfg(owner);
+            __moduleCfg = new DefaultSecurityModuleCfg(owner);
             __owner.registerHandler(net.ymate.module.security.annotation.Security.class, new SecurityHandler());
             //
             if (__moduleCfg.getAuthenticatorFactory() != null) {
@@ -86,8 +87,9 @@ public class Security implements IModule, ISecurity {
 
     @Override
     public boolean isFiltered(PermissionMeta permissionMeta) {
-        Set<String> _permissions = __moduleCfg.getPermissionFilters().get(permissionMeta.getGroupName());
-        return _permissions != null && (_permissions.contains("all") || _permissions.contains(permissionMeta.getName()));
+        String _groupName = StringUtils.lowerCase(permissionMeta.getGroupName());
+        Set<String> _permissions = __moduleCfg.getPermissionFilters().get(_groupName);
+        return _permissions != null && (_permissions.contains(ISecurityModuleCfg.PERMISSIONS_ALL) || _permissions.contains(permissionMeta.getName()));
     }
 
     @Override

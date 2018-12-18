@@ -87,15 +87,11 @@
         </dependency>
         <dependency>
             <groupId>net.ymate.platform</groupId>
-            <artifactId>ymate-platform-core</artifactId>
+            <artifactId>ymate-platform-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>net.ymate.framework</groupId>
             <artifactId>ymate-framework-commons</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.ymate.framework</groupId>
-            <artifactId>ymate-framework-core</artifactId>
         </dependency>
         <dependency>
             <groupId>net.ymate.module</groupId>

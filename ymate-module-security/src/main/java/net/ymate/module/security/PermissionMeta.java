@@ -103,8 +103,8 @@ public class PermissionMeta {
             }
             //
             _meta = new PermissionMeta();
-            _meta.__name = StringUtils.defaultIfBlank(_method.name(), "default");
-            _meta.__groupName = _groupName;
+            _meta.__name = StringUtils.defaultIfBlank(_method.name(), "default").toUpperCase();
+            _meta.__groupName = StringUtils.lowerCase(_groupName);
             _meta.__logicType = _logicType;
             _meta.__permissions = _permissions.toArray(new String[0]);
             //

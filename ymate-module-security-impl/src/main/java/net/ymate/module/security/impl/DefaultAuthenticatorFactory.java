@@ -15,12 +15,13 @@
  */
 package net.ymate.module.security.impl;
 
-import net.ymate.framework.commons.ReentrantLockHelper;
 import net.ymate.framework.webmvc.support.UserSessionBean;
 import net.ymate.module.security.IAuthenticatorFactory;
+import net.ymate.module.security.IDataAccessAuthenticator;
 import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
 import net.ymate.module.security.repository.ISecurityRepository;
+import net.ymate.platform.core.support.ReentrantLockHelper;
 import net.ymate.platform.core.util.RuntimeUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -85,6 +86,11 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
         }
         return new DefaultUserAuthenticator();
     }
+
+//    @Override
+//    public IDataAccessAuthenticator createDataAccessAuthenticatorIfNeed() {
+//        return null;
+//    }
 
     @Override
     public boolean checkUserIsFounder(String uid) {
