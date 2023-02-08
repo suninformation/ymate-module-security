@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2017 the original author or authors.
+ * Copyright 2007-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,29 +15,32 @@
  */
 package net.ymate.module.security.annotation;
 
+import net.ymate.module.security.IAuthenticatorFactory;
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.annotation.*;
 
 /**
- * @author 刘镇 (suninformation@163.com) on 17/2/18 下午5:02
- * @version 1.0
+ * @author 刘镇 (suninformation@163.com) on 2023/01/28 02:25
+ * @since 1.0.0
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Permission {
+public @interface SecurityConf {
 
     /**
-     * @return 限制访问角色集合, 默认为继承类级设置，若无父级设置则RoleType.INHERIT等同于RoleType.ALL
+     * @return 模块是否已启用, 默认值: true
      */
-    RoleType[] roleTypes() default RoleType.INHERIT;
+    boolean enabled() default true;
 
     /**
-     * @return 权限码集合
+     * @return 缓存名称前缀, 默认值: ""
      */
-    String[] value() default {};
+    String cacheNamePrefix() default StringUtils.EMPTY;
 
     /**
-     * @return 权限码匹配逻辑类型, 默认为继承类级设置，若无父级设置则LogicType.INHERIT等同于LogicType.OR
+     * @return 用户认证工厂接口实例对象
      */
-    LogicType logicType() default LogicType.INHERIT;
+    Class<? extends IAuthenticatorFactory> authenticatorFactoryClass() default IAuthenticatorFactory.class;
 }

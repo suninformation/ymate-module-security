@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2018 the original author or authors.
+ * Copyright 2007-2025 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.ymate.module.security;
+package net.ymate.module.security.base;
 
 /**
- * TODO 用户数据访问认证器接口
- *
- * @author 刘镇 (suninformation@163.com) on 2018/10/12 下午3:10
- * @version 1.0
+ * @author 刘镇 (suninformation@163.com) on 2025/4/30 16:10
+ * @since 1.0.0
  */
-public interface IDataAccessAuthenticator {
+public interface IGroupDataScopeInfo extends IAttributeExt {
 
-    String checkUserBusinessRoles(String uid);
+    /**
+     * 组数据范围唯一标识
+     */
+    String getId();
+
+    /**
+     * 组唯一标识
+     */
+    String getGroupId();
+
+    /**
+     * 部门唯一标识
+     */
+    String getDeptId();
+
+    /**
+     * 创建时间
+     */
+    Long getCreateTime();
 }

@@ -1,39 +1,52 @@
-### YMP-Security
+# YMATE-MODULE-SECURITY
 
-> 用户权限认证及安全模块，特性如下：
-> 
+[![Maven Central status](https://img.shields.io/maven-central/v/net.ymate.module/ymate-module-security.svg)](https://search.maven.org/artifact/net.ymate.module/ymate-module-security)
+[![LICENSE](https://img.shields.io/github/license/suninformation/ymate-module-security.svg)](https://gitee.com/suninformation/ymate-module-security/blob/master/LICENSE)
 
-#### Maven包依赖
 
-    <dependency>
-        <groupId>net.ymate.module</groupId>
-        <artifactId>ymate-module-security</artifactId>
-        <version>1.0.0</version>
-    </dependency>
+基于 YMP 框架实现的邮件发送服务模块，支持多账号配置。
 
-#### 模块配置参数说明
 
-    #-------------------------------------
-    # module.security 模块初始化参数
-    #-------------------------------------
-    
-    # 缓存名称前缀, 默认值: ""
-    ymp.configs.module.security.cache_name_prefix=
-    
-    # 用户认证工厂接口实现类, 必须参数, 默认值: 空
-    ymp.configs.module.security.authenticator_factory_class=
-    
-    # 权限控制开关过滤集合, 默认值：空
-    # - <group_name>: 权限组名称, 未指定分组的权限默认组为: default
-    # - <name_1|name_N>: 权限名称集合, 未指定名称的权限默认名称为: default, 多个名称间用'|'分隔, 若希望过滤权限组下全部权限可设置值为all
-    ymp.configs.module.security.permissions.<group_name>=<name_1|name_N>
 
-#### 示例代码：
+## Maven包依赖
 
-#### One More Thing
+```xml
+<dependency>
+    <groupId>net.ymate.module</groupId>
+    <artifactId>ymate-module-security</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
 
-YMP不仅提供便捷的Web及其它Java项目的快速开发体验，也将不断提供更多丰富的项目实践经验。
 
-感兴趣的小伙伴儿们可以加入 官方QQ群480374360，一起交流学习，帮助YMP成长！
 
-了解更多有关YMP框架的内容，请访问官网：http://www.ymate.net/
+## 模块配置参数说明
+
+```properties
+#-------------------------------------
+# module.security 模块初始化参数
+#-------------------------------------
+
+# 模块是否已启用, 默认值: true
+#ymp.configs.module.security.enabled=false
+
+# 缓存名称前缀, 默认值: ""
+ymp.configs.module.security.cache_name_prefix=
+
+# 用户认证工厂, 默认值: net.ymate.module.security.impl.DefaultAuthenticatorFactory
+ymp.configs.module.security.authenticator_factory_class=
+```
+
+
+
+## One More Thing
+
+YMP 不仅提供便捷的 Web 及其它 Java 项目的快速开发体验，也将不断提供更多丰富的项目实践经验。
+
+感兴趣的小伙伴儿们可以加入官方 QQ 群：[480374360](https://qm.qq.com/cgi-bin/qm/qr?k=3KSXbRoridGeFxTVA8HZzyhwU_btZQJ2)，一起交流学习，帮助 YMP 成长！
+
+如果喜欢 YMP，希望得到你的支持和鼓励！
+
+![Donation Code](https://ymate.net/img/donation_code.png)
+
+了解更多有关 YMP 框架的内容，请访问官网：[https://ymate.net](https://ymate.net)

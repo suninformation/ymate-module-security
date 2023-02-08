@@ -15,33 +15,36 @@
  */
 package net.ymate.module.security;
 
-import net.ymate.platform.core.IApplication;
 import net.ymate.platform.core.beans.annotation.Ignored;
-import net.ymate.platform.core.support.IDestroyable;
 import net.ymate.platform.core.support.IInitialization;
 
 /**
- * @author 刘镇 (suninformation@163.com) on 17/2/18 下午6:01
+ * @author 刘镇 (suninformation@163.com) on 17/2/18 下午6:02
  * @version 1.0
  */
 @Ignored
-public interface ISecurity extends IInitialization<IApplication>, IDestroyable {
+public interface ISecurityConfig extends IInitialization<ISecurity> {
 
-    String MODULE_NAME = "module.security";
+    String ENABLED = "enabled";
 
-    /**
-     * 获取所属应用容器
-     *
-     * @return 返回所属应用容器实例
-     */
-    IApplication getOwner();
+    String CACHE_NAME_PREFIX = "cache_name_prefix";
+
+    String AUTHENTICATOR_FACTORY_CLASS = "authenticator_factory_class";
 
     /**
-     * 获取配置
+     * 模块是否已启用, 默认值: true
      *
-     * @return 返回配置对象
+     * @return 返回false表示禁用
      */
-    ISecurityConfig getConfig();
+    boolean isEnabled();
 
-    ISecurityService getService();
+    /**
+     * @return 缓存名称前缀, 默认值: ""
+     */
+    String getCacheNamePrefix();
+
+    /**
+     * @return 返回用户认证工厂接口实例对象
+     */
+    IAuthenticatorFactory getAuthenticatorFactory();
 }

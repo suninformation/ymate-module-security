@@ -16,6 +16,7 @@
 package net.ymate.module.security;
 
 import net.ymate.module.security.annotation.RoleType;
+import net.ymate.module.security.base.IUserInfo;
 
 import java.io.Serializable;
 
@@ -25,18 +26,20 @@ import java.io.Serializable;
  */
 public interface IUserAuthenticator extends Serializable {
 
+    IUserInfo getUser();
+
     /**
-     * @return 当前用户是否为超级用户(即站点创建者, 该用户将默认拥有全部权限且不可删除)
+     * @return 当前用户是否为超级用户
      */
     boolean isFounder();
 
     /**
-     * @return 返回所拥有的角色集合
+     * @return 返回所拥有的角色类型集合
      */
-    RoleType[] getUserRoles();
+    RoleType[] getRoleTypes();
 
     /**
      * @return 返回所拥有的权限码集合
      */
-    String[] getUserPermissions();
+    String[] getPermissions();
 }

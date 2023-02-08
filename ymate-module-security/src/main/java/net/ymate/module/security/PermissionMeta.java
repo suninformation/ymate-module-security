@@ -18,11 +18,15 @@ package net.ymate.module.security;
 import net.ymate.module.security.annotation.LogicType;
 import net.ymate.module.security.annotation.Permission;
 import net.ymate.module.security.annotation.RoleType;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import net.ymate.platform.commons.ReentrantLockHelper;
+import org.apache.commons.lang.NullArgumentException;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -33,142 +37,83 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PermissionMeta {
 
-    private static final RoleType[] __ROLE_ALL;
+    private static final RoleType[] ROLE_TYPES_ALL = new RoleType[]{RoleType.ADMIN, RoleType.OPERATOR, RoleType.USER};
 
-    private static Map<Method, PermissionMeta> __PERMISSION_CACHES;
+    //
+    private static final Map<Method, PermissionMeta> PERMISSION_META_MAP = new ConcurrentHashMap<>();
 
-    static {
-        __ROLE_ALL = new RoleType[]{RoleType.ADMIN, RoleType.OPERATOR, RoleType.USER};
-        //
-        __PERMISSION_CACHES = new ConcurrentHashMap<Method, PermissionMeta>();
-    }
+    private RoleType[] roleTypes;
 
-    private String __groupName;
+    private String[] permissions;
 
-    private String __name;
+    private LogicType logicType;
 
-    private RoleType[] __roles;
-
-    private String[] __permissions;
-
-    private LogicType __logicType;
-
-    public static PermissionMeta createIfNeed(Method targetMethod) throws Exception {
-        PermissionMeta _meta = null;
-        //
-        Permission _method = targetMethod.getAnnotation(Permission.class);
-        //
-        if (_method != null) {
-            Set<RoleType> _roles = new HashSet<RoleType>();
-            Set<String> _permissions = new HashSet<String>();
-            //
-            String _groupName = "default";
-            LogicType _logicType = LogicType.OR;
-            //
-            Permission _parent = targetMethod.getDeclaringClass().getAnnotation(Permission.class);
-            if (_parent != null) {
-                // 首先处理类级注解
-                if (StringUtils.isNotBlank(_parent.name())) {
-                    _groupName = _parent.name();
-                }
-                if (!LogicType.INHERIT.equals(_parent.logicType())) {
-                    _logicType = _parent.logicType();
-                }
-                _roles.addAll(Arrays.asList(_parent.roles()));
-                _permissions.addAll(Arrays.asList(_parent.value()));
-                //
-                // 然后处理方法级注解
-                if (!LogicType.INHERIT.equals(_parent.logicType())) {
-                    _logicType = _method.logicType();
-                }
-                if (ArrayUtils.contains(_method.roles(), RoleType.ALL)) {
-                    _roles.add(RoleType.INHERIT);
-                } else if (ArrayUtils.contains(_method.roles(), RoleType.INHERIT)) {
-                    for (RoleType _item : _method.roles()) {
-                        if (!RoleType.INHERIT.equals(_item)) {
-                            _roles.add(_item);
-                        }
+    public static PermissionMeta createAndGet(Method targetMethod) throws Exception {
+        if (targetMethod == null) {
+            throw new NullArgumentException("targetMethod");
+        }
+        Permission permissionAnn = targetMethod.getAnnotation(Permission.class);
+        if (permissionAnn != null) {
+            return ReentrantLockHelper.putIfAbsentAsync(PERMISSION_META_MAP, targetMethod, () -> {
+                Set<RoleType> roleTypes = new HashSet<>();
+                Set<String> permissions = new HashSet<>();
+                LogicType logicType = LogicType.OR;
+                Permission parentPermissionAnn = targetMethod.getDeclaringClass().getAnnotation(Permission.class);
+                if (parentPermissionAnn != null) {
+                    if (!LogicType.INHERIT.equals(parentPermissionAnn.logicType())) {
+                        logicType = parentPermissionAnn.logicType();
                     }
+                    roleTypes.addAll(Arrays.asList(parentPermissionAnn.roleTypes()));
+                    permissions.addAll(Arrays.asList(parentPermissionAnn.value()));
+                    //
+                    if (!LogicType.INHERIT.equals(parentPermissionAnn.logicType())) {
+                        logicType = permissionAnn.logicType();
+                    }
+                    if (ArrayUtils.contains(permissionAnn.roleTypes(), RoleType.ALL)) {
+                        roleTypes.add(RoleType.INHERIT);
+                    } else if (ArrayUtils.contains(permissionAnn.roleTypes(), RoleType.INHERIT)) {
+                        Arrays.stream(permissionAnn.roleTypes())
+                                .filter(roleType -> !RoleType.INHERIT.equals(roleType))
+                                .forEach(roleTypes::add);
+                    } else {
+                        roleTypes.addAll(Arrays.asList(permissionAnn.roleTypes()));
+                    }
+                    permissions.addAll(Arrays.asList(permissionAnn.value()));
                 } else {
-                    _roles.addAll(Arrays.asList(_method.roles()));
+                    if (!LogicType.INHERIT.equals(permissionAnn.logicType())) {
+                        logicType = permissionAnn.logicType();
+                    }
+                    roleTypes.addAll(Arrays.asList(permissionAnn.roleTypes()));
+                    permissions.addAll(Arrays.asList(permissionAnn.value()));
                 }
-                _permissions.addAll(Arrays.asList(_method.value()));
-            } else {
-                // 处理方法级注解
-                if (!LogicType.INHERIT.equals(_method.logicType())) {
-                    _logicType = _method.logicType();
+                //
+                PermissionMeta permissionMeta = new PermissionMeta();
+                permissionMeta.logicType = logicType;
+                permissionMeta.permissions = permissions.toArray(new String[0]);
+                //
+                if (roleTypes.contains(RoleType.INHERIT) || roleTypes.contains(RoleType.ALL)) {
+                    permissionMeta.roleTypes = ROLE_TYPES_ALL;
+                } else {
+                    permissionMeta.roleTypes = roleTypes.toArray(new RoleType[0]);
                 }
-                _roles.addAll(Arrays.asList(_method.roles()));
-                _permissions.addAll(Arrays.asList(_method.value()));
-            }
-            //
-            _meta = new PermissionMeta();
-            _meta.__name = StringUtils.defaultIfBlank(_method.name(), "default").toUpperCase();
-            _meta.__groupName = StringUtils.lowerCase(_groupName);
-            _meta.__logicType = _logicType;
-            _meta.__permissions = _permissions.toArray(new String[0]);
-            //
-            if (_roles.contains(RoleType.INHERIT) || _roles.contains(RoleType.ALL)) {
-                _meta.__roles = __ROLE_ALL;
-            } else {
-                _meta.__roles = _roles.toArray(new RoleType[0]);
-            }
-            //
-            __PERMISSION_CACHES.put(targetMethod, _meta);
+                return permissionMeta;
+            });
         }
-        return _meta;
-    }
-
-    public static PermissionMeta bind(Method targetMethod) throws Exception {
-        PermissionMeta _meta = null;
-        if (targetMethod != null) {
-            _meta = __PERMISSION_CACHES.get(targetMethod);
-        }
-        return _meta;
-    }
-
-    public static Collection<PermissionMeta> getPermissionMetas() {
-        return Collections.unmodifiableCollection(__PERMISSION_CACHES.values());
-    }
-
-    /**
-     * @return 按分组的方式返回所有权限元数据对象映射
-     */
-    public static Map<String, List<PermissionMeta>> getPermissionMetasWithGroup() {
-        Map<String, List<PermissionMeta>> _permissionMetas = new HashMap<String, List<PermissionMeta>>();
-        for (PermissionMeta _meta : PermissionMeta.getPermissionMetas()) {
-            List<PermissionMeta> _values = _permissionMetas.get(_meta.getGroupName());
-            if (_values == null) {
-                _values = new ArrayList<PermissionMeta>();
-                _values.add(_meta);
-                _permissionMetas.put(_meta.getGroupName(), _values);
-            } else {
-                _values.add(_meta);
-            }
-        }
-        return Collections.unmodifiableMap(_permissionMetas);
+        return null;
     }
 
     private PermissionMeta() {
     }
 
-    public String getName() {
-        return __name;
-    }
-
-    public String getGroupName() {
-        return __groupName;
-    }
-
     public LogicType getLogicType() {
-        return __logicType;
+        return logicType;
     }
 
-    public RoleType[] getRoles() {
-        return __roles;
+    public RoleType[] getRoleTypes() {
+        return roleTypes;
     }
 
     public String[] getPermissions() {
-        return __permissions;
+        return permissions;
     }
 }

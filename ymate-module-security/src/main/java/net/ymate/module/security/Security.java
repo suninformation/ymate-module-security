@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2017 the original author or authors.
+ * Copyright 2007-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,104 +15,127 @@
  */
 package net.ymate.module.security;
 
-import net.ymate.module.security.handle.SecurityHandler;
-import net.ymate.module.security.impl.DefaultSecurityModuleCfg;
-import net.ymate.platform.core.Version;
-import net.ymate.platform.core.YMP;
+import net.ymate.module.security.impl.DefaultSecurityConfig;
+import net.ymate.module.security.support.SecurityProxy;
+import net.ymate.platform.commons.util.ClassUtils;
+import net.ymate.platform.core.*;
+import net.ymate.platform.core.beans.proxy.IProxyFactory;
 import net.ymate.platform.core.module.IModule;
-import net.ymate.platform.core.module.annotation.Module;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import java.util.Set;
+import net.ymate.platform.core.module.IModuleConfigurer;
+import net.ymate.platform.core.module.impl.DefaultModuleConfigurer;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/2/18 下午6:06
  * @version 1.0
  */
-@Module
-public class Security implements IModule, ISecurity {
+public final class Security implements IModule, ISecurity {
 
-    private static final Log _LOG = LogFactory.getLog(Security.class);
+    private static volatile ISecurity instance;
 
-    public static final Version VERSION = new Version(1, 0, 0, Security.class.getPackage().getImplementationVersion(), Version.VersionType.Alpha);
+    private IApplication owner;
 
-    private static volatile ISecurity __instance;
+    private ISecurityConfig config;
 
-    private YMP __owner;
+    private ISecurityService service;
 
-    private ISecurityModuleCfg __moduleCfg;
-
-    private boolean __inited;
+    private boolean initialized;
 
     public static ISecurity get() {
-        if (__instance == null) {
-            synchronized (VERSION) {
-                if (__instance == null) {
-                    __instance = YMP.get().getModule(Security.class);
+        ISecurity inst = instance;
+        if (inst == null) {
+            synchronized (Security.class) {
+                inst = instance;
+                if (inst == null) {
+                    instance = inst = YMP.get().getModuleManager().getModule(Security.class);
                 }
             }
         }
-        return __instance;
+        return inst;
+    }
+
+    public Security() {
+    }
+
+    public Security(ISecurityConfig config) {
+        this.config = config;
     }
 
     @Override
     public String getName() {
-        return ISecurity.MODULE_NAME;
+        return MODULE_NAME;
     }
 
     @Override
-    public void init(YMP owner) throws Exception {
-        if (!__inited) {
+    public void initialize(IApplication owner) throws Exception {
+        if (!initialized) {
             //
-            _LOG.info("Initializing ymate-module-security-" + VERSION);
+            YMP.showVersion("Initializing ymate-module-security-${version}", new Version(1, 0, 0, Security.class, Version.VersionType.Release));
             //
-            __owner = owner;
-            __moduleCfg = new DefaultSecurityModuleCfg(owner);
-            __owner.registerHandler(net.ymate.module.security.annotation.Security.class, new SecurityHandler());
-            //
-            if (__moduleCfg.getAuthenticatorFactory() != null) {
-                __moduleCfg.getAuthenticatorFactory().init(this);
+            this.owner = owner;
+            if (config == null) {
+                IApplicationConfigureFactory configureFactory = owner.getConfigureFactory();
+                if (configureFactory != null) {
+                    IApplicationConfigurer configurer = configureFactory.getConfigurer();
+                    IModuleConfigurer moduleConfigurer = configurer == null ? null : configurer.getModuleConfigurer(MODULE_NAME);
+                    if (moduleConfigurer != null) {
+                        config = DefaultSecurityConfig.create(configureFactory.getMainClass(), moduleConfigurer);
+                    } else {
+                        config = DefaultSecurityConfig.create(configureFactory.getMainClass(), DefaultModuleConfigurer.createEmpty(MODULE_NAME));
+                    }
+                }
+                if (config == null) {
+                    config = DefaultSecurityConfig.defaultConfig();
+                }
             }
-            //
-            __inited = true;
+            if (!config.isInitialized()) {
+                config.initialize(this);
+            }
+            if (config.isEnabled()) {
+                service = ClassUtils.loadClass(ISecurityService.class);
+                if (service != null) {
+                    service.initialize(this);
+                }
+                IProxyFactory proxyFactory = owner.getBeanFactory().getProxyFactory();
+                if (proxyFactory != null) {
+                    proxyFactory.registerProxy(new SecurityProxy(this));
+                }
+            }
+            initialized = true;
         }
     }
 
     @Override
-    public boolean isInited() {
-        return __inited;
+    public boolean isInitialized() {
+        return initialized;
     }
 
     @Override
-    public boolean isFiltered(PermissionMeta permissionMeta) {
-        String _groupName = StringUtils.lowerCase(permissionMeta.getGroupName());
-        Set<String> _permissions = __moduleCfg.getPermissionFilters().get(_groupName);
-        return _permissions != null && (_permissions.contains(ISecurityModuleCfg.PERMISSIONS_ALL) || _permissions.contains(permissionMeta.getName()));
-    }
-
-    @Override
-    public YMP getOwner() {
-        return __owner;
-    }
-
-    @Override
-    public void destroy() throws Exception {
-        if (__inited) {
-            __inited = false;
+    public void close() throws Exception {
+        if (initialized) {
+            initialized = false;
             //
-            if (__moduleCfg.getAuthenticatorFactory() != null) {
-                __moduleCfg.getAuthenticatorFactory().destroy();
+            if (service != null) {
+                service.close();
+                service = null;
             }
             //
-            __moduleCfg = null;
-            __owner = null;
+            config = null;
+            owner = null;
         }
     }
 
     @Override
-    public ISecurityModuleCfg getModuleCfg() {
-        return __moduleCfg;
+    public IApplication getOwner() {
+        return owner;
+    }
+
+    @Override
+    public ISecurityConfig getConfig() {
+        return config;
+    }
+
+    @Override
+    public ISecurityService getService() {
+        return service;
     }
 }

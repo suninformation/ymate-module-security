@@ -15,107 +15,93 @@
  */
 package net.ymate.module.security.support;
 
-import com.alibaba.fastjson.JSON;
 import net.ymate.module.security.IAuthenticatorFactory;
+import net.ymate.module.security.ISecurity;
 import net.ymate.module.security.IUserAuthenticator;
 import net.ymate.module.security.PermissionMeta;
 import net.ymate.module.security.annotation.LogicType;
 import net.ymate.module.security.annotation.RoleType;
-import net.ymate.module.security.annotation.Security;
 import net.ymate.platform.core.beans.annotation.Order;
-import net.ymate.platform.core.beans.annotation.Proxy;
 import net.ymate.platform.core.beans.proxy.IProxy;
 import net.ymate.platform.core.beans.proxy.IProxyChain;
-import net.ymate.platform.webmvc.exception.RequestUnauthorizedException;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import net.ymate.platform.webmvc.exception.RequestForbiddenException;
+import net.ymate.platform.webmvc.exception.UserSessionInvalidException;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * 访问权限控制代理, 用于处理被声明@Security和@Permission注解的类和方法
+ * 访问权限控制代理, 用于处理被声明@Permission注解的类方法
  *
  * @author 刘镇 (suninformation@163.com) on 17/2/25 下午4:28
  * @version 1.0
  */
-@Proxy(annotation = Security.class, order = @Order(-899))
+@Order(-85000)
 public class SecurityProxy implements IProxy {
 
-    private static final Log _LOG = LogFactory.getLog(SecurityProxy.class);
-
-    public static boolean containsUserRole(RoleType[] roles, IUserAuthenticator _authenticator) {
-        if (ArrayUtils.isNotEmpty(roles)) {
-            boolean _flag = false;
-            RoleType[] _roles = _authenticator.getUserRoles();
-            if (ArrayUtils.isNotEmpty(_roles)) {
-                for (RoleType _role : _roles) {
-                    for (RoleType _r : roles) {
-                        if (_r.compareTo(_role) == 0) {
-                            _flag = true;
-                            break;
-                        }
-                    }
-                    if (_flag) {
+    public static boolean containsRoleTypes(RoleType[] roleTypes, IUserAuthenticator authenticator) {
+        if (ArrayUtils.isNotEmpty(roleTypes)) {
+            boolean flag = false;
+            RoleType[] authenticatorRoleTypes = authenticator.getRoleTypes();
+            if (ArrayUtils.isNotEmpty(authenticatorRoleTypes)) {
+                for (RoleType roleType : authenticatorRoleTypes) {
+                    if (Arrays.stream(roleTypes).anyMatch(rt -> rt.compareTo(roleType) == 0)) {
+                        flag = true;
                         break;
                     }
                 }
             }
-            return _flag;
+            return flag;
         }
         return true;
     }
 
-    public static boolean containsUserPermissions(LogicType logicType, String[] permissions, IUserAuthenticator _authenticator) {
+    public static boolean containsPermissions(LogicType type, String[] permissions, IUserAuthenticator authenticator) {
         if (ArrayUtils.isNotEmpty(permissions)) {
-            boolean _flag = false;
-            String[] _permissions = _authenticator.getUserPermissions();
-            if (ArrayUtils.isNotEmpty(_permissions)) {
-                switch (logicType) {
-                    case OR:
-                        for (String _right : _permissions) {
-                            if (ArrayUtils.contains(permissions, _right)) {
-                                _flag = true;
-                                break;
-                            }
-                        }
-                        break;
-                    case AND:
-                        _flag = Collections.indexOfSubList(Arrays.asList(_permissions), Arrays.asList(permissions)) != -1;
-                        break;
+            boolean flag = false;
+            String[] authenticatorPermissions = authenticator.getPermissions();
+            if (ArrayUtils.isNotEmpty(authenticatorPermissions)) {
+                if (LogicType.OR.equals(type)) {
+                    flag = Arrays.stream(authenticatorPermissions).anyMatch(permission -> ArrayUtils.contains(permissions, permission));
+                } else if (LogicType.AND.equals(type)) {
+                    flag = Collections.indexOfSubList(Arrays.asList(authenticatorPermissions), Arrays.asList(permissions)) != -1;
                 }
             }
-            return _flag;
+            return flag;
         }
         return true;
+    }
+
+    private final ISecurity owner;
+
+    public SecurityProxy(ISecurity owner) {
+        this.owner = owner;
     }
 
     @Override
     public Object doProxy(IProxyChain proxyChain) throws Throwable {
-        PermissionMeta _meta = PermissionMeta.bind(proxyChain.getTargetMethod());
-        if (_meta != null && !net.ymate.module.security.Security.get().isFiltered(_meta)) {
-            IAuthenticatorFactory _factory = net.ymate.module.security.Security.get().getModuleCfg().getAuthenticatorFactory();
-            if (_factory != null) {
-                IUserAuthenticator _authenticator = _factory.createUserAuthenticatorIfNeed();
-                if (_authenticator != null && !_authenticator.isFounder()) {
-                    // 进行用户角色判断
-                    if (!containsUserRole(_meta.getRoles(), _authenticator)) {
-                        String _errMsg = "User role is not within the allowed range: " + JSON.toJSONString(_meta.getRoles());
-                        if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
-                            _LOG.debug(_errMsg);
+        PermissionMeta permissionMeta = PermissionMeta.createAndGet(proxyChain.getTargetMethod());
+        if (permissionMeta != null) {
+            IAuthenticatorFactory authenticatorFactory = owner.getConfig().getAuthenticatorFactory();
+            if (authenticatorFactory != null) {
+                IUserAuthenticator authenticator;
+                if ((authenticator = authenticatorFactory.getUserAuthenticator()) != null && authenticator.getUser() != null) {
+                    if (!authenticator.isFounder()) {
+                        // 进行用户角色判断
+                        if (!containsRoleTypes(permissionMeta.getRoleTypes(), authenticator)) {
+                            throw new UnauthorizedRoleException(authenticator.getUser(), permissionMeta.getRoleTypes());
                         }
-                        throw new RequestUnauthorizedException(_errMsg);
-                    }
-                    // 进行用户权限判断
-                    if (!containsUserPermissions(_meta.getLogicType(), _meta.getPermissions(), _authenticator)) {
-                        String _errMsg = "User permissions are not within the allowed range: " + JSON.toJSONString(_meta.getPermissions());
-                        if (proxyChain.getProxyFactory().getOwner().getConfig().isDevelopMode() && _LOG.isDebugEnabled()) {
-                            _LOG.debug(_errMsg);
+                        // 进行用户权限判断
+                        if (!containsPermissions(permissionMeta.getLogicType(), permissionMeta.getPermissions(), authenticator)) {
+                            throw new UnauthorizedPermissionException(authenticator.getUser(), permissionMeta.getPermissions());
                         }
-                        throw new RequestUnauthorizedException(_errMsg);
                     }
+                } else {
+                    throw new UserSessionInvalidException();
                 }
+            } else {
+                throw new RequestForbiddenException();
             }
         }
         return proxyChain.doProxyChain();

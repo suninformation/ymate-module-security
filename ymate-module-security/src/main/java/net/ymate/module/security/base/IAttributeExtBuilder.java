@@ -1,5 +1,5 @@
 /*
- * Copyright 2007-2018 the original author or authors.
+ * Copyright 2007-2023 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.ymate.module.security;
+package net.ymate.module.security.base;
+
+import java.io.Serializable;
+import java.util.Map;
 
 /**
- * TODO 用户数据访问认证器接口
+ * 扩展属性构建器接口定义
  *
- * @author 刘镇 (suninformation@163.com) on 2018/10/12 下午3:10
- * @version 1.0
+ * @author 刘镇 (suninformation@163.com) on 2022/3/6 2:59 AM
+ * @since 1.0.0
  */
-public interface IDataAccessAuthenticator {
+public interface IAttributeExtBuilder<T> extends Serializable {
 
-    String checkUserBusinessRoles(String uid);
+    T attributes(Map<String, Object> attributes);
+
+    T attribute(String name, Object value);
 }

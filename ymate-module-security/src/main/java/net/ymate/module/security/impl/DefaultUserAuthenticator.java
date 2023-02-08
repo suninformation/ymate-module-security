@@ -17,6 +17,7 @@ package net.ymate.module.security.impl;
 
 import net.ymate.module.security.IUserAuthenticator;
 import net.ymate.module.security.annotation.RoleType;
+import net.ymate.module.security.base.IUserInfo;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/5/27 下午4:16
@@ -24,36 +25,45 @@ import net.ymate.module.security.annotation.RoleType;
  */
 public class DefaultUserAuthenticator implements IUserAuthenticator {
 
-    private boolean __founder;
+    private final IUserInfo user;
 
-    private RoleType[] __roles;
+    private final boolean founder;
 
-    private String[] __permissions;
+    private final RoleType[] roleTypes;
+
+    private final String[] permissions;
 
     public DefaultUserAuthenticator() {
-        __founder = false;
-        __roles = new RoleType[0];
-        __permissions = new String[0];
+        user = null;
+        founder = false;
+        roleTypes = new RoleType[0];
+        permissions = new String[0];
     }
 
-    public DefaultUserAuthenticator(boolean founder, RoleType[] roles, String[] permissions) {
-        __founder = founder;
-        __roles = roles;
-        __permissions = permissions;
+    public DefaultUserAuthenticator(IUserInfo user, boolean founder, RoleType[] roleTypes, String[] permissions) {
+        this.user = user;
+        this.founder = founder;
+        this.roleTypes = roleTypes;
+        this.permissions = permissions;
+    }
+
+    @Override
+    public IUserInfo getUser() {
+        return user;
     }
 
     @Override
     public boolean isFounder() {
-        return __founder;
+        return founder;
     }
 
     @Override
-    public RoleType[] getUserRoles() {
-        return __roles;
+    public RoleType[] getRoleTypes() {
+        return roleTypes;
     }
 
     @Override
-    public String[] getUserPermissions() {
-        return __permissions;
+    public String[] getPermissions() {
+        return permissions;
     }
 }
