@@ -33,6 +33,9 @@
 # 缓存名称前缀, 默认值: ""
 ymp.configs.module.security.cache_name_prefix=
 
+# 缓存数据超时时间, 可选参数, 数值必须大于等于0, 否则将采用默认
+ymp.configs.module.security.cache_timeout=
+
 # 用户认证工厂, 默认值: net.ymate.module.security.impl.DefaultAuthenticatorFactory
 ymp.configs.module.security.authenticator_factory_class=
 ```

@@ -34,17 +34,9 @@ public class PostInfo extends AbstractAttributeExt implements IPostInfo {
 
     private String code;
 
-    private Integer level;
+    private int level;
 
     private String description;
-
-    private Integer type;
-
-    private Integer status;
-
-    private Long createTime;
-
-    private Long lastModifyTime;
 
     public PostInfo() {
     }
@@ -77,7 +69,7 @@ public class PostInfo extends AbstractAttributeExt implements IPostInfo {
     }
 
     @Override
-    public Integer getLevel() {
+    public int getLevel() {
         return level;
     }
 
@@ -92,42 +84,6 @@ public class PostInfo extends AbstractAttributeExt implements IPostInfo {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Override
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    @Override
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Override
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public Long getLastModifyTime() {
-        return lastModifyTime;
-    }
-
-    public void setLastModifyTime(Long lastModifyTime) {
-        this.lastModifyTime = lastModifyTime;
     }
 
     @Override
@@ -195,42 +151,6 @@ public class PostInfo extends AbstractAttributeExt implements IPostInfo {
 
         public Builder description(String description) {
             target.setDescription(description);
-            return this;
-        }
-
-        public Integer type() {
-            return target.getType();
-        }
-
-        public Builder type(Integer type) {
-            target.setType(type);
-            return this;
-        }
-
-        public Integer status() {
-            return target.getStatus();
-        }
-
-        public Builder status(Integer status) {
-            target.setStatus(status);
-            return this;
-        }
-
-        public Long createTime() {
-            return target.getCreateTime();
-        }
-
-        public Builder createTime(Long createTime) {
-            target.setCreateTime(createTime);
-            return this;
-        }
-
-        public Long lastModifyTime() {
-            return target.getLastModifyTime();
-        }
-
-        public Builder lastModifyTime(Long lastModifyTime) {
-            target.setLastModifyTime(lastModifyTime);
             return this;
         }
     }

@@ -61,30 +61,45 @@ public interface IDeptInfo extends IAttributeExt {
     /**
      * 层级深度
      */
-    Long getDepth();
+    long getDepth();
 
     /**
      * 排序
      */
-    Float getSort();
+    float getSort();
 
     /**
      * 类型：{0-节点 1-根}
      */
-    Integer getType();
+    Type getType();
 
     /**
-     * 状态：{0-启用 1-禁用}
+     * 部门 类型枚举
      */
-    Integer getStatus();
+    enum Type {
 
-    /**
-     * 创建时间
-     */
-    Long getCreateTime();
+        ROOT(1), NODE(0);
 
-    /**
-     * 最后修改时间
-     */
-    Long getLastModifyTime();
+        private final int type;
+
+        Type(int type) {
+            this.type = type;
+        }
+
+        public static Type valueOf(Integer type) {
+            if (type != null && type == 1) {
+                return Type.ROOT;
+            }
+            return Type.NODE;
+        }
+
+        public int type() {
+            return type;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(type);
+        }
+    }
 }

@@ -41,30 +41,10 @@ public interface IPostInfo extends IAttributeExt {
     /**
      * 岗位等级
      */
-    Integer getLevel();
+    int getLevel();
 
     /**
      * 描述
      */
     String getDescription();
-
-    /**
-     * 类型
-     */
-    Integer getType();
-
-    /**
-     * 状态：{0-启用 1-禁用}
-     */
-    Integer getStatus();
-
-    /**
-     * 创建时间
-     */
-    Long getCreateTime();
-
-    /**
-     * 最后修改时间
-     */
-    Long getLastModifyTime();
 }

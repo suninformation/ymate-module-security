@@ -29,7 +29,11 @@ public interface ISecurityConfig extends IInitialization<ISecurity> {
 
     String CACHE_NAME_PREFIX = "cache_name_prefix";
 
+    String CACHE_TIMEOUT = "cache_timeout";
+
     String AUTHENTICATOR_FACTORY_CLASS = "authenticator_factory_class";
+
+    String SERVICE_IMPL_CLASS = "service_impl_class";
 
     /**
      * 模块是否已启用, 默认值: true
@@ -42,6 +46,13 @@ public interface ISecurityConfig extends IInitialization<ISecurity> {
      * @return 缓存名称前缀, 默认值: ""
      */
     String getCacheNamePrefix();
+
+    /**
+     * 缓存数据超时时间, 可选参数, 数值必须大于等于0, 否则将采用默认
+     *
+     * @return 返回缓存数据超时时间
+     */
+    int getCacheTimeout();
 
     /**
      * @return 返回用户认证工厂接口实例对象

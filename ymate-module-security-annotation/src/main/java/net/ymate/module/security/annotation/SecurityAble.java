@@ -13,33 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.ymate.module.security.base;
+package net.ymate.module.security.annotation;
+
+import java.lang.annotation.*;
 
 /**
- * 安全组用户接口定义
+ * 声明一个类将被安全模块扫描
  *
- * @author 刘镇 (suninformation@163.com) on 2025/4/30 10:52
+ * @author 刘镇 (suninformation@163.com) on 2025/5/12 13:26
  * @since 1.0.0
  */
-public interface IGroupUserInfo extends IAttributeExt {
-
-    /**
-     * 组用户关系唯一标识
-     */
-    String getId();
-
-    /**
-     * 组唯一标识
-     */
-    String getGroupId();
-
-    /**
-     * 用户唯一标识
-     */
-    String getUid();
-
-    /**
-     * 创建时间
-     */
-    Long getCreateTime();
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface SecurityAble {
 }

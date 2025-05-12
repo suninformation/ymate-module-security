@@ -46,6 +46,8 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
 
     private String cacheName;
 
+    private int cacheTimeout;
+
     private ICache authenticatorsCache;
 
     private boolean initialized;
@@ -55,6 +57,7 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
         if (!initialized) {
             this.owner = owner;
             cacheName = String.format("%s%s_authenticators", StringUtils.trimToEmpty(owner.getConfig().getCacheNamePrefix()), ISecurity.MODULE_NAME);
+            cacheTimeout = owner.getConfig().getCacheTimeout();
             authenticatorsCache = owner.getOwner().getModuleManager().getModule(Caches.class).getConfig().getCacheProvider().getCache(cacheName);
             doInitialize();
             initialized = true;
@@ -85,6 +88,10 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
         return cacheName;
     }
 
+    protected int getCacheTimeout() {
+        return cacheTimeout;
+    }
+
     protected ICache getAuthenticatorsCache() {
         return authenticatorsCache;
     }
@@ -93,7 +100,7 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
     public IUserAuthenticator getUserAuthenticator() {
         IUserInfo user = owner.getService().getCurrentUser();
         if (user != null && StringUtils.isNotBlank(user.getId())) {
-            String cacheKey = user.getId(); //.buildUniqueKey();
+            String cacheKey = user.getId();
             IUserAuthenticator authenticator = (IUserAuthenticator) authenticatorsCache.get(cacheKey);
             if (authenticator == null) {
                 try {
@@ -106,7 +113,7 @@ public class DefaultAuthenticatorFactory implements IAuthenticatorFactory {
                             if (authenticator == null) {
                                 authenticator = DEFAULT_USER_AUTHENTICATOR;
                             }
-                            authenticatorsCache.put(cacheKey, authenticator);
+                            authenticatorsCache.put(cacheKey, authenticator, cacheTimeout);
                         }
                         return authenticator;
                     } finally {

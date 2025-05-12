@@ -17,13 +17,16 @@ package net.ymate.module.security;
 
 import net.ymate.module.security.annotation.RoleType;
 import net.ymate.module.security.base.IUserInfo;
+import net.ymate.platform.core.beans.annotation.Ignored;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/5/9 下午6:11
  * @version 1.0
  */
+@Ignored
 public interface IUserAuthenticator extends Serializable {
 
     IUserInfo getUser();
@@ -36,10 +39,10 @@ public interface IUserAuthenticator extends Serializable {
     /**
      * @return 返回所拥有的角色类型集合
      */
-    RoleType[] getRoleTypes();
+    Collection<RoleType> getRoleTypes();
 
     /**
      * @return 返回所拥有的权限码集合
      */
-    String[] getPermissions();
+    Collection<String> getPermissions();
 }

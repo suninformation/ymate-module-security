@@ -16,9 +16,13 @@
 package net.ymate.module.security.base.impl;
 
 import net.ymate.module.security.base.AbstractAttributeExt;
+import net.ymate.module.security.base.IDeptInfo;
+import net.ymate.module.security.base.IPostInfo;
 import net.ymate.module.security.base.IUserInfo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Set;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 2025/04/28 16:53:51
@@ -30,17 +34,17 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
 
     private String id;
 
-    private String deptId;
-
     private String username;
 
     private String nickname;
 
     private String avatarUrl;
 
-    private Integer type;
+    private Type type;
 
-    private Integer status;
+    private IDeptInfo dept;
+
+    private Set<IPostInfo> posts;
 
     public UserInfo() {
     }
@@ -52,15 +56,6 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    @Override
-    public String getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(String deptId) {
-        this.deptId = deptId;
     }
 
     @Override
@@ -91,21 +86,30 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
     }
 
     @Override
-    public Integer getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
     @Override
-    public Integer getStatus() {
-        return status;
+    public IDeptInfo getDept() {
+        return dept;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setDept(IDeptInfo dept) {
+        this.dept = dept;
+    }
+
+    @Override
+    public Set<IPostInfo> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<IPostInfo> posts) {
+        this.posts = posts;
     }
 
     @Override
@@ -140,15 +144,6 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
             return this;
         }
 
-        public String deptId() {
-            return target.getDeptId();
-        }
-
-        public Builder deptId(String deptId) {
-            target.setDeptId(deptId);
-            return this;
-        }
-
         public String username() {
             return target.getUsername();
         }
@@ -176,21 +171,30 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
             return this;
         }
 
-        public Integer type() {
+        public Type type() {
             return target.getType();
         }
 
-        public Builder type(Integer type) {
+        public Builder type(Type type) {
             target.setType(type);
             return this;
         }
 
-        public Integer status() {
-            return target.getStatus();
+        public IDeptInfo dept() {
+            return target.getDept();
         }
 
-        public Builder status(Integer status) {
-            target.setStatus(status);
+        public Builder dept(IDeptInfo dept) {
+            target.setDept(dept);
+            return this;
+        }
+
+        public Set<IPostInfo> posts() {
+            return target.getPosts();
+        }
+
+        public Builder posts(Set<IPostInfo> posts) {
+            target.setPosts(posts);
             return this;
         }
     }

@@ -35,6 +35,8 @@ public final class DefaultSecurityConfig implements ISecurityConfig {
 
     private String cacheNamePrefix;
 
+    private int cacheTimeout;
+
     private IAuthenticatorFactory authenticatorFactory;
 
     public static DefaultSecurityConfig defaultConfig() {
@@ -64,6 +66,7 @@ public final class DefaultSecurityConfig implements ISecurityConfig {
         enabled = configReader.getBoolean(ENABLED, confAnn == null || confAnn.enabled());
         if (enabled) {
             cacheNamePrefix = configReader.getString(CACHE_NAME_PREFIX, confAnn != null ? confAnn.cacheNamePrefix() : null);
+            cacheTimeout = configReader.getInt(CACHE_TIMEOUT, confAnn != null ? confAnn.cacheTimeout() : 0);
             authenticatorFactory = configReader.getClassImpl(AUTHENTICATOR_FACTORY_CLASS, confAnn == null || confAnn.authenticatorFactoryClass().equals(IAuthenticatorFactory.class) ? null : confAnn.authenticatorFactoryClass().getName(), IAuthenticatorFactory.class);
         }
     }
@@ -112,6 +115,17 @@ public final class DefaultSecurityConfig implements ISecurityConfig {
     }
 
     @Override
+    public int getCacheTimeout() {
+        return cacheTimeout;
+    }
+
+    public void setCacheTimeout(int cacheTimeout) {
+        if (!initialized) {
+            this.cacheTimeout = cacheTimeout;
+        }
+    }
+
+    @Override
     public IAuthenticatorFactory getAuthenticatorFactory() {
         return authenticatorFactory;
     }
@@ -136,6 +150,11 @@ public final class DefaultSecurityConfig implements ISecurityConfig {
 
         public Builder cacheNamePrefix(String cacheNamePrefix) {
             config.setCacheNamePrefix(cacheNamePrefix);
+            return this;
+        }
+
+        public Builder cacheTimeout(int cacheTimeout) {
+            config.setCacheTimeout(cacheTimeout);
             return this;
         }
 

@@ -34,13 +34,7 @@ public class RoleInfo extends AbstractAttributeExt implements IRoleInfo {
 
     private String description;
 
-    private Integer type;
-
-    private Integer status;
-
-    private Long createTime;
-
-    private Long lastModifyTime;
+    private Type type;
 
     public RoleInfo() {
     }
@@ -73,39 +67,12 @@ public class RoleInfo extends AbstractAttributeExt implements IRoleInfo {
     }
 
     @Override
-    public Integer getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Type type) {
         this.type = type;
-    }
-
-    @Override
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Override
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public Long getLastModifyTime() {
-        return lastModifyTime;
-    }
-
-    public void setLastModifyTime(Long lastModifyTime) {
-        this.lastModifyTime = lastModifyTime;
     }
 
     @Override
@@ -158,39 +125,12 @@ public class RoleInfo extends AbstractAttributeExt implements IRoleInfo {
             return this;
         }
 
-        public Integer type() {
+        public Type type() {
             return target.getType();
         }
 
-        public Builder type(Integer type) {
+        public Builder type(Type type) {
             target.setType(type);
-            return this;
-        }
-
-        public Integer status() {
-            return target.getStatus();
-        }
-
-        public Builder status(Integer status) {
-            target.setStatus(status);
-            return this;
-        }
-
-        public Long createTime() {
-            return target.getCreateTime();
-        }
-
-        public Builder createTime(Long createTime) {
-            target.setCreateTime(createTime);
-            return this;
-        }
-
-        public Long lastModifyTime() {
-            return target.getLastModifyTime();
-        }
-
-        public Builder lastModifyTime(Long lastModifyTime) {
-            target.setLastModifyTime(lastModifyTime);
             return this;
         }
     }

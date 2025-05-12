@@ -29,7 +29,6 @@ import net.ymate.platform.webmvc.exception.UserSessionInvalidException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 /**
  * 访问权限控制代理, 用于处理被声明@Permission注解的类方法
@@ -42,17 +41,7 @@ public class SecurityProxy implements IProxy {
 
     public static boolean containsRoleTypes(RoleType[] roleTypes, IUserAuthenticator authenticator) {
         if (ArrayUtils.isNotEmpty(roleTypes)) {
-            boolean flag = false;
-            RoleType[] authenticatorRoleTypes = authenticator.getRoleTypes();
-            if (ArrayUtils.isNotEmpty(authenticatorRoleTypes)) {
-                for (RoleType roleType : authenticatorRoleTypes) {
-                    if (Arrays.stream(roleTypes).anyMatch(rt -> rt.compareTo(roleType) == 0)) {
-                        flag = true;
-                        break;
-                    }
-                }
-            }
-            return flag;
+            return authenticator.getRoleTypes().stream().anyMatch(roleType -> Arrays.stream(roleTypes).anyMatch(rt -> rt.compareTo(roleType) == 0));
         }
         return true;
     }
@@ -60,13 +49,10 @@ public class SecurityProxy implements IProxy {
     public static boolean containsPermissions(LogicType type, String[] permissions, IUserAuthenticator authenticator) {
         if (ArrayUtils.isNotEmpty(permissions)) {
             boolean flag = false;
-            String[] authenticatorPermissions = authenticator.getPermissions();
-            if (ArrayUtils.isNotEmpty(authenticatorPermissions)) {
-                if (LogicType.OR.equals(type)) {
-                    flag = Arrays.stream(authenticatorPermissions).anyMatch(permission -> ArrayUtils.contains(permissions, permission));
-                } else if (LogicType.AND.equals(type)) {
-                    flag = Collections.indexOfSubList(Arrays.asList(authenticatorPermissions), Arrays.asList(permissions)) != -1;
-                }
+            if (LogicType.OR.equals(type)) {
+                flag = authenticator.getPermissions().stream().anyMatch(permission -> ArrayUtils.contains(permissions, permission));
+            } else if (LogicType.AND.equals(type)) {
+                flag = authenticator.getPermissions().containsAll(Arrays.asList(permissions));
             }
             return flag;
         }
@@ -85,8 +71,8 @@ public class SecurityProxy implements IProxy {
         if (permissionMeta != null) {
             IAuthenticatorFactory authenticatorFactory = owner.getConfig().getAuthenticatorFactory();
             if (authenticatorFactory != null) {
-                IUserAuthenticator authenticator;
-                if ((authenticator = authenticatorFactory.getUserAuthenticator()) != null && authenticator.getUser() != null) {
+                IUserAuthenticator authenticator = authenticatorFactory.getUserAuthenticator();
+                if (authenticator != null && authenticator.getUser() != null) {
                     if (!authenticator.isFounder()) {
                         // 进行用户角色判断
                         if (!containsRoleTypes(permissionMeta.getRoleTypes(), authenticator)) {

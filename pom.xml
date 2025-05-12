@@ -21,8 +21,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <ymate.platform.version>2.1.3</ymate.platform.version>
-        <ymate.maven.plugin.version>1.0.3-dev</ymate.maven.plugin.version>
-        <ymate.module.sso.version>2.0.2-dev</ymate.module.sso.version>
     </properties>
 
     <developers>

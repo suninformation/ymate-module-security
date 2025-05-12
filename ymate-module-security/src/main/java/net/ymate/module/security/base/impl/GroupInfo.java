@@ -17,6 +17,7 @@ package net.ymate.module.security.base.impl;
 
 import net.ymate.module.security.base.AbstractAttributeExt;
 import net.ymate.module.security.base.IGroupInfo;
+import net.ymate.module.security.base.IRoleInfo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -34,13 +35,7 @@ public class GroupInfo extends AbstractAttributeExt implements IGroupInfo {
 
     private String description;
 
-    private Integer type;
-
-    private Integer status;
-
-    private Long createTime;
-
-    private Long lastModifyTime;
+    private IRoleInfo.Type type;
 
     public GroupInfo() {
     }
@@ -73,39 +68,12 @@ public class GroupInfo extends AbstractAttributeExt implements IGroupInfo {
     }
 
     @Override
-    public Integer getType() {
+    public IRoleInfo.Type getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(IRoleInfo.Type type) {
         this.type = type;
-    }
-
-    @Override
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Override
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public Long getLastModifyTime() {
-        return lastModifyTime;
-    }
-
-    public void setLastModifyTime(Long lastModifyTime) {
-        this.lastModifyTime = lastModifyTime;
     }
 
     @Override
@@ -158,39 +126,12 @@ public class GroupInfo extends AbstractAttributeExt implements IGroupInfo {
             return this;
         }
 
-        public Integer type() {
+        public IRoleInfo.Type type() {
             return target.getType();
         }
 
-        public Builder type(Integer type) {
+        public Builder type(IRoleInfo.Type type) {
             target.setType(type);
-            return this;
-        }
-
-        public Integer status() {
-            return target.getStatus();
-        }
-
-        public Builder status(Integer status) {
-            target.setStatus(status);
-            return this;
-        }
-
-        public Long createTime() {
-            return target.getCreateTime();
-        }
-
-        public Builder createTime(Long createTime) {
-            target.setCreateTime(createTime);
-            return this;
-        }
-
-        public Long lastModifyTime() {
-            return target.getLastModifyTime();
-        }
-
-        public Builder lastModifyTime(Long lastModifyTime) {
-            target.setLastModifyTime(lastModifyTime);
             return this;
         }
     }

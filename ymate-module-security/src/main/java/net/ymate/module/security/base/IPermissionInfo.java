@@ -71,40 +71,59 @@ public interface IPermissionInfo extends IAttributeExt {
     /**
      * 层级深度
      */
-    Long getDepth();
+    long getDepth();
 
     /**
      * 排序
      */
-    Float getSort();
+    float getSort();
 
     /**
      * 是否全屏显示
      */
-    Integer getIsFullScreen();
+    boolean isFullScreen();
 
     /**
      * 是否外部链接
      */
-    Integer getIsOutsideUrl();
+    boolean isOutsideUrl();
 
     /**
-     * 类型：{0-菜单 1-动作 2-模块或组件}
+     * 类型：{0-模块或组 1-菜单 2-动作}
      */
-    Integer getType();
+    Type getType();
 
     /**
-     * 状态：{0-启用 1-禁用}
+     * 权限 类型枚举
      */
-    Integer getStatus();
+    enum Type {
 
-    /**
-     * 创建时间
-     */
-    Long getCreateTime();
+        MODULE(0), MENU(1), ACTION(2);
 
-    /**
-     * 最后修改时间
-     */
-    Long getLastModifyTime();
+        private final int type;
+
+        Type(int type) {
+            this.type = type;
+        }
+
+        public static Type valueOf(Integer type) {
+            if (type != null) {
+                if (type == 1) {
+                    return Type.MENU;
+                } else if (type == 2) {
+                    return Type.ACTION;
+                }
+            }
+            return Type.MODULE;
+        }
+
+        public int type() {
+            return type;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(type);
+        }
+    }
 }

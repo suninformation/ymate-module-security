@@ -42,17 +42,11 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
 
     private String path;
 
-    private Long depth;
+    private long depth;
 
-    private Float sort;
+    private float sort;
 
-    private Integer type;
-
-    private Integer status;
-
-    private Long createTime;
-
-    private Long lastModifyTime;
+    private Type type;
 
     public DeptInfo() {
     }
@@ -121,57 +115,30 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
     }
 
     @Override
-    public Long getDepth() {
+    public long getDepth() {
         return depth;
     }
 
-    public void setDepth(Long depth) {
+    public void setDepth(long depth) {
         this.depth = depth;
     }
 
     @Override
-    public Float getSort() {
+    public float getSort() {
         return sort;
     }
 
-    public void setSort(Float sort) {
+    public void setSort(float sort) {
         this.sort = sort;
     }
 
     @Override
-    public Integer getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Type type) {
         this.type = type;
-    }
-
-    @Override
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Override
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public Long getLastModifyTime() {
-        return lastModifyTime;
-    }
-
-    public void setLastModifyTime(Long lastModifyTime) {
-        this.lastModifyTime = lastModifyTime;
     }
 
     public String toString() {
@@ -193,7 +160,7 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
         }
 
         public Builder(DeptInfo target) {
-           super(target);
+            super(target);
         }
 
         public String id() {
@@ -259,57 +226,30 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
             return this;
         }
 
-        public Long depth() {
+        public long depth() {
             return target.getDepth();
         }
 
-        public Builder depth(Long depth) {
+        public Builder depth(long depth) {
             target.setDepth(depth);
             return this;
         }
 
-        public Float sort() {
+        public float sort() {
             return target.getSort();
         }
 
-        public Builder sort(Float sort) {
+        public Builder sort(float sort) {
             target.setSort(sort);
             return this;
         }
 
-        public Integer type() {
+        public Type type() {
             return target.getType();
         }
 
-        public Builder type(Integer type) {
+        public Builder type(Type type) {
             target.setType(type);
-            return this;
-        }
-
-        public Integer status() {
-            return target.getStatus();
-        }
-
-        public Builder status(Integer status) {
-            target.setStatus(status);
-            return this;
-        }
-
-        public Long createTime() {
-            return target.getCreateTime();
-        }
-
-        public Builder createTime(Long createTime) {
-            target.setCreateTime(createTime);
-            return this;
-        }
-
-        public Long lastModifyTime() {
-            return target.getLastModifyTime();
-        }
-
-        public Builder lastModifyTime(Long lastModifyTime) {
-            target.setLastModifyTime(lastModifyTime);
             return this;
         }
     }

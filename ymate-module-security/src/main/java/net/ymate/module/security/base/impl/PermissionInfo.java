@@ -46,21 +46,15 @@ public class PermissionInfo extends AbstractAttributeExt implements IPermissionI
 
     private String path;
 
-    private Long depth;
+    private long depth;
 
-    private Float sort;
+    private float sort;
 
-    private Integer isFullScreen;
+    private boolean fullScreen;
 
-    private Integer isOutsideUrl;
+    private boolean outsideUrl;
 
-    private Integer type;
-
-    private Integer status;
-
-    private Long createTime;
-
-    private Long lastModifyTime;
+    private Type type;
 
     public PermissionInfo() {
     }
@@ -147,75 +141,48 @@ public class PermissionInfo extends AbstractAttributeExt implements IPermissionI
     }
 
     @Override
-    public Long getDepth() {
+    public long getDepth() {
         return depth;
     }
 
-    public void setDepth(Long depth) {
+    public void setDepth(long depth) {
         this.depth = depth;
     }
 
     @Override
-    public Float getSort() {
+    public float getSort() {
         return sort;
     }
 
-    public void setSort(Float sort) {
+    public void setSort(float sort) {
         this.sort = sort;
     }
 
     @Override
-    public Integer getIsFullScreen() {
-        return isFullScreen;
+    public boolean isFullScreen() {
+        return fullScreen;
     }
 
-    public void setIsFullScreen(Integer isFullScreen) {
-        this.isFullScreen = isFullScreen;
-    }
-
-    @Override
-    public Integer getIsOutsideUrl() {
-        return isOutsideUrl;
-    }
-
-    public void setIsOutsideUrl(Integer isOutsideUrl) {
-        this.isOutsideUrl = isOutsideUrl;
+    public void setFullScreen(boolean fullScreen) {
+        this.fullScreen = fullScreen;
     }
 
     @Override
-    public Integer getType() {
+    public boolean isOutsideUrl() {
+        return outsideUrl;
+    }
+
+    public void setOutsideUrl(boolean outsideUrl) {
+        this.outsideUrl = outsideUrl;
+    }
+
+    @Override
+    public Type getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Type type) {
         this.type = type;
-    }
-
-    @Override
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    @Override
-    public Long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Long createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public Long getLastModifyTime() {
-        return lastModifyTime;
-    }
-
-    public void setLastModifyTime(Long lastModifyTime) {
-        this.lastModifyTime = lastModifyTime;
     }
 
     @Override
@@ -322,75 +289,48 @@ public class PermissionInfo extends AbstractAttributeExt implements IPermissionI
             return this;
         }
 
-        public Long depth() {
+        public long depth() {
             return target.getDepth();
         }
 
-        public Builder depth(Long depth) {
+        public Builder depth(long depth) {
             target.setDepth(depth);
             return this;
         }
 
-        public Float sort() {
+        public float sort() {
             return target.getSort();
         }
 
-        public Builder sort(Float sort) {
+        public Builder sort(float sort) {
             target.setSort(sort);
             return this;
         }
 
-        public Integer isFullScreen() {
-            return target.getIsFullScreen();
+        public boolean fullScreen() {
+            return target.isFullScreen();
         }
 
-        public Builder isFullScreen(Integer isFullScreen) {
-            target.setIsFullScreen(isFullScreen);
+        public Builder fullScreen(boolean fullScreen) {
+            target.setFullScreen(fullScreen);
             return this;
         }
 
-        public Integer isOutsideUrl() {
-            return target.getIsOutsideUrl();
+        public boolean outsideUrl() {
+            return target.isOutsideUrl();
         }
 
-        public Builder isOutsideUrl(Integer isOutsideUrl) {
-            target.setIsOutsideUrl(isOutsideUrl);
+        public Builder outsideUrl(boolean outsideUrl) {
+            target.setOutsideUrl(outsideUrl);
             return this;
         }
 
-        public Integer type() {
+        public Type type() {
             return target.getType();
         }
 
-        public Builder type(Integer type) {
+        public Builder type(Type type) {
             target.setType(type);
-            return this;
-        }
-
-        public Integer status() {
-            return target.getStatus();
-        }
-
-        public Builder status(Integer status) {
-            target.setStatus(status);
-            return this;
-        }
-
-        public Long createTime() {
-            return target.getCreateTime();
-        }
-
-        public Builder createTime(Long createTime) {
-            target.setCreateTime(createTime);
-            return this;
-        }
-
-        public Long lastModifyTime() {
-            return target.getLastModifyTime();
-        }
-
-        public Builder lastModifyTime(Long lastModifyTime) {
-            target.setLastModifyTime(lastModifyTime);
             return this;
         }
     }

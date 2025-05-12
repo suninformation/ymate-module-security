@@ -15,10 +15,14 @@
  */
 package net.ymate.module.security;
 
+import net.ymate.module.security.annotation.SecurityAble;
+import net.ymate.module.security.handle.SecurityAbleHandler;
 import net.ymate.module.security.impl.DefaultSecurityConfig;
 import net.ymate.module.security.support.SecurityProxy;
 import net.ymate.platform.commons.util.ClassUtils;
 import net.ymate.platform.core.*;
+import net.ymate.platform.core.beans.IBeanLoadFactory;
+import net.ymate.platform.core.beans.IBeanLoader;
 import net.ymate.platform.core.beans.proxy.IProxyFactory;
 import net.ymate.platform.core.module.IModule;
 import net.ymate.platform.core.module.IModuleConfigurer;
@@ -76,11 +80,20 @@ public final class Security implements IModule, ISecurity {
                 IApplicationConfigureFactory configureFactory = owner.getConfigureFactory();
                 if (configureFactory != null) {
                     IApplicationConfigurer configurer = configureFactory.getConfigurer();
-                    IModuleConfigurer moduleConfigurer = configurer == null ? null : configurer.getModuleConfigurer(MODULE_NAME);
-                    if (moduleConfigurer != null) {
-                        config = DefaultSecurityConfig.create(configureFactory.getMainClass(), moduleConfigurer);
-                    } else {
-                        config = DefaultSecurityConfig.create(configureFactory.getMainClass(), DefaultModuleConfigurer.createEmpty(MODULE_NAME));
+                    if (configurer != null) {
+                        IBeanLoadFactory beanLoaderFactory = configurer.getBeanLoadFactory();
+                        if (beanLoaderFactory != null) {
+                            IBeanLoader beanLoader = beanLoaderFactory.getBeanLoader();
+                            if (beanLoader != null) {
+                                beanLoader.registerHandler(SecurityAble.class, new SecurityAbleHandler());
+                            }
+                        }
+                        IModuleConfigurer moduleConfigurer = configurer.getModuleConfigurer(MODULE_NAME);
+                        if (moduleConfigurer != null) {
+                            config = DefaultSecurityConfig.create(configureFactory.getMainClass(), moduleConfigurer);
+                        } else {
+                            config = DefaultSecurityConfig.create(configureFactory.getMainClass(), DefaultModuleConfigurer.createEmpty(MODULE_NAME));
+                        }
                     }
                 }
                 if (config == null) {

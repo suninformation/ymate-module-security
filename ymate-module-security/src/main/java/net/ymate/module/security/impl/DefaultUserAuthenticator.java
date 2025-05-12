@@ -18,6 +18,13 @@ package net.ymate.module.security.impl;
 import net.ymate.module.security.IUserAuthenticator;
 import net.ymate.module.security.annotation.RoleType;
 import net.ymate.module.security.base.IUserInfo;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/5/27 下午4:16
@@ -29,22 +36,35 @@ public class DefaultUserAuthenticator implements IUserAuthenticator {
 
     private final boolean founder;
 
-    private final RoleType[] roleTypes;
+    private final Collection<RoleType> roleTypes = new HashSet<>();
 
-    private final String[] permissions;
+    private final Collection<String> permissions = new HashSet<>();
 
     public DefaultUserAuthenticator() {
         user = null;
         founder = false;
-        roleTypes = new RoleType[0];
-        permissions = new String[0];
     }
 
     public DefaultUserAuthenticator(IUserInfo user, boolean founder, RoleType[] roleTypes, String[] permissions) {
         this.user = user;
         this.founder = founder;
-        this.roleTypes = roleTypes;
-        this.permissions = permissions;
+        if (ArrayUtils.isNotEmpty(roleTypes)) {
+            this.roleTypes.addAll(Arrays.asList(roleTypes));
+        }
+        if (ArrayUtils.isNotEmpty(permissions)) {
+            Arrays.stream(permissions).filter(StringUtils::isNotBlank).map(String::toLowerCase).forEach(this.permissions::add);
+        }
+    }
+
+    public DefaultUserAuthenticator(IUserInfo user, boolean founder, Collection<RoleType> roleTypes, Collection<String> permissions) {
+        this.user = user;
+        this.founder = founder;
+        if (roleTypes != null && !roleTypes.isEmpty()) {
+            this.roleTypes.addAll(roleTypes);
+        }
+        if (permissions != null && !permissions.isEmpty()) {
+            permissions.stream().filter(StringUtils::isNotBlank).map(String::toLowerCase).forEach(this.permissions::add);
+        }
     }
 
     @Override
@@ -58,12 +78,12 @@ public class DefaultUserAuthenticator implements IUserAuthenticator {
     }
 
     @Override
-    public RoleType[] getRoleTypes() {
-        return roleTypes;
+    public Collection<RoleType> getRoleTypes() {
+        return Collections.unmodifiableCollection(roleTypes);
     }
 
     @Override
-    public String[] getPermissions() {
-        return permissions;
+    public Collection<String> getPermissions() {
+        return Collections.unmodifiableCollection(permissions);
     }
 }

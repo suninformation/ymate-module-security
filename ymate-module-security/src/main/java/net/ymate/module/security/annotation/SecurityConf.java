@@ -40,6 +40,11 @@ public @interface SecurityConf {
     String cacheNamePrefix() default StringUtils.EMPTY;
 
     /**
+     * @return 缓存数据超时时间, 可选参数, 数值必须大于等于0, 否则将采用默认
+     */
+    int cacheTimeout() default 0;
+
+    /**
      * @return 用户认证工厂接口实例对象
      */
     Class<? extends IAuthenticatorFactory> authenticatorFactoryClass() default IAuthenticatorFactory.class;

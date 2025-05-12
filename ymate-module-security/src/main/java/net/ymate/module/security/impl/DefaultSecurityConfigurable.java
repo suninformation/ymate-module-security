@@ -52,6 +52,11 @@ public final class DefaultSecurityConfigurable extends DefaultModuleConfigurable
             return this;
         }
 
+        public Builder cacheTimeout(int cacheTimeout) {
+            configurable.addConfig(ISecurityConfig.CACHE_TIMEOUT, String.valueOf(cacheTimeout));
+            return this;
+        }
+
         public Builder authenticatorFactoryClass(Class<? extends IAuthenticatorFactory> authenticatorFactoryClass) {
             configurable.addConfig(ISecurityConfig.AUTHENTICATOR_FACTORY_CLASS, authenticatorFactoryClass.getName());
             return this;

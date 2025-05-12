@@ -15,6 +15,7 @@
  */
 package net.ymate.module.security;
 
+import net.ymate.platform.core.beans.annotation.Ignored;
 import net.ymate.platform.core.support.IInitialization;
 
 /**
@@ -23,6 +24,7 @@ import net.ymate.platform.core.support.IInitialization;
  * @author 刘镇 (suninformation@163.com) on 17/6/1 上午11:18
  * @version 1.0
  */
+@Ignored
 public interface IAuthenticatorFactory extends IInitialization<ISecurity> {
 
     /**

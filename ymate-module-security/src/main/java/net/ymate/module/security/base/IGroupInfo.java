@@ -41,20 +41,5 @@ public interface IGroupInfo extends IAttributeExt {
     /**
      * 类型：{0-用户 1-操作员 2-管理员}
      */
-    Integer getType();
-
-    /**
-     * 状态：{0-启用 1-禁用}
-     */
-    Integer getStatus();
-
-    /**
-     * 创建时间
-     */
-    Long getCreateTime();
-
-    /**
-     * 最后修改时间
-     */
-    Long getLastModifyTime();
+    IRoleInfo.Type getType();
 }

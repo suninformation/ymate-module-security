@@ -15,6 +15,8 @@
  */
 package net.ymate.module.security.base;
 
+import java.util.Set;
+
 /**
  * 用户接口定义
  *
@@ -27,11 +29,6 @@ public interface IUserInfo extends IAttributeExt {
      * 用户唯一标识
      */
     String getId();
-
-    /**
-     * 部门唯一标识
-     */
-    String getDeptId();
 
     /**
      * 用户名称
@@ -51,10 +48,45 @@ public interface IUserInfo extends IAttributeExt {
     /**
      * 类型：{0-普通用户 1-内部用户}
      */
-    Integer getType();
+    Type getType();
 
     /**
-     * 状态：{0-启用 1-禁用}
+     * 所属部门
      */
-    Integer getStatus();
+    IDeptInfo getDept();
+
+    /**
+     * 所属岗位
+     */
+    Set<IPostInfo> getPosts();
+
+    /**
+     * 用户 类型枚举
+     */
+    enum Type {
+
+        GENERAL(0), INTERNAL(1);
+
+        private final int type;
+
+        Type(int type) {
+            this.type = type;
+        }
+
+        public static Type valueOf(Integer type) {
+            if (type != null && type == 1) {
+                return Type.INTERNAL;
+            }
+            return Type.GENERAL;
+        }
+
+        public int type() {
+            return type;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(type);
+        }
+    }
 }

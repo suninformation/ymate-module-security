@@ -15,13 +15,15 @@
  */
 package net.ymate.module.security.base;
 
+import net.ymate.module.security.annotation.RoleType;
+
 /**
  * 角色接口定义
  *
  * @author 刘镇 (suninformation@163.com) on 2022/3/6 2:11 AM
  * @since 1.0.0
  */
-public interface IRoleInfo extends IAttributeExt{
+public interface IRoleInfo extends IAttributeExt {
 
     /**
      * 角色唯一标识
@@ -41,20 +43,50 @@ public interface IRoleInfo extends IAttributeExt{
     /**
      * 类型：{0-用户 1-操作员 2-管理员}
      */
-    Integer getType();
+    Type getType();
 
     /**
-     * 状态：{0-启用 1-禁用}
+     * 角色类型枚举
      */
-    Integer getStatus();
+    enum Type {
 
-    /**
-     * 创建时间
-     */
-    Long getCreateTime();
+        ADMIN(2), OPERATOR(1), USER(0);
 
-    /**
-     * 最后修改时间
-     */
-    Long getLastModifyTime();
+        private final int type;
+
+        Type(int type) {
+            this.type = type;
+        }
+
+        public static Type valueOf(Integer type) {
+            if (type != null) {
+                if (type == 2) {
+                    return Type.ADMIN;
+                } else if (type == 1) {
+                    return Type.OPERATOR;
+                }
+            }
+            return Type.USER;
+        }
+
+        public int type() {
+            return type;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(type);
+        }
+
+        public RoleType toType() {
+            switch (type) {
+                case 2:
+                    return RoleType.ADMIN;
+                case 1:
+                    return RoleType.OPERATOR;
+                default:
+                    return RoleType.USER;
+            }
+        }
+    }
 }
