@@ -19,6 +19,7 @@ import net.ymate.module.security.annotation.LogicType;
 import net.ymate.module.security.annotation.Permission;
 import net.ymate.module.security.annotation.RoleType;
 import net.ymate.platform.commons.ReentrantLockHelper;
+import net.ymate.platform.commons.util.ClassUtils;
 import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -37,7 +38,6 @@ public class PermissionMeta {
 
     private static final RoleType[] ROLE_TYPES_ALL = new RoleType[]{RoleType.ADMIN, RoleType.OPERATOR, RoleType.USER};
 
-    //
     private static final Map<Method, PermissionMeta> PERMISSION_META_MAP = new ConcurrentHashMap<>();
 
     private RoleType[] roleTypes;
@@ -54,6 +54,18 @@ public class PermissionMeta {
         return Collections.unmodifiableSet(codes);
     }
 
+    private static LogicType parseLogicType(Permission permissionAnn, Permission classPermissionAnn, Permission packagePermissionAnn) {
+        LogicType logicType = LogicType.AND;
+        if (!LogicType.INHERIT.equals(permissionAnn.logicType())) {
+            logicType = permissionAnn.logicType();
+        } else if (classPermissionAnn != null && !LogicType.INHERIT.equals(classPermissionAnn.logicType())) {
+            logicType = classPermissionAnn.logicType();
+        } else if (packagePermissionAnn != null && !LogicType.INHERIT.equals(packagePermissionAnn.logicType())) {
+            logicType = packagePermissionAnn.logicType();
+        }
+        return logicType;
+    }
+
     public static PermissionMeta createAndGet(Method targetMethod) throws Exception {
         if (targetMethod == null) {
             throw new NullArgumentException("targetMethod");
@@ -61,36 +73,48 @@ public class PermissionMeta {
         Permission permissionAnn = targetMethod.getAnnotation(Permission.class);
         if (permissionAnn != null) {
             return ReentrantLockHelper.putIfAbsentAsync(PERMISSION_META_MAP, targetMethod, () -> {
+                Permission packagePermissionAnn = ClassUtils.getPackageAnnotation(targetMethod.getDeclaringClass(), Permission.class);
+                Permission classPermissionAnn = targetMethod.getDeclaringClass().getAnnotation(Permission.class);
+                // LogicType
+                LogicType logicType = parseLogicType(permissionAnn, classPermissionAnn, packagePermissionAnn);
+                // RoleType
                 Set<RoleType> roleTypes = new HashSet<>();
-                Set<String> permissions = new HashSet<>();
-                LogicType logicType = LogicType.AND;
-                Permission parentPermissionAnn = targetMethod.getDeclaringClass().getAnnotation(Permission.class);
-                if (parentPermissionAnn != null) {
-                    if (!LogicType.INHERIT.equals(parentPermissionAnn.logicType())) {
-                        logicType = parentPermissionAnn.logicType();
+                if (ArrayUtils.contains(permissionAnn.roleTypes(), RoleType.ALL)) {
+                    roleTypes.add(RoleType.INHERIT);
+                } else if (ArrayUtils.contains(permissionAnn.roleTypes(), RoleType.INHERIT)) {
+                    if (classPermissionAnn != null) {
+                        if (ArrayUtils.contains(classPermissionAnn.roleTypes(), RoleType.ALL)) {
+                            roleTypes.add(RoleType.INHERIT);
+                        } else if (ArrayUtils.contains(classPermissionAnn.roleTypes(), RoleType.INHERIT)) {
+                            if (packagePermissionAnn != null) {
+                                Arrays.stream(packagePermissionAnn.roleTypes())
+                                        .filter(roleType -> !RoleType.INHERIT.equals(roleType))
+                                        .forEach(roleTypes::add);
+                            }
+                        } else {
+                            roleTypes.addAll(Arrays.asList(classPermissionAnn.roleTypes()));
+                        }
+                    } else if (packagePermissionAnn != null) {
+                        if (ArrayUtils.contains(packagePermissionAnn.roleTypes(), RoleType.ALL)) {
+                            roleTypes.add(RoleType.INHERIT);
+                        } else {
+                            Arrays.stream(packagePermissionAnn.roleTypes())
+                                    .filter(roleType -> !RoleType.INHERIT.equals(roleType))
+                                    .forEach(roleTypes::add);
+                        }
                     }
-                    roleTypes.addAll(Arrays.asList(parentPermissionAnn.roleTypes()));
-                    permissions.addAll(Arrays.asList(parentPermissionAnn.value()));
-                    //
-                    if (!LogicType.INHERIT.equals(parentPermissionAnn.logicType())) {
-                        logicType = permissionAnn.logicType();
-                    }
-                    if (ArrayUtils.contains(permissionAnn.roleTypes(), RoleType.ALL)) {
-                        roleTypes.add(RoleType.INHERIT);
-                    } else if (ArrayUtils.contains(permissionAnn.roleTypes(), RoleType.INHERIT)) {
-                        Arrays.stream(permissionAnn.roleTypes())
-                                .filter(roleType -> !RoleType.INHERIT.equals(roleType))
-                                .forEach(roleTypes::add);
-                    } else {
-                        roleTypes.addAll(Arrays.asList(permissionAnn.roleTypes()));
-                    }
-                    permissions.addAll(Arrays.asList(permissionAnn.value()));
                 } else {
-                    if (!LogicType.INHERIT.equals(permissionAnn.logicType())) {
-                        logicType = permissionAnn.logicType();
-                    }
-                    roleTypes.addAll(Arrays.asList(permissionAnn.roleTypes()));
-                    permissions.addAll(Arrays.asList(permissionAnn.value()));
+                    Arrays.stream(permissionAnn.roleTypes())
+                            .filter(roleType -> !RoleType.INHERIT.equals(roleType))
+                            .forEach(roleTypes::add);
+                }
+                // Permission
+                Set<String> permissions = new HashSet<>(Arrays.asList(permissionAnn.value()));
+                if (classPermissionAnn != null) {
+                    permissions.addAll(Arrays.asList(classPermissionAnn.value()));
+                }
+                if (packagePermissionAnn != null) {
+                    permissions.addAll(Arrays.asList(packagePermissionAnn.value()));
                 }
                 //
                 PermissionMeta permissionMeta = new PermissionMeta();
