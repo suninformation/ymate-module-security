@@ -37,7 +37,7 @@ public @interface Permission {
     String[] value() default {};
 
     /**
-     * @return 权限码匹配逻辑类型, 默认为继承类级设置，若无父级设置则LogicType.INHERIT等同于LogicType.OR
+     * @return 权限码匹配逻辑类型, 默认为继承类级设置，若无父级设置则LogicType.INHERIT等同于LogicType.AND
      */
     LogicType logicType() default LogicType.INHERIT;
 }

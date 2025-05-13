@@ -23,11 +23,9 @@ import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * 权限元数据
@@ -48,6 +46,14 @@ public class PermissionMeta {
 
     private LogicType logicType;
 
+    public static Set<String> getPermissionCodes() {
+        Set<String> codes = PERMISSION_META_MAP.values()
+                .stream()
+                .flatMap(permissionMeta -> Arrays.stream(permissionMeta.getPermissions()))
+                .collect(Collectors.toSet());
+        return Collections.unmodifiableSet(codes);
+    }
+
     public static PermissionMeta createAndGet(Method targetMethod) throws Exception {
         if (targetMethod == null) {
             throw new NullArgumentException("targetMethod");
@@ -57,7 +63,7 @@ public class PermissionMeta {
             return ReentrantLockHelper.putIfAbsentAsync(PERMISSION_META_MAP, targetMethod, () -> {
                 Set<RoleType> roleTypes = new HashSet<>();
                 Set<String> permissions = new HashSet<>();
-                LogicType logicType = LogicType.OR;
+                LogicType logicType = LogicType.AND;
                 Permission parentPermissionAnn = targetMethod.getDeclaringClass().getAnnotation(Permission.class);
                 if (parentPermissionAnn != null) {
                     if (!LogicType.INHERIT.equals(parentPermissionAnn.logicType())) {
