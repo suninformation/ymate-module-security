@@ -15,6 +15,8 @@
  */
 package net.ymate.module.security.base;
 
+import net.ymate.platform.commons.ext.IAttributeExt;
+
 /**
  * 岗位接口定义
  *
@@ -41,10 +43,5 @@ public interface IPostInfo extends IAttributeExt {
     /**
      * 岗位等级
      */
-    int getLevel();
-
-    /**
-     * 描述
-     */
-    String getDescription();
+    Integer getLevel();
 }

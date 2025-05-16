@@ -19,6 +19,8 @@ import net.ymate.module.security.annotation.SecurityAble;
 import net.ymate.module.security.handle.SecurityAbleHandler;
 import net.ymate.module.security.impl.DefaultSecurityConfig;
 import net.ymate.module.security.support.SecurityProxy;
+import net.ymate.module.security.support.UnauthorizedPermissionException;
+import net.ymate.module.security.support.UnauthorizedRoleException;
 import net.ymate.platform.commons.util.ClassUtils;
 import net.ymate.platform.core.*;
 import net.ymate.platform.core.beans.IBeanLoadFactory;
@@ -27,12 +29,19 @@ import net.ymate.platform.core.beans.proxy.IProxyFactory;
 import net.ymate.platform.core.module.IModule;
 import net.ymate.platform.core.module.IModuleConfigurer;
 import net.ymate.platform.core.module.impl.DefaultModuleConfigurer;
+import net.ymate.platform.webmvc.util.ExceptionProcessHelper;
+import net.ymate.platform.webmvc.util.IExceptionProcessor;
+import net.ymate.platform.webmvc.util.WebErrorCode;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 17/2/18 下午6:06
  * @version 1.0
  */
 public final class Security implements IModule, ISecurity {
+
+    private static final Log LOG = LogFactory.getLog(Security.class);
 
     private static volatile ISecurity instance;
 
@@ -112,6 +121,15 @@ public final class Security implements IModule, ISecurity {
                 if (proxyFactory != null) {
                     proxyFactory.registerProxy(new SecurityProxy(this));
                 }
+                //
+                IExceptionProcessor processor = target -> {
+                    if (owner.isDevEnv() && LOG.isWarnEnabled()) {
+                        LOG.warn(target.getMessage());
+                    }
+                    return new IExceptionProcessor.Result(WebErrorCode.REQUEST_RESOURCE_UNAUTHORIZED, WebErrorCode.MSG_REQUEST_RESOURCE_UNAUTHORIZED);
+                };
+                ExceptionProcessHelper.DEFAULT.registerProcessor(UnauthorizedRoleException.class, processor);
+                ExceptionProcessHelper.DEFAULT.registerProcessor(UnauthorizedPermissionException.class, processor);
             }
             initialized = true;
         }

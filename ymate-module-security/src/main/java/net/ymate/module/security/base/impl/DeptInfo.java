@@ -15,8 +15,10 @@
  */
 package net.ymate.module.security.base.impl;
 
-import net.ymate.module.security.base.AbstractAttributeExt;
 import net.ymate.module.security.base.IDeptInfo;
+import net.ymate.platform.commons.ext.AbstractTreeViewAttributeExt;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -24,9 +26,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author 刘镇 (suninformation@163.com) on 2025/04/28 00:23:30
  * @since 1.0.0
  */
-public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
-
-    private static final long serialVersionUID = 1L;
+public class DeptInfo extends AbstractTreeViewAttributeExt<String, IDeptInfo> implements IDeptInfo {
 
     private String id;
 
@@ -38,15 +38,11 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
 
     private String name;
 
-    private String description;
-
     private String path;
 
-    private long depth;
+    private Long depth;
 
-    private float sort;
-
-    private Type type;
+    private Float sort;
 
     public DeptInfo() {
     }
@@ -97,15 +93,6 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
     }
 
     @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
     public String getPath() {
         return path;
     }
@@ -115,30 +102,38 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
     }
 
     @Override
-    public long getDepth() {
+    public Long getDepth() {
         return depth;
     }
 
-    public void setDepth(long depth) {
+    public void setDepth(Long depth) {
         this.depth = depth;
     }
 
     @Override
-    public float getSort() {
+    public Float getSort() {
         return sort;
     }
 
-    public void setSort(float sort) {
+    public void setSort(Float sort) {
         this.sort = sort;
     }
 
     @Override
-    public Type getType() {
-        return type;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        DeptInfo deptInfo = (DeptInfo) o;
+        return new EqualsBuilder().append(id, deptInfo.id).isEquals();
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(id).toHashCode();
     }
 
     public String toString() {
@@ -208,15 +203,6 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
             return this;
         }
 
-        public String description() {
-            return target.getDescription();
-        }
-
-        public Builder description(String description) {
-            target.setDescription(description);
-            return this;
-        }
-
         public String path() {
             return target.getPath();
         }
@@ -226,30 +212,21 @@ public class DeptInfo extends AbstractAttributeExt implements IDeptInfo {
             return this;
         }
 
-        public long depth() {
+        public Long depth() {
             return target.getDepth();
         }
 
-        public Builder depth(long depth) {
+        public Builder depth(Long depth) {
             target.setDepth(depth);
             return this;
         }
 
-        public float sort() {
+        public Float sort() {
             return target.getSort();
         }
 
-        public Builder sort(float sort) {
+        public Builder sort(Float sort) {
             target.setSort(sort);
-            return this;
-        }
-
-        public Type type() {
-            return target.getType();
-        }
-
-        public Builder type(Type type) {
-            target.setType(type);
             return this;
         }
     }

@@ -15,9 +15,10 @@
  */
 package net.ymate.module.security.base.impl;
 
-import net.ymate.module.security.base.AbstractAttributeExt;
 import net.ymate.module.security.base.IGroupInfo;
-import net.ymate.module.security.base.IRoleInfo;
+import net.ymate.platform.commons.ext.AbstractAttributeExt;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -27,15 +28,11 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class GroupInfo extends AbstractAttributeExt implements IGroupInfo {
 
-    private static final long serialVersionUID = 1L;
-
     private String id;
 
     private String name;
 
-    private String description;
-
-    private IRoleInfo.Type type;
+    private Type type;
 
     public GroupInfo() {
     }
@@ -59,21 +56,29 @@ public class GroupInfo extends AbstractAttributeExt implements IGroupInfo {
     }
 
     @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public IRoleInfo.Type getType() {
+    public Type getType() {
         return type;
     }
 
-    public void setType(IRoleInfo.Type type) {
+    public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        GroupInfo groupInfo = (GroupInfo) o;
+        return new EqualsBuilder().append(id, groupInfo.id).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(id).toHashCode();
     }
 
     @Override
@@ -117,20 +122,11 @@ public class GroupInfo extends AbstractAttributeExt implements IGroupInfo {
             return this;
         }
 
-        public String description() {
-            return target.getDescription();
-        }
-
-        public Builder description(String description) {
-            target.setDescription(description);
-            return this;
-        }
-
-        public IRoleInfo.Type type() {
+        public Type type() {
             return target.getType();
         }
 
-        public Builder type(IRoleInfo.Type type) {
+        public Builder type(Type type) {
             target.setType(type);
             return this;
         }

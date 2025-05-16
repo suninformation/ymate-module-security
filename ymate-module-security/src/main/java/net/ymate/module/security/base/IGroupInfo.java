@@ -15,6 +15,9 @@
  */
 package net.ymate.module.security.base;
 
+import net.ymate.module.security.annotation.RoleType;
+import net.ymate.platform.commons.ext.IAttributeExt;
+
 /**
  * 安全组接口定义
  *
@@ -34,12 +37,56 @@ public interface IGroupInfo extends IAttributeExt {
     String getName();
 
     /**
-     * 组描述
+     * 类型：{0-默认 1-用户 2-操作员 3-管理员}
      */
-    String getDescription();
+    Type getType();
 
     /**
-     * 类型：{0-用户 1-操作员 2-管理员}
+     * 角色类型枚举
      */
-    IRoleInfo.Type getType();
+    enum Type {
+
+        DEFAULT(0), USER(1), OPERATOR(2), ADMIN(3);
+
+        private final int type;
+
+        Type(int type) {
+            this.type = type;
+        }
+
+        public static Type valueOf(Integer type) {
+            if (type != null) {
+                if (type == 3) {
+                    return Type.ADMIN;
+                } else if (type == 2) {
+                    return Type.OPERATOR;
+                } else if (type == 1) {
+                    return Type.USER;
+                }
+            }
+            return Type.DEFAULT;
+        }
+
+        public int type() {
+            return type;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(type);
+        }
+
+        public RoleType toType() {
+            switch (type) {
+                case 3:
+                    return RoleType.ADMIN;
+                case 2:
+                    return RoleType.OPERATOR;
+                case 1:
+                    return RoleType.USER;
+                default:
+                    return RoleType.INHERIT;
+            }
+        }
+    }
 }

@@ -43,5 +43,10 @@ public interface ISecurity extends IInitialization<IApplication>, IDestroyable {
      */
     ISecurityConfig getConfig();
 
+    /**
+     * 获取安全服务
+     *
+     * @return 返回安全服务接口实例
+     */
     ISecurityService getService();
 }

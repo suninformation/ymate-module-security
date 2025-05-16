@@ -15,7 +15,9 @@
  */
 package net.ymate.module.security.base;
 
-import java.util.Set;
+import net.ymate.platform.commons.ext.IAttributeExt;
+
+import java.util.Collection;
 
 /**
  * 用户接口定义
@@ -58,7 +60,7 @@ public interface IUserInfo extends IAttributeExt {
     /**
      * 所属岗位
      */
-    Set<IPostInfo> getPosts();
+    Collection<IPostInfo> getPosts();
 
     /**
      * 用户 类型枚举

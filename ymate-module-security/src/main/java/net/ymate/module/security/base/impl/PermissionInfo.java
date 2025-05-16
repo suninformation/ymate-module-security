@@ -15,8 +15,10 @@
  */
 package net.ymate.module.security.base.impl;
 
-import net.ymate.module.security.base.AbstractAttributeExt;
 import net.ymate.module.security.base.IPermissionInfo;
+import net.ymate.platform.commons.ext.AbstractTreeViewAttributeExt;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -24,9 +26,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @author 刘镇 (suninformation@163.com) on 2025/04/28 16:53:51
  * @since 1.0.0
  */
-public class PermissionInfo extends AbstractAttributeExt implements IPermissionInfo {
-
-    private static final long serialVersionUID = 1L;
+public class PermissionInfo extends AbstractTreeViewAttributeExt<String, IPermissionInfo> implements IPermissionInfo {
 
     private String id;
 
@@ -46,13 +46,13 @@ public class PermissionInfo extends AbstractAttributeExt implements IPermissionI
 
     private String path;
 
-    private long depth;
+    private Long depth;
 
-    private float sort;
+    private Float sort;
 
-    private boolean fullScreen;
+    private Boolean fullScreen;
 
-    private boolean outsideUrl;
+    private Boolean outsideUrl;
 
     private Type type;
 
@@ -141,38 +141,38 @@ public class PermissionInfo extends AbstractAttributeExt implements IPermissionI
     }
 
     @Override
-    public long getDepth() {
+    public Long getDepth() {
         return depth;
     }
 
-    public void setDepth(long depth) {
+    public void setDepth(Long depth) {
         this.depth = depth;
     }
 
     @Override
-    public float getSort() {
+    public Float getSort() {
         return sort;
     }
 
-    public void setSort(float sort) {
+    public void setSort(Float sort) {
         this.sort = sort;
     }
 
     @Override
-    public boolean isFullScreen() {
+    public Boolean isFullScreen() {
         return fullScreen;
     }
 
-    public void setFullScreen(boolean fullScreen) {
+    public void setFullScreen(Boolean fullScreen) {
         this.fullScreen = fullScreen;
     }
 
     @Override
-    public boolean isOutsideUrl() {
+    public Boolean isOutsideUrl() {
         return outsideUrl;
     }
 
-    public void setOutsideUrl(boolean outsideUrl) {
+    public void setOutsideUrl(Boolean outsideUrl) {
         this.outsideUrl = outsideUrl;
     }
 
@@ -183,6 +183,23 @@ public class PermissionInfo extends AbstractAttributeExt implements IPermissionI
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PermissionInfo permissionInfo = (PermissionInfo) o;
+        return new EqualsBuilder().append(id, permissionInfo.id).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(id).toHashCode();
     }
 
     @Override
@@ -289,38 +306,38 @@ public class PermissionInfo extends AbstractAttributeExt implements IPermissionI
             return this;
         }
 
-        public long depth() {
+        public Long depth() {
             return target.getDepth();
         }
 
-        public Builder depth(long depth) {
+        public Builder depth(Long depth) {
             target.setDepth(depth);
             return this;
         }
 
-        public float sort() {
+        public Float sort() {
             return target.getSort();
         }
 
-        public Builder sort(float sort) {
+        public Builder sort(Float sort) {
             target.setSort(sort);
             return this;
         }
 
-        public boolean fullScreen() {
+        public Boolean fullScreen() {
             return target.isFullScreen();
         }
 
-        public Builder fullScreen(boolean fullScreen) {
+        public Builder fullScreen(Boolean fullScreen) {
             target.setFullScreen(fullScreen);
             return this;
         }
 
-        public boolean outsideUrl() {
+        public Boolean outsideUrl() {
             return target.isOutsideUrl();
         }
 
-        public Builder outsideUrl(boolean outsideUrl) {
+        public Builder outsideUrl(Boolean outsideUrl) {
             target.setOutsideUrl(outsideUrl);
             return this;
         }

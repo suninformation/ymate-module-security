@@ -15,22 +15,22 @@
  */
 package net.ymate.module.security.base.impl;
 
-import net.ymate.module.security.base.AbstractAttributeExt;
 import net.ymate.module.security.base.IDeptInfo;
 import net.ymate.module.security.base.IPostInfo;
 import net.ymate.module.security.base.IUserInfo;
+import net.ymate.platform.commons.ext.AbstractAttributeExt;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 2025/04/28 16:53:51
  * @since 1.0.0
  */
 public class UserInfo extends AbstractAttributeExt implements IUserInfo {
-
-    private static final long serialVersionUID = 1L;
 
     private String id;
 
@@ -44,7 +44,7 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
 
     private IDeptInfo dept;
 
-    private Set<IPostInfo> posts;
+    private Collection<IPostInfo> posts;
 
     public UserInfo() {
     }
@@ -104,12 +104,29 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
     }
 
     @Override
-    public Set<IPostInfo> getPosts() {
+    public Collection<IPostInfo> getPosts() {
         return posts;
     }
 
-    public void setPosts(Set<IPostInfo> posts) {
+    public void setPosts(Collection<IPostInfo> posts) {
         this.posts = posts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        UserInfo userInfo = (UserInfo) o;
+        return new EqualsBuilder().append(id, userInfo.id).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(id).toHashCode();
     }
 
     @Override
@@ -189,11 +206,11 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
             return this;
         }
 
-        public Set<IPostInfo> posts() {
+        public Collection<IPostInfo> posts() {
             return target.getPosts();
         }
 
-        public Builder posts(Set<IPostInfo> posts) {
+        public Builder posts(Collection<IPostInfo> posts) {
             target.setPosts(posts);
             return this;
         }

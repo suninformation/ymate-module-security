@@ -33,8 +33,6 @@ public interface ISecurityConfig extends IInitialization<ISecurity> {
 
     String AUTHENTICATOR_FACTORY_CLASS = "authenticator_factory_class";
 
-    String SERVICE_IMPL_CLASS = "service_impl_class";
-
     /**
      * 模块是否已启用, 默认值: true
      *

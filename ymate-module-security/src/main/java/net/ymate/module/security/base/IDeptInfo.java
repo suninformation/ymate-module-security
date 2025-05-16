@@ -15,28 +15,16 @@
  */
 package net.ymate.module.security.base;
 
+import net.ymate.platform.commons.ext.IAttributeExt;
+import net.ymate.platform.commons.ext.ITreeViewExt;
+
 /**
  * 部门接口定义
  *
  * @author 刘镇 (suninformation@163.com) on 2022/3/6 2:14 AM
  * @since 1.0.0
  */
-public interface IDeptInfo extends IAttributeExt {
-
-    /**
-     * 部门唯一标识
-     */
-    String getId();
-
-    /**
-     * 根部门唯一标识
-     */
-    String getRootId();
-
-    /**
-     * 父级部门唯一标识
-     */
-    String getParentId();
+public interface IDeptInfo extends ITreeViewExt<String, IDeptInfo>, IAttributeExt {
 
     /**
      * 负责人唯一标识
@@ -49,57 +37,7 @@ public interface IDeptInfo extends IAttributeExt {
     String getName();
 
     /**
-     * 部门描述
-     */
-    String getDescription();
-
-    /**
-     * 部门层级路径
-     */
-    String getPath();
-
-    /**
-     * 层级深度
-     */
-    long getDepth();
-
-    /**
      * 排序
      */
-    float getSort();
-
-    /**
-     * 类型：{0-节点 1-根}
-     */
-    Type getType();
-
-    /**
-     * 部门 类型枚举
-     */
-    enum Type {
-
-        ROOT(1), NODE(0);
-
-        private final int type;
-
-        Type(int type) {
-            this.type = type;
-        }
-
-        public static Type valueOf(Integer type) {
-            if (type != null && type == 1) {
-                return Type.ROOT;
-            }
-            return Type.NODE;
-        }
-
-        public int type() {
-            return type;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(type);
-        }
-    }
+    Float getSort();
 }

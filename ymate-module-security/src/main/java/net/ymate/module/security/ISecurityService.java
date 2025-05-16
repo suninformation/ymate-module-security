@@ -20,7 +20,7 @@ import net.ymate.platform.core.beans.annotation.Ignored;
 import net.ymate.platform.core.support.IDestroyable;
 import net.ymate.platform.core.support.IInitialization;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 2023/2/9 00:24
@@ -58,6 +58,22 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
     IUserAuthenticator getUserAuthenticator(IUserInfo user);
 
     /**
+     * 获取部门树（组织架构）
+     *
+     * @param deptIds 部门唯一标识集合
+     * @return 返回部门树集合
+     */
+    Collection<IDeptInfo> getDepartmentTreeView(String... deptIds);
+
+    /**
+     * 获取权限树
+     *
+     * @param permissionIds 权限唯一标识集合
+     * @return 返回权限树集合
+     */
+    Collection<IPermissionInfo> getPermissionTreeView(String... permissionIds);
+
+    /**
      * 获取指定用户
      *
      * @param uid 用户唯一标识
@@ -71,7 +87,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param uid 用户唯一标识
      * @return 返回部门集合
      */
-    Set<IDeptInfo> getUserDataScopes(String uid);
+    Collection<IDeptInfo> getUserDataScopes(String uid);
 
     /**
      * 获取指定用户的岗位
@@ -79,7 +95,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param uid 用户唯一标识
      * @return 返回岗位集合
      */
-    Set<IPostInfo> getUserPosts(String uid);
+    Collection<IPostInfo> getUserPosts(String uid);
 
     /**
      * 获取指定用户所在组
@@ -87,7 +103,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param uid 用户唯一标识
      * @return 返回组集合
      */
-    Set<IGroupInfo> getUserGroups(String uid);
+    Collection<IGroupInfo> getUserGroups(String uid);
 
     /**
      * 获取指定用户拥有的权限
@@ -95,7 +111,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param uid 用户唯一标识
      * @return 返回权限集合
      */
-    Set<IPermissionInfo> getUserPermissions(String uid);
+    Collection<IPermissionInfo> getUserPermissions(String uid);
 
     // --- POST
 
@@ -105,7 +121,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param postIds 岗位唯一标识集合
      * @return 返回岗位合
      */
-    Set<IPostInfo> getPosts(String... postIds);
+    Collection<IPostInfo> getPosts(String... postIds);
 
     /**
      * 获取指定岗位
@@ -123,7 +139,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param deptIds 部门唯一标识集合
      * @return 返回部门集合
      */
-    Set<IDeptInfo> getDepartments(String... deptIds);
+    Collection<IDeptInfo> getDepartments(String... deptIds);
 
     /**
      * 获取指定部门
@@ -139,7 +155,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param deptId 部门唯一标识
      * @return 返回部门下的用户集合
      */
-    Set<IUserInfo> getDepartmentUsers(String deptId);
+    Collection<IUserInfo> getDepartmentUsers(String deptId);
 
     // --- GROUP
 
@@ -149,7 +165,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param groupIds 组唯一标识集合
      * @return 返回组集合
      */
-    Set<IGroupInfo> getGroups(String... groupIds);
+    Collection<IGroupInfo> getGroups(String... groupIds);
 
     /**
      * 获取指定组
@@ -165,7 +181,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param groupId 组唯一标识
      * @return 返回组用户集合
      */
-    Set<IUserInfo> getGroupUsers(String groupId);
+    Collection<IUserInfo> getGroupUsers(String groupId);
 
     /**
      * 获取指定组角色
@@ -173,7 +189,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param groupId 组唯一标识
      * @return 返回组集合
      */
-    Set<IRoleInfo> getGroupRoles(String groupId);
+    Collection<IRoleInfo> getGroupRoles(String groupId);
 
     /**
      * 获取指定组允许访问的部门
@@ -181,7 +197,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param groupId 组唯一标识
      * @return 返回部门集合
      */
-    Set<IDeptInfo> getGroupDataScopes(String groupId);
+    Collection<IDeptInfo> getGroupDataScopes(String groupId);
 
     /**
      * 获取指定组拥有的权限
@@ -189,7 +205,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param groupId 组唯一标识
      * @return 返回权限集合
      */
-    Set<IPermissionInfo> getGroupPermissions(String groupId);
+    Collection<IPermissionInfo> getGroupPermissions(String groupId);
 
     // --- ROLE
 
@@ -199,7 +215,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param roleIds 角色唯一标识集合
      * @return 返回角色集合
      */
-    Set<IRoleInfo> getRoles(String... roleIds);
+    Collection<IRoleInfo> getRoles(String... roleIds);
 
     /**
      * 获取指定角色
@@ -215,7 +231,7 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param roleId 角色唯一标识
      * @return 返回角色权限集合
      */
-    Set<IPermissionInfo> getRolePermissions(String roleId);
+    Collection<IPermissionInfo> getRolePermissions(String roleId);
 
     // --- PERMISSION
 
@@ -225,5 +241,5 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @param permissionIds 权限唯一标识集合
      * @return 返回权限集合
      */
-    Set<IPermissionInfo> getPermissions(String... permissionIds);
+    Collection<IPermissionInfo> getPermissions(String... permissionIds);
 }

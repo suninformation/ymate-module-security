@@ -15,8 +15,10 @@
  */
 package net.ymate.module.security.base.impl;
 
-import net.ymate.module.security.base.AbstractAttributeExt;
 import net.ymate.module.security.base.IRoleInfo;
+import net.ymate.platform.commons.ext.AbstractAttributeExt;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -26,15 +28,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class RoleInfo extends AbstractAttributeExt implements IRoleInfo {
 
-    private static final long serialVersionUID = 1L;
-
     private String id;
 
     private String name;
-
-    private String description;
-
-    private Type type;
 
     public RoleInfo() {
     }
@@ -58,21 +54,20 @@ public class RoleInfo extends AbstractAttributeExt implements IRoleInfo {
     }
 
     @Override
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        RoleInfo roleInfo = (RoleInfo) o;
+        return new EqualsBuilder().append(id, roleInfo.id).isEquals();
     }
 
     @Override
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(id).toHashCode();
     }
 
     @Override
@@ -113,24 +108,6 @@ public class RoleInfo extends AbstractAttributeExt implements IRoleInfo {
 
         public Builder name(String name) {
             target.setName(name);
-            return this;
-        }
-
-        public String description() {
-            return target.getDescription();
-        }
-
-        public Builder description(String description) {
-            target.setDescription(description);
-            return this;
-        }
-
-        public Type type() {
-            return target.getType();
-        }
-
-        public Builder type(Type type) {
-            target.setType(type);
             return this;
         }
     }

@@ -17,6 +17,7 @@ package net.ymate.module.security;
 
 import net.ymate.module.security.annotation.RoleType;
 import net.ymate.module.security.base.IUserInfo;
+import net.ymate.module.security.impl.DefaultUserAuthenticator;
 import net.ymate.platform.core.beans.annotation.Ignored;
 
 import java.io.Serializable;
@@ -28,6 +29,8 @@ import java.util.Collection;
  */
 @Ignored
 public interface IUserAuthenticator extends Serializable {
+
+    IUserAuthenticator DEFAULT_USER_AUTHENTICATOR = new DefaultUserAuthenticator();
 
     IUserInfo getUser();
 

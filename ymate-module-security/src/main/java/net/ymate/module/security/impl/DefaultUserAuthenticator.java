@@ -52,7 +52,10 @@ public class DefaultUserAuthenticator implements IUserAuthenticator {
             this.roleTypes.addAll(Arrays.asList(roleTypes));
         }
         if (ArrayUtils.isNotEmpty(permissions)) {
-            Arrays.stream(permissions).filter(StringUtils::isNotBlank).map(String::toLowerCase).forEach(this.permissions::add);
+            Arrays.stream(permissions)
+                    .filter(StringUtils::isNotBlank)
+                    .map(String::toLowerCase)
+                    .forEach(this.permissions::add);
         }
     }
 
@@ -63,7 +66,10 @@ public class DefaultUserAuthenticator implements IUserAuthenticator {
             this.roleTypes.addAll(roleTypes);
         }
         if (permissions != null && !permissions.isEmpty()) {
-            permissions.stream().filter(StringUtils::isNotBlank).map(String::toLowerCase).forEach(this.permissions::add);
+            permissions.stream()
+                    .filter(StringUtils::isNotBlank)
+                    .map(String::toLowerCase)
+                    .forEach(this.permissions::add);
         }
     }
 

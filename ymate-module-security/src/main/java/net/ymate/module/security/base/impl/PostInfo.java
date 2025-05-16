@@ -15,8 +15,10 @@
  */
 package net.ymate.module.security.base.impl;
 
-import net.ymate.module.security.base.AbstractAttributeExt;
 import net.ymate.module.security.base.IPostInfo;
+import net.ymate.platform.commons.ext.AbstractAttributeExt;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -26,17 +28,13 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  */
 public class PostInfo extends AbstractAttributeExt implements IPostInfo {
 
-    private static final long serialVersionUID = 1L;
-
     private String id;
 
     private String name;
 
     private String code;
 
-    private int level;
-
-    private String description;
+    private Integer level;
 
     public PostInfo() {
     }
@@ -69,7 +67,7 @@ public class PostInfo extends AbstractAttributeExt implements IPostInfo {
     }
 
     @Override
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
@@ -78,12 +76,20 @@ public class PostInfo extends AbstractAttributeExt implements IPostInfo {
     }
 
     @Override
-    public String getDescription() {
-        return description;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        PostInfo postInfo = (PostInfo) o;
+        return new EqualsBuilder().append(id, postInfo.id).isEquals();
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(id).toHashCode();
     }
 
     @Override
@@ -142,15 +148,6 @@ public class PostInfo extends AbstractAttributeExt implements IPostInfo {
 
         public Builder level(Integer level) {
             target.setLevel(level);
-            return this;
-        }
-
-        public String description() {
-            return target.getDescription();
-        }
-
-        public Builder description(String description) {
-            target.setDescription(description);
             return this;
         }
     }

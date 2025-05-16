@@ -15,7 +15,7 @@
  */
 package net.ymate.module.security.base;
 
-import net.ymate.module.security.annotation.RoleType;
+import net.ymate.platform.commons.ext.IAttributeExt;
 
 /**
  * 角色接口定义
@@ -34,59 +34,4 @@ public interface IRoleInfo extends IAttributeExt {
      * 角色名称
      */
     String getName();
-
-    /**
-     * 角色描述
-     */
-    String getDescription();
-
-    /**
-     * 类型：{0-用户 1-操作员 2-管理员}
-     */
-    Type getType();
-
-    /**
-     * 角色类型枚举
-     */
-    enum Type {
-
-        ADMIN(2), OPERATOR(1), USER(0);
-
-        private final int type;
-
-        Type(int type) {
-            this.type = type;
-        }
-
-        public static Type valueOf(Integer type) {
-            if (type != null) {
-                if (type == 2) {
-                    return Type.ADMIN;
-                } else if (type == 1) {
-                    return Type.OPERATOR;
-                }
-            }
-            return Type.USER;
-        }
-
-        public int type() {
-            return type;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(type);
-        }
-
-        public RoleType toType() {
-            switch (type) {
-                case 2:
-                    return RoleType.ADMIN;
-                case 1:
-                    return RoleType.OPERATOR;
-                default:
-                    return RoleType.USER;
-            }
-        }
-    }
 }

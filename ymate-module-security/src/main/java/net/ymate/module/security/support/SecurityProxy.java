@@ -41,7 +41,10 @@ public class SecurityProxy implements IProxy {
 
     public static boolean containsRoleTypes(RoleType[] roleTypes, IUserAuthenticator authenticator) {
         if (ArrayUtils.isNotEmpty(roleTypes)) {
-            return authenticator.getRoleTypes().stream().anyMatch(roleType -> Arrays.stream(roleTypes).anyMatch(rt -> rt.compareTo(roleType) == 0));
+            return authenticator.getRoleTypes()
+                    .stream()
+                    .anyMatch(roleType -> Arrays.stream(roleTypes)
+                            .anyMatch(rt -> rt.compareTo(roleType) == 0));
         }
         return true;
     }
@@ -50,7 +53,9 @@ public class SecurityProxy implements IProxy {
         if (ArrayUtils.isNotEmpty(permissions)) {
             boolean flag = false;
             if (LogicType.OR.equals(type)) {
-                flag = authenticator.getPermissions().stream().anyMatch(permission -> ArrayUtils.contains(permissions, permission));
+                flag = authenticator.getPermissions()
+                        .stream()
+                        .anyMatch(permission -> ArrayUtils.contains(permissions, permission));
             } else if (LogicType.AND.equals(type)) {
                 flag = authenticator.getPermissions().containsAll(Arrays.asList(permissions));
             }

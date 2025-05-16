@@ -15,18 +15,16 @@
  */
 package net.ymate.module.security.base;
 
+import net.ymate.platform.commons.ext.IAttributeExt;
+import net.ymate.platform.commons.ext.ITreeViewExt;
+
 /**
  * 授权项接口定义
  *
  * @author 刘镇 (suninformation@163.com) on 2022/3/6 2:13 AM
  * @since 1.0.0
  */
-public interface IPermissionInfo extends IAttributeExt {
-
-    /**
-     * 权限唯一标识
-     */
-    String getId();
+public interface IPermissionInfo extends ITreeViewExt<String, IPermissionInfo>, IAttributeExt {
 
     /**
      * 权限名称
@@ -54,39 +52,19 @@ public interface IPermissionInfo extends IAttributeExt {
     String getComponentUrl();
 
     /**
-     * 父级权限唯一标识
-     */
-    String getParentId();
-
-    /**
-     * 根权限唯一标识
-     */
-    String getRootId();
-
-    /**
-     * 层级路径
-     */
-    String getPath();
-
-    /**
-     * 层级深度
-     */
-    long getDepth();
-
-    /**
      * 排序
      */
-    float getSort();
+    Float getSort();
 
     /**
      * 是否全屏显示
      */
-    boolean isFullScreen();
+    Boolean isFullScreen();
 
     /**
      * 是否外部链接
      */
-    boolean isOutsideUrl();
+    Boolean isOutsideUrl();
 
     /**
      * 类型：{0-模块或组 1-菜单 2-动作}
