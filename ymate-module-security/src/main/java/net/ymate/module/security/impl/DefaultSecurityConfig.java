@@ -37,6 +37,8 @@ public final class DefaultSecurityConfig implements ISecurityConfig {
 
     private int cacheTimeout;
 
+    private boolean proxyEnabled;
+
     private IAuthenticatorFactory authenticatorFactory;
 
     public static DefaultSecurityConfig defaultConfig() {
@@ -67,6 +69,7 @@ public final class DefaultSecurityConfig implements ISecurityConfig {
         if (enabled) {
             cacheNamePrefix = configReader.getString(CACHE_NAME_PREFIX, confAnn != null ? confAnn.cacheNamePrefix() : null);
             cacheTimeout = configReader.getInt(CACHE_TIMEOUT, confAnn != null ? confAnn.cacheTimeout() : 0);
+            proxyEnabled = configReader.getBoolean(PROXY_ENABLED, confAnn == null || confAnn.proxyEnabled());
             authenticatorFactory = configReader.getClassImpl(AUTHENTICATOR_FACTORY_CLASS, confAnn == null || confAnn.authenticatorFactoryClass().equals(IAuthenticatorFactory.class) ? null : confAnn.authenticatorFactoryClass().getName(), IAuthenticatorFactory.class);
         }
     }
@@ -126,6 +129,17 @@ public final class DefaultSecurityConfig implements ISecurityConfig {
     }
 
     @Override
+    public boolean isProxyEnabled() {
+        return proxyEnabled;
+    }
+
+    public void setProxyEnabled(boolean proxyEnabled) {
+        if (!initialized) {
+            this.proxyEnabled = proxyEnabled;
+        }
+    }
+
+    @Override
     public IAuthenticatorFactory getAuthenticatorFactory() {
         return authenticatorFactory;
     }
@@ -155,6 +169,11 @@ public final class DefaultSecurityConfig implements ISecurityConfig {
 
         public Builder cacheTimeout(int cacheTimeout) {
             config.setCacheTimeout(cacheTimeout);
+            return this;
+        }
+
+        public Builder proxyEnabled(boolean proxyEnabled) {
+            config.setProxyEnabled(proxyEnabled);
             return this;
         }
 

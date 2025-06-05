@@ -27,6 +27,8 @@ public interface ISecurityConfig extends IInitialization<ISecurity> {
 
     String ENABLED = "enabled";
 
+    String PROXY_ENABLED = "proxy_enabled";
+
     String CACHE_NAME_PREFIX = "cache_name_prefix";
 
     String CACHE_TIMEOUT = "cache_timeout";
@@ -39,6 +41,13 @@ public interface ISecurityConfig extends IInitialization<ISecurity> {
      * @return 返回false表示禁用
      */
     boolean isEnabled();
+
+    /**
+     * 安全代理是否启用, 默认值: true
+     *
+     * @return 返回false表示禁用
+     */
+    boolean isProxyEnabled();
 
     /**
      * @return 缓存名称前缀, 默认值: ""

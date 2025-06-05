@@ -47,6 +47,11 @@ public final class DefaultSecurityConfigurable extends DefaultModuleConfigurable
             return this;
         }
 
+        public Builder proxyEnabled(boolean proxyEnabled) {
+            configurable.addConfig(ISecurityConfig.PROXY_ENABLED, String.valueOf(proxyEnabled));
+            return this;
+        }
+
         public Builder cacheNamePrefix(String cacheNamePrefix) {
             configurable.addConfig(ISecurityConfig.CACHE_NAME_PREFIX, cacheNamePrefix);
             return this;

@@ -35,6 +35,11 @@ public @interface SecurityConf {
     boolean enabled() default true;
 
     /**
+     * @return 安全代理是否启用, 默认值: true
+     */
+    boolean proxyEnabled() default true;
+
+    /**
      * @return 缓存名称前缀, 默认值: ""
      */
     String cacheNamePrefix() default StringUtils.EMPTY;

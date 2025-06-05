@@ -30,6 +30,9 @@
 # 模块是否已启用, 默认值: true
 #ymp.configs.module.security.enabled=false
 
+# 安全代理是否启用, 默认值: true
+#ymp.configs.module.security.proxy_enabled=false
+
 # 缓存名称前缀, 默认值: ""
 ymp.configs.module.security.cache_name_prefix=
 

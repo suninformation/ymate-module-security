@@ -117,9 +117,11 @@ public final class Security implements IModule, ISecurity {
                 if (service != null) {
                     service.initialize(this);
                 }
-                IProxyFactory proxyFactory = owner.getBeanFactory().getProxyFactory();
-                if (proxyFactory != null) {
-                    proxyFactory.registerProxy(new SecurityProxy(this));
+                if (config.isProxyEnabled()) {
+                    IProxyFactory proxyFactory = owner.getBeanFactory().getProxyFactory();
+                    if (proxyFactory != null) {
+                        proxyFactory.registerProxy(new SecurityProxy(this));
+                    }
                 }
                 //
                 IExceptionProcessor processor = target -> {
