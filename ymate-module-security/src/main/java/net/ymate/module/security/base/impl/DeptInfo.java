@@ -17,10 +17,7 @@ package net.ymate.module.security.base.impl;
 
 import net.ymate.module.security.base.IDeptInfo;
 import net.ymate.platform.commons.ext.AbstractTreeViewAttributeExt;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import net.ymate.platform.commons.ext.ITreeViewExtBuilder;
 
 /**
  * @author 刘镇 (suninformation@163.com) on 2025/04/28 00:23:30
@@ -119,27 +116,6 @@ public class DeptInfo extends AbstractTreeViewAttributeExt<String, IDeptInfo> im
         this.sort = sort;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        DeptInfo deptInfo = (DeptInfo) o;
-        return new EqualsBuilder().append(id, deptInfo.id).isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(id).toHashCode();
-    }
-
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
-    }
-
     public Builder bind() {
         return new Builder(this);
     }
@@ -148,7 +124,7 @@ public class DeptInfo extends AbstractTreeViewAttributeExt<String, IDeptInfo> im
         return new Builder();
     }
 
-    public static class Builder extends AbstractBuilder<Builder, DeptInfo> {
+    public static class Builder extends AbstractBuilder<Builder, DeptInfo> implements ITreeViewExtBuilder<String, Builder> {
 
         public Builder() {
             super(new DeptInfo());
@@ -158,28 +134,34 @@ public class DeptInfo extends AbstractTreeViewAttributeExt<String, IDeptInfo> im
             super(target);
         }
 
+        @Override
         public String id() {
             return target.getId();
         }
 
+        @Override
         public Builder id(String id) {
             target.setId(id);
             return this;
         }
 
+        @Override
         public String rootId() {
             return target.getRootId();
         }
 
+        @Override
         public Builder rootId(String rootId) {
             target.setRootId(rootId);
             return this;
         }
 
+        @Override
         public String parentId() {
             return target.getParentId();
         }
 
+        @Override
         public Builder parentId(String parentId) {
             target.setParentId(parentId);
             return this;
@@ -203,19 +185,23 @@ public class DeptInfo extends AbstractTreeViewAttributeExt<String, IDeptInfo> im
             return this;
         }
 
+        @Override
         public String path() {
             return target.getPath();
         }
 
+        @Override
         public Builder path(String path) {
             target.setPath(path);
             return this;
         }
 
+        @Override
         public Long depth() {
             return target.getDepth();
         }
 
+        @Override
         public Builder depth(Long depth) {
             target.setDepth(depth);
             return this;

@@ -35,6 +35,13 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
     void refresh();
 
     /**
+     * 刷新指定用户的数据
+     *
+     * @param uid 用户唯一标识
+     */
+    void refresh(String uid);
+
+    /**
      * 获取当前用户
      *
      * @return 返回用户
