@@ -138,6 +138,14 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      */
     IPostInfo getPost(String postId);
 
+    /**
+     * 获取指定岗位用户
+     *
+     * @param postId 岗位唯一标识
+     * @return 返回岗位用户集合
+     */
+    Collection<IUserInfo> getPostUsers(String postId);
+
     // --- DEPT
 
     /**
