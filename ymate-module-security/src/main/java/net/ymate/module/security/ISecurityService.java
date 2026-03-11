@@ -30,6 +30,13 @@ import java.util.Collection;
 public interface ISecurityService extends IInitialization<ISecurity>, IDestroyable {
 
     /**
+     * 获取所属模块
+     *
+     * @return 返回所属模块实例
+     */
+    ISecurity getOwner();
+
+    /**
      * 刷新数据
      */
     void refresh();
@@ -79,6 +86,14 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @return 返回权限树集合
      */
     Collection<IPermissionInfo> getPermissionTreeView(String... permissionIds);
+
+    /**
+     * 获取权限树
+     *
+     * @param permissionCodes 权限码集合
+     * @return 返回权限树集合
+     */
+    Collection<IPermissionInfo> getPermissionTreeViewByCode(String... permissionCodes);
 
     /**
      * 获取指定用户
@@ -131,6 +146,14 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
     Collection<IPostInfo> getPosts(String... postIds);
 
     /**
+     * 获取全部或指定唯一代码的岗位
+     *
+     * @param postCodes 岗位唯一代码集合
+     * @return 返回岗位合
+     */
+    Collection<IPostInfo> getPostsByCode(String... postCodes);
+
+    /**
      * 获取指定岗位
      *
      * @param postId 岗位唯一标识
@@ -139,12 +162,28 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
     IPostInfo getPost(String postId);
 
     /**
+     * 获取指定岗位
+     *
+     * @param postCode 岗位唯一代码
+     * @return 返回岗位
+     */
+    IPostInfo getPostByCode(String postCode);
+
+    /**
      * 获取指定岗位用户
      *
      * @param postId 岗位唯一标识
      * @return 返回岗位用户集合
      */
     Collection<IUserInfo> getPostUsers(String postId);
+
+    /**
+     * 获取指定岗位用户
+     *
+     * @param postCode 岗位唯一代码
+     * @return 返回岗位用户集合
+     */
+    Collection<IUserInfo> getPostUsersByCode(String postCode);
 
     // --- DEPT
 
@@ -257,4 +296,12 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
      * @return 返回权限集合
      */
     Collection<IPermissionInfo> getPermissions(String... permissionIds);
+
+    /**
+     * 获取全部或指定唯一代码的权限
+     *
+     * @param permissionCodes 权限码集合
+     * @return 返回权限集合
+     */
+    Collection<IPermissionInfo> getPermissionsByCode(String... permissionCodes);
 }
