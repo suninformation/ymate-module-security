@@ -104,12 +104,12 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
     IUserInfo getUser(String uid);
 
     /**
-     * 获取指定用户允许访问的部门
+     * 获取指定用户允许访问的数据作用域
      *
      * @param uid 用户唯一标识
-     * @return 返回部门集合
+     * @return 返回数据作用域集合
      */
-    Collection<IDeptInfo> getUserDataScopes(String uid);
+    Collection<IDataScopeInfo> getUserDataScopes(String uid);
 
     /**
      * 获取指定用户的岗位
@@ -246,12 +246,12 @@ public interface ISecurityService extends IInitialization<ISecurity>, IDestroyab
     Collection<IRoleInfo> getGroupRoles(String groupId);
 
     /**
-     * 获取指定组允许访问的部门
+     * 获取指定组允许访问的数据作用域
      *
      * @param groupId 组唯一标识
-     * @return 返回部门集合
+     * @return 返回数据作用域集合
      */
-    Collection<IDeptInfo> getGroupDataScopes(String groupId);
+    Collection<IDataScopeInfo> getGroupDataScopes(String groupId);
 
     /**
      * 获取指定组拥有的权限
