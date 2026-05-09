@@ -38,6 +38,8 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
 
     private String nickname;
 
+    private String realName;
+
     private String avatarUrl;
 
     private Type type;
@@ -74,6 +76,15 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    @Override
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     @Override
@@ -176,6 +187,15 @@ public class UserInfo extends AbstractAttributeExt implements IUserInfo {
 
         public Builder nickname(String nickname) {
             target.setNickname(nickname);
+            return this;
+        }
+
+        public String realName() {
+            return target.getRealName();
+        }
+
+        public Builder realName(String realName) {
+            target.setRealName(realName);
             return this;
         }
 

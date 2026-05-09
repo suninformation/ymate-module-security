@@ -43,6 +43,11 @@ public interface IUserInfo extends IAttributeExt {
     String getNickname();
 
     /**
+     * 真实姓名
+     */
+    String getRealName();
+
+    /**
      * 头像URL地址
      */
     String getAvatarUrl();
